@@ -118,3 +118,9 @@ h1 {
   .button:hover, .button:active { transform: none; }
   .button.primary::before { animation: none !important; }
 }
+
+/* Folded A / paper-plane brand mark. */
+.brand-mark{width:32px;height:32px;flex:none;display:block;margin-right:7px;overflow:visible}
+.mini-wordmark{display:inline-flex;align-items:center}.mini-wordmark .brand-mark{width:22px;height:22px;margin-right:5px}
+.footer-mark .brand-mark{width:28px;height:28px}
+@media(max-width:420px){.header .brand-mark{width:27px;height:27px;margin-right:5px}}
