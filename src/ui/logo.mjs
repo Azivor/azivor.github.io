@@ -1,0 +1,1 @@
+export const logoPaths = "<path fill=\"currentColor\" fill-rule=\"evenodd\" d=\"M4 40 35 4 28 25 29 32H17ZM21 25H28L30 14Z\"/><path fill=\"currentColor\" opacity=\".72\" d=\"m35 4 8 36-14-8-1-7Z\"/>";
