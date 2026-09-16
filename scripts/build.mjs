@@ -1,0 +1,17 @@
+import {mkdir,writeFile,copyFile,readFile,rm} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import {join} from 'node:path';
+import Home from '../src/pages/home.mjs';
+import Catalog from '../src/pages/components.mjs';
+import {logoPaths} from '../src/ui/logo.mjs';
+const root=fileURLToPath(new URL('../',import.meta.url));
+const out=join(root,'dist');await mkdir(join(out,'ui'),{recursive:true});await mkdir(join(out,'components'),{recursive:true});
+const favicon=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#e1f1fc"/><g transform="translate(8 8)" color="#265b99">${logoPaths}</g></svg>`;
+await writeFile(join(out,'index.html'),Home().replace(/<link rel="icon"[^>]*>/,`<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,${encodeURIComponent(favicon)}">`));
+await writeFile(join(out,'components/index.html'),Catalog());
+await writeFile(join(out,'logo.svg'),`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" color="#203550">${logoPaths}</svg>`);
+for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
+for(const name of ['home','catalog'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
+await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
+for(const name of ['style.css','refinements.css'])await rm(join(out,name),{force:true});
+console.log('Built homepage and /components/ from shared components.');

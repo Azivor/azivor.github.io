@@ -1,20 +1,61 @@
-# Project AGI homepage
+# Project AGI component library
 
-A static placeholder homepage using an sky blue palette, EB Garamond headings, and translucent glass controls.
+A dependency-free static site built from reusable HTML-rendering components. The homepage and `/components/` catalog share the same implementation. Node 20+ and Python 3 are the only local requirements.
 
-## Local preview
+## Work locally
 
-Run `python3 -m http.server 4173 --directory dist` and open localhost:4173.
-No dependencies or build step required. `dist/` is authored source and is tracked.
+- `npm run build` generates the site in `dist/`.
+- `npm test` verifies semantics, escaping, accessibility associations, and page integrity.
+- `npm run dev` builds and serves http://127.0.0.1:4173.
 
-## Hosting
+No install is needed. Rebuild after editing source; the preview is not a hot-reload server.
 
-ChatGPT Sites configuration is in `.openai/hosting.json`. Publish the exact committed source using the Sites connector and static asset packager.
+## Structure
 
-## Design
+| Location | Responsibility |
+| --- | --- |
+| `src/ui/components.mjs` | Button, Brand, Logo, Navigation, Card, Badge, Section, Field, Disclosure |
+| `src/ui/logo.mjs` | Single source for the folded A mark, inline branding, SVG asset, and favicon |
+| `src/styles/tokens.css` | Palette, fonts, spacing scale, radii, widths, blur, and motion tokens |
+| `src/styles/base.css` | Reset, focus treatment, layout and typography utilities |
+| `src/styles/components.css` | Shared component variants and interaction states |
+| `src/styles/home.css` | Existing homepage composition and responsive adjustments |
+| `src/styles/catalog.css` | Library reference-page layout only |
+| `src/pages/` | Page compositions using the shared UI |
+| `scripts/build.mjs` | Explicit page registry and deterministic static build |
+| `dist/` | Generated deployment output, tracked for static Sites hosting |
 
-Requested reference: https://cluely.com. Reference inspection was blocked by the browser security-policy service, so no reference code or assets were copied. The user then supplied a screenshot; the final visual direction follows its saturated sky-blue-to-white background, white serif headline, compact blue glass controls, and large colorful preview panel. No reference code or assets were copied. All copy is provisional. Fonts are loaded from Google Fonts, with system fallbacks. Navigation links move to sections on this page; there are no app or account features.
+## Add a page
 
-## Visual refinement
+Create a module in `src/pages/` that returns an HTML document. Import components from `../ui/components.mjs`, and include `/ui/tokens.css`, `/ui/base.css`, and `/ui/components.css` in that order, followed by any page-specific stylesheet. Register the page output in `scripts/build.mjs`. Build, run tests, then publish through the existing Sites project. Use the `/components/` reference for examples.
 
-The subsequent live-reference audit confirmed EB Garamond 500, looser headline tracking, compact 44px controls, directional radial lighting on the opaque blue CTA, and translucent dark overlays. `dist/refinements.css` applies those scoped changes, including matching Safari blur properties and reduced-motion support. The simple background from the supplied screenshot is preserved.
+```js
+import {Section, Card, Button} from '../ui/components.mjs';
+Section({id: 'research', title: 'New ideas', children:
+  Card({variant: 'solid', children:
+    Button({label: 'Explore', href: '/#possibilities'})
+  })
+});
+```
+
+## Component contracts
+
+| Component | Options |
+| --- | --- |
+| Button | required `label`; `href` makes a link, otherwise native button; variant `primary/glass/ghost`; size `small/default/large`; `icon`, `className`, `disabled`, `type` |
+| Brand | `href`, `label`, `className`; includes decorative Logo |
+| Logo | Shared decorative SVG; provide an accessible label on its containing link when icon-only |
+| Navigation | `items: [{label,href}]`, `active`, accessible `label` |
+| Card | variant `light/dark/solid`, trusted HTML `children`, `className` |
+| Badge | `label` |
+| Section | required unique `id` and `title`, optional `eyebrow`, trusted HTML `children` |
+| Field | required unique `id`, `label`; `type`, `value`, `placeholder`, `help`, `error`, `required`, `disabled` |
+| Disclosure | `title`, trusted HTML `children`, `open`; native keyboard-accessible details/summary |
+
+Text and attribute values are escaped. `children` is an intentionally trusted HTML slot; never pass unsanitized external content. Use `escapeHTML` for external plain text. Link schemes are validated. Disabled links are rejected rather than pretending to be disabled. Field errors are presentation props; server validation and persistence are not implemented. The catalog is a style reference, not a working form backend.
+
+Layout utilities: `ui-container`, `ui-stack`, `ui-cluster`, `ui-grid`, `ui-section`. Typography: `ui-title`, `ui-body`, `ui-eyebrow`. Preserve visible keyboard focus, unique IDs, native semantics, and reduced-motion support. Avoid introducing new page-specific button or logo styles; change shared components instead.
+
+## Hosting and provenance
+
+Reuse `.openai/hosting.json`; never create another Site for updates. Source is backed up privately under KineticLogicLabs/project-agi-site. The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond and DM Sans, with system fallbacks.
