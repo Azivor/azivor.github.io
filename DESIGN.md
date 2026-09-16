@@ -12,7 +12,7 @@ Prior panel observations: neutral charcoal #21232a at 50% with 8px blur; 12px ov
 
 - Primary actions keep blue radial illumination, a soft directional rim, and short interaction-only shimmer.
 - Dark overlay: neutral #21232a at 60%, blur 8px, radius 12px. The slightly stronger fill is a readability adaptation over the light silver panel.
-- Light glass: restrained transparent white with directional top lighting and a short contact shadow.
+- Light glass: restrained transparent white with directional top lighting and a short contact shadow. When nested inside dark glass, use a 10% black fill to preserve small-label contrast; white-on-white layering otherwise weakens it.
 - Silver feature surface: cool opaque radial gradient, radius 20px, small elevation. This replaces the generic multicolor backdrop without borrowing product imagery.
 - Solid cards: white, neutral hairline border, no blur. Used for dense content and forms.
 - Fonts: EB Garamond for display, Geist for interface/body, system fallbacks retained.

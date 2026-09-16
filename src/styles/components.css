@@ -28,6 +28,8 @@
 .ui-surface--light{background:var(--glass-light-fill);border-color:var(--glass-light-border);border-top-color:var(--glass-light-highlight);box-shadow:var(--glass-light-shadow)}
 .ui-surface--dark{border-radius:var(--radius-overlay);color:white;background:var(--glass-dark-fill);border-color:var(--glass-dark-border);border-top-color:var(--glass-dark-highlight);border-left-color:#ffffff3d;box-shadow:var(--glass-dark-shadow)}
 .ui-surface--solid{background:var(--surface-solid);border-color:var(--surface-solid-border);box-shadow:var(--surface-solid-shadow);backdrop-filter:none;-webkit-backdrop-filter:none}
+/* Nested overlays use a slight dark tint to keep small white labels readable. */
+.ui-surface--dark .ui-surface--light{background:rgba(0,0,0,.10)}
 /* Visible focus against both the sky and dark glass. */
 .button:focus-visible{outline:3px solid #fff;outline-offset:3px;box-shadow:0 0 0 6px #1f4778}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.ui-surface--dark{background:#353a40}.ui-surface--light{background:#ffffffb8}.ui-surface--dark .ui-surface--light{background:#ffffff18}}
