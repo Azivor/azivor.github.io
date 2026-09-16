@@ -46,7 +46,7 @@ Section({id: 'research', title: 'New ideas', children:
 | Brand | `href`, `label`, `className`; includes decorative Logo |
 | Logo | Shared decorative SVG; provide an accessible label on its containing link when icon-only |
 | Navigation | `items: [{label,href}]`, `active`, accessible `label` |
-| Card | variant `light/dark/solid`, trusted HTML `children`, `className` |
+| Card | variant `light/dark/solid/silver`, trusted HTML `children`, `className` |
 | Badge | `label` |
 | Section | required unique `id` and `title`, optional `eyebrow`, trusted HTML `children` |
 | Field | required unique `id`, `label`; `type`, `value`, `placeholder`, `help`, `error`, `required`, `disabled` |
@@ -58,4 +58,6 @@ Layout utilities: `ui-container`, `ui-stack`, `ui-cluster`, `ui-grid`, `ui-secti
 
 ## Hosting and provenance
 
-Reuse `.openai/hosting.json`; never create another Site for updates. Source is backed up privately under KineticLogicLabs/project-agi-site. The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond and DM Sans, with system fallbacks.
+Reuse `.openai/hosting.json`; never create another Site for updates. Source is backed up privately under KineticLogicLabs/project-agi-site. The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond and Geist, with system fallbacks.
+
+Design reference decisions are recorded in DESIGN.md. Dark overlays deliberately use 60% charcoal for readable text over the silver feature surface; reference measurements suggested 50% as a starting point.

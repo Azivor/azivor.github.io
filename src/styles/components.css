@@ -3,7 +3,7 @@
 .brand-mark{display:block;width:32px;height:32px;flex:none;margin-right:7px;overflow:visible}.brand-period{color:inherit}
 .nav{display:flex;align-items:center;flex-wrap:wrap;gap:22px}.nav a{font-size:.875rem;padding:9px 4px;color:inherit;text-decoration:none;border-radius:4px}.nav a:hover{text-decoration:underline;text-underline-offset:6px}
 .skip-link{position:fixed;top:-80px;left:16px;padding:14px 20px;background:white;color:var(--color-ink);z-index:20;border-radius:10px}.skip-link:focus{top:16px}
-.glass{background:linear-gradient(130deg,#ffffff94,#ffffff2e 42%,#e6effe4d);border:1px solid var(--color-border);box-shadow:inset 0 1px 2px #fffffff2,inset 0 -1px 2px #80a5d626,0 5px 15px #35557f12;backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%)}
+.glass{background:var(--glass-light-fill);border:1px solid var(--glass-light-border);border-top-color:var(--glass-light-highlight);box-shadow:var(--glass-light-shadow);backdrop-filter:blur(var(--blur-glass)) saturate(115%);-webkit-backdrop-filter:blur(var(--blur-glass)) saturate(115%)}
 .button{position:relative;isolation:isolate;display:inline-flex;justify-content:center;align-items:center;gap:12px;min-height:44px;padding:9px 19px;font:500 1rem/24px var(--font-body);color:inherit;text-decoration:none;border:1px solid transparent;border-radius:var(--radius-control);background:transparent;cursor:pointer;transition:transform var(--duration-fast) ease,box-shadow .25s ease,background .25s ease}
 .button:hover{transform:scale(1.03)}.button:active{transform:scale(.97)}
 .button.primary{overflow:hidden;color:white;border-color:#a0c7ff57;background:radial-gradient(101.79% 101.79% at 65.61% 81.79%,#ffffff47,transparent),radial-gradient(114.65% 114.65% at 9.73% 17.27%,var(--color-accent),var(--color-accent-deep));box-shadow:14px 15px 24px #6d97e540,inset -3px -3px 4px #bfe5fb66,inset 4px 4px 4px #131ae41a}
@@ -11,16 +11,25 @@
 .button.primary::before{content:"";position:absolute;z-index:-1;inset:-100% -60%;background:linear-gradient(110deg,transparent 38%,#ffffff52 49%,transparent 61%);transform:translateX(-75%);pointer-events:none}
 .button.primary:hover,.button.primary:focus-visible{box-shadow:16px 17px 27px #6d97e552,inset -3px -3px 5px #daf2ff8c,inset 4px 4px 4px #131ae41a}
 .button.primary:hover::before,.button.primary:focus-visible::before{animation:glass-sweep 1.1s ease-out both}@keyframes glass-sweep{from{transform:translateX(-75%)}to{transform:translateX(75%)}}
-.button.glass{border-color:#ffffff59;background:linear-gradient(135deg,#ffffff30,#ffffff0a 65%,#e8f6ff1f);box-shadow:inset 0 1px 1px #ffffff6b,inset 0 -1px 1px #35729c14,0 4px 10px #19629d0d;backdrop-filter:blur(var(--blur-glass)) saturate(130%);-webkit-backdrop-filter:blur(var(--blur-glass)) saturate(130%)}
+.button.glass{background:var(--glass-light-fill);border:1px solid var(--glass-light-border);border-top-color:var(--glass-light-highlight);box-shadow:var(--glass-light-shadow);backdrop-filter:blur(var(--blur-glass)) saturate(115%);-webkit-backdrop-filter:blur(var(--blur-glass)) saturate(115%)}
 .button.glass:hover{background-color:#ffffff1a;box-shadow:inset 0 1px 2px #ffffff9e,0 5px 14px #19629d1a}.button.ghost{background:transparent;border-color:currentColor;box-shadow:none}
 .button.button--small{font-size:.875rem;padding-inline:16px}.button.button--large{min-height:52px;padding:13px 24px}.button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}.button:disabled::before{display:none}.arrow{font-size:19px;font-weight:400}
-.ui-surface{padding:var(--space-6);border-radius:var(--radius-panel);border:1px solid #ffffff52;backdrop-filter:blur(var(--blur-glass)) saturate(120%);-webkit-backdrop-filter:blur(var(--blur-glass)) saturate(120%);box-shadow:inset 0 1px 1px #ffffff47,0 18px 40px #163a6033}
-.ui-surface--light{background:linear-gradient(130deg,#ffffff26,#ffffff09 70%);border-top-color:#ffffff80}
-.ui-surface--dark{color:white;background:linear-gradient(125deg,#0f2236ab,#142a3d94);border-top-color:#ffffffa8}.ui-surface--dark .ui-body{color:#f1f6fc}
-.ui-surface--solid{background:white;border-color:#cfdeed;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 4px 18px #2035500a}
+.ui-surface{padding:var(--space-6);border-radius:var(--radius-panel);border:1px solid var(--glass-light-border);backdrop-filter:blur(var(--blur-glass)) saturate(115%);-webkit-backdrop-filter:blur(var(--blur-glass)) saturate(115%)}
+
+.ui-surface--dark .ui-body{color:#f1f6fc}
+
 .ui-badge{display:inline-flex;align-items:center;border-radius:999px;background:#e1f1fc;color:#234d70;border:1px solid #c9e3f5;padding:4px 10px;font-size:.8125rem;line-height:1.4}
 .ui-field{display:grid;gap:8px;font-size:.875rem;font-weight:500}.ui-input{width:100%;min-height:44px;padding:10px 12px;border:1px solid #91a9c0;border-radius:var(--radius-control);background:#ffffffbf;color:var(--color-ink)}.ui-input[aria-invalid=true]{border-color:#b6263c}.ui-help{font-size:.8125rem;font-weight:400;color:var(--color-muted)}.ui-error{color:#a31c32}.ui-input:disabled{opacity:.55;cursor:not-allowed}
 .ui-disclosure{padding:var(--space-4);border:1px solid #cfdeed;border-radius:var(--radius-card);background:#ffffff90}.ui-disclosure summary{cursor:pointer;font-weight:500}.ui-disclosure[open] summary{margin-bottom:var(--space-3)}
 @media(prefers-reduced-motion:reduce){.button:hover,.button:active{transform:none}.button.primary::before{animation:none!important}}
 
-.ui-surface--dark{border-left-color:#ffffff80}.ui-surface--light{box-shadow:inset 0 1px 1px #ffffff66,0 7px 20px #031d3726}
+
+
+.ui-surface--light{background:var(--glass-light-fill);border-color:var(--glass-light-border);border-top-color:var(--glass-light-highlight);box-shadow:var(--glass-light-shadow)}
+.ui-surface--dark{border-radius:var(--radius-overlay);color:white;background:var(--glass-dark-fill);border-color:var(--glass-dark-border);border-top-color:var(--glass-dark-highlight);border-left-color:#ffffff3d;box-shadow:var(--glass-dark-shadow)}
+.ui-surface--solid{background:var(--surface-solid);border-color:var(--surface-solid-border);box-shadow:var(--surface-solid-shadow);backdrop-filter:none;-webkit-backdrop-filter:none}
+/* Visible focus against both the sky and dark glass. */
+.button:focus-visible{outline:3px solid #fff;outline-offset:3px;box-shadow:0 0 0 6px #1f4778}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.ui-surface--dark{background:#353a40}.ui-surface--light{background:#ffffffb8}.ui-surface--dark .ui-surface--light{background:#ffffff18}}
+
+.ui-surface--silver{background:var(--surface-silver);border-color:#ffffff73;box-shadow:var(--surface-feature-shadow);backdrop-filter:none;-webkit-backdrop-filter:none;color:var(--color-ink)}

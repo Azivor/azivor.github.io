@@ -13,7 +13,7 @@ export function Button({label,href,variant='primary',size='default',icon='',clas
  return href?`<a class="${escapeHTML(classes)}" href="${url(href)}">${body}</a>`:`<button class="${escapeHTML(classes)}" type="${type}"${disabled?' disabled':''}>${body}</button>`;
 }
 export function Navigation({items=[],active='',label='Main navigation'}={}) {return `<nav class="nav" aria-label="${escapeHTML(label)}">${items.map(i=>`<a href="${url(i.href)}"${i.href===active?' class="selected" aria-current="location"':''}>${escapeHTML(i.label)}</a>`).join('')}</nav>`;}
-export function surfaceAttributes({variant='light',className=''}={}) {choice(variant,['light','dark','solid'],'surface variant');return `class="ui-surface ui-surface--${variant} ${escapeHTML(className)}"`;}
+export function surfaceAttributes({variant='light',className=''}={}) {choice(variant,['light','dark','solid','silver'],'surface variant');return `class="ui-surface ui-surface--${variant} ${escapeHTML(className)}"`;}
 // children is trusted, author-written HTML, never untrusted user content.
 export function Card({variant='light',className='',children=''}={}) {return `<div ${surfaceAttributes({variant,className})}>${children}</div>`;}
 export function Badge({label}={}) {return `<span class="ui-badge">${escapeHTML(label)}</span>`;}
