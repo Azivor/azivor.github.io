@@ -1,33 +1,19 @@
-/* Homepage composition. Materials and controls come from the shared UI library. */
-.page{overflow:hidden;background:linear-gradient(180deg,var(--color-sky) 0,var(--color-cyan) 390px,#9fd7eb 600px,#f2fafd 820px,#fff 980px)}
+/* A continuous sky, white typography, and one clear glass surface. */
+.page{overflow:hidden;background:linear-gradient(180deg,#2787d2 0,#329bd8 380px,#55b5df 700px,#c0e7f4 930px,#fff 1120px)}
 .header{max-width:1200px;margin:auto;display:flex;align-items:center;gap:64px;padding:18px 24px;color:white}
-.header-cta{margin-left:auto;font-size:.875rem;padding:9px 16px}
-.hero{text-align:center;padding:62px 24px 0}
-.hero h1{font:500 clamp(4rem,6.325vw,5rem)/.96 var(--font-display);letter-spacing:-1px;margin:0;color:white}
-.intro{color:var(--color-on-sky);font-size:18px;line-height:1.45;margin-top:28px;letter-spacing:-.2px}
+.hero{text-align:center;padding:62px 24px 0;color:white}
+.hero h1{font:500 clamp(4rem,6.325vw,5rem)/.96 var(--font-display);letter-spacing:-1px;margin:0}
+.intro{color:white;font-size:18px;line-height:1.45;margin-top:28px;letter-spacing:-.2px}
 .hero-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:31px}
-.hero-actions .secondary{font-size:.875rem;border-color:#ffffff3b}
-.hero-note{font-size:.8125rem;color:#234d70;margin-top:16px}
-.showcase{position:relative;max-width:var(--content-width);margin:56px auto 0;overflow:hidden;text-align:left;scroll-margin-top:28px;padding:0;border-radius:var(--radius-panel)}
-.showcase-top{display:flex;justify-content:space-between;align-items:center;padding:13px 20px;background:#ffffff1f;color:var(--color-ink)}
-.mini-wordmark{display:inline-flex;align-items:center;font-weight:600;letter-spacing:-.7px;font-size:15px}.mini-wordmark .brand-mark{width:22px;height:22px;margin-right:5px}
-.preview-label{font-size:.75rem;letter-spacing:1.6px;color:#304d64;font-weight:500}.sparkle{font-size:19px;color:var(--color-ink)}
-.showcase-body{display:flex;justify-content:space-between;align-items:center;gap:35px;max-width:880px;margin:48px auto 59px;padding:43px 42px}
-.kicker{display:block;font-size:.75rem;letter-spacing:2px;font-weight:500;color:#477088}.showcase-copy>.kicker{color:#e3eefb}
-.showcase h2{font:400 57px/1.02 var(--font-display);letter-spacing:-1.8px;margin-top:21px}.showcase h2 em{color:#e0e6ec;font-weight:400}
-.showcase-copy>p{color:#f1f6fc;font-size:16px;line-height:1.65;max-width:345px;margin-top:24px}.showcase-copy>p br{display:none}
-.thought-card{width:252px;flex-shrink:0;border-radius:var(--radius-overlay);padding:20px 23px 16px}
-.thought-top{display:flex;align-items:center;gap:8px;font-size:.75rem;color:#edf5ff}.thought-symbol{font-size:20px;color:#e4edf7}.card-number{margin-left:auto;font-size:.75rem;color:#edf5ff}
-.thought-card p{font:400 36px/1.15 var(--font-display);letter-spacing:-.3px;margin:26px 0 30px;color:white}.thought-card p em{color:#d4e9fc}
-.card-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ffffff2b;padding-top:13px;font-size:.75rem;letter-spacing:1.2px;color:#edf5ff}.card-bottom>span:last-child{font-size:18px}
-.showcase-bottom{border-top:1px solid #ffffff21;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 22px;color:#263d57;background:#ffffff5c;font-size:.75rem}
-.about{text-align:center;padding:112px 24px 103px}.about h2{font:400 72px/1.04 var(--font-display);letter-spacing:-2px;margin-top:20px}.about h2 em{color:#379cd7;font-weight:400}.about>p{font-size:16px;line-height:1.8;color:var(--color-muted);margin-top:25px}.about>.button{margin-top:30px;background-color:#eaf6fc;border-color:#d9edf8}
-footer{max-width:1200px;border-top:1px solid #abbfdc45;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:30px 24px 35px;background:white;color:#677b94;font-size:.75rem}.wordmark.footer-mark{font-size:20px;color:#314967}.footer-mark .brand-mark{width:28px;height:28px}
+.hero-actions .secondary{color:white;border-color:#ffffff5c}
+.showcase{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:32px;max-width:var(--content-width);min-height:360px;margin:72px auto 0;overflow:hidden;text-align:left;scroll-margin-top:28px;padding:60px 68px;border-radius:20px;color:white;background:linear-gradient(120deg,#ffffff24,#e2f9ff0a 50%,#ffffff2b);border:1px solid #ffffff66;border-top-color:#ffffffb3;box-shadow:inset 0 1px 1px #ffffff73,inset 0 -1px 2px #ffffff33,0 22px 48px #1576b21c;backdrop-filter:blur(16px) saturate(125%);-webkit-backdrop-filter:blur(16px) saturate(125%)}
+.showcase::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 95% 100%,#b7eeff55,transparent 65%)}
+.showcase h2{font:400 clamp(2.8rem,4.6vw,4rem)/1.03 var(--font-display);letter-spacing:-1px;margin:0}.showcase h2 em{font-weight:400;color:white}
+.showcase-copy>p{font-size:16px;line-height:1.65;margin-top:24px;max-width:360px;color:white}
+.showcase-emblem{display:flex;align-items:center;justify-content:center;width:32%;flex:none;color:#ffffffa3;filter:drop-shadow(0 2px 1px #ffffff66) drop-shadow(0 16px 24px #1875ab33)}.showcase-emblem .brand-mark{width:190px;height:190px;margin:0}
+.about{text-align:center;padding:130px 24px 100px}.about h2{font:400 72px/1.04 var(--font-display);letter-spacing:-2px;margin:0;color:#236b99}.about h2 em{color:#379cd7;font-weight:400}.about>p{font-size:16px;line-height:1.8;color:#426e89;margin-top:25px}.about>.button{margin-top:30px;background-color:#eaf6fc;border-color:#d9edf8;color:#236b99}
+footer{max-width:1200px;border-top:1px solid #cde6f1;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:30px 24px 35px;background:white;color:#47728d;font-size:.8125rem}.wordmark.footer-mark{font-size:20px;color:#236b99}.footer-mark .brand-mark{width:28px;height:28px}
 .hero>h1,.hero>.intro,.hero>.hero-actions{animation:arrive .9s ease both}.hero>.intro{animation-delay:.1s}.hero>.hero-actions{animation-delay:.2s}@keyframes arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:1000px){.header{gap:38px}.showcase-body{margin:38px 36px 42px;padding:35px 32px}.showcase h2{font-size:47px}.thought-card{width:230px}}
-@media(max-width:800px){.header-cta{display:none}}
-@media(max-width:700px){.header{padding:18px 22px;justify-content:space-between;gap:20px;flex-wrap:wrap}.header .nav{gap:19px}.hero{padding-top:51px}.showcase-body{gap:27px;margin:30px 22px 34px;padding:29px 25px;flex-direction:column;align-items:stretch}.showcase-copy{max-width:100%}.showcase h2{font-size:48px}.showcase-copy>p{max-width:420px}.thought-card{width:100%;max-width:none;align-self:stretch}.thought-card p{font-size:33px;margin:16px 0 20px}.thought-card p br{display:none}.thought-card p em{white-space:nowrap}.about h2{font-size:59px}}
-@media(max-width:560px){.hero{padding-inline:18px}.hero h1{font-size:clamp(2.75rem,13.5vw,4.6rem)}.hero-actions{gap:10px}.intro{font-size:16px}.preview-label{letter-spacing:1px}.about{padding:78px 22px}.about>p{font-size:15px}.about>p br{display:none}footer{flex-wrap:wrap;padding:25px 22px;gap:17px}footer>span:last-child{width:100%}}
-@media(max-width:420px){.header{padding:18px;gap:16px}.header .wordmark{font-size:20px}.header .brand-mark{width:27px;height:27px;margin-right:5px}.header .nav{gap:15px}.header .nav a{font-size:.875rem;padding:8px 0}.hero{padding:42px 14px 0}.showcase{margin-top:44px;padding:0;border-radius:var(--radius-panel)}.showcase-body{margin:23px 15px 27px;padding:24px 19px}.showcase h2{font-size:42px}.thought-card{padding:18px}.thought-card p{font-size:30px}.showcase-bottom{padding:13px 16px}.about h2{font-size:52px}}
-
-.header .nav{color:var(--color-on-sky)}.hero-actions .secondary{color:var(--color-on-sky)}.hero-note{color:var(--color-on-sky)}.hero-actions .primary{flex-shrink:0}
+@media(max-width:700px){.header{padding:18px 22px;justify-content:space-between;gap:20px;flex-wrap:wrap}.header .nav{gap:19px}.hero{padding-top:51px}.showcase{padding:38px 30px;min-height:330px;gap:20px}.showcase-emblem .brand-mark{width:120px;height:120px}.about h2{font-size:59px}}
+@media(max-width:560px){.hero{padding-inline:18px}.hero h1{font-size:clamp(2.75rem,13.5vw,4.6rem)}.intro{font-size:16px}.showcase{margin-top:56px;padding:32px 26px;min-height:360px}.showcase-emblem{position:absolute;width:auto;right:16px;top:12px;opacity:.45}.showcase-emblem .brand-mark{width:72px;height:72px}.showcase-copy{position:relative;z-index:1}.showcase h2{font-size:44px}.showcase-copy>p{max-width:260px}.about{padding:105px 22px 78px}.about>p{font-size:15px}footer{padding:25px 22px;gap:17px;flex-wrap:wrap}}
+@media(max-width:420px){.header{padding:18px;gap:16px}.header .wordmark{font-size:20px}.header .brand-mark{width:27px;height:27px;margin-right:5px}.header .nav{gap:15px}.header .nav a{font-size:.875rem;padding:8px 0}.hero{padding:42px 14px 0}.about h2{font-size:52px}}
