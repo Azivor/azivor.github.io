@@ -21,22 +21,21 @@ export default function Home(){ return `<!doctype html>
 <header class="header">
 <a class="wordmark" href="#top" aria-label="Project AGI home">${Logo()} project agi<span class="brand-period">.</span></a>
 ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibilities"},{label:"About",href:"#about"}],active:"#top"})}
-${Button({"label": "Take a look", "href": "#possibilities", "variant": "glass", "icon": "\u2197", "className": "header-cta"})}
 </header>
 <main id="main">
 <section class="hero" aria-labelledby="hero-title">
 
 <h1 id="hero-title">A little beyond<br>the ordinary.</h1>
 <p class="intro">Big ideas start with a little curiosity.<br>Welcome to the beginning of something new.</p>
-<div class="hero-actions">${Button({"label": "Explore", "href": "#possibilities", "variant": "primary", "icon": "\u2197", "className": ""})}${Button({"label": "Meet Project AGI", "href": "#about", "variant": "glass", "icon": "", "className": "secondary"})}</div>
+<div class="hero-actions">${Button({"label": "Explore the idea", "href": "#possibilities", "variant": "primary", "icon": "\u2193", "className": ""})}${Button({"label": "Meet Project AGI", "href": "#about", "variant": "glass", "icon": "", "className": "secondary"})}</div>
 <p class="hero-note">An idea in motion. More to come.</p>
-<div ${surfaceAttributes({variant:"silver",className:"showcase"})} id="possibilities" aria-labelledby="showcase-title">
+<div ${surfaceAttributes({variant:"silver",className:"showcase"})} id="possibilities" tabindex="-1" aria-labelledby="showcase-title">
 <div class="showcase-top"><span class="mini-wordmark">${Logo()}project agi.</span><span class="preview-label">A FIRST LOOK</span><span class="sparkle" aria-hidden="true">✳</span></div>
-<div ${surfaceAttributes({variant:"dark",className:"showcase-body"})}><div class="showcase-copy"><span class="kicker">ROOM TO WONDER</span><h2 id="showcase-title">What if<br><em>is only the beginning.</em></h2><p>A place for the things we haven’t imagined yet.<br>One thought, one question, one possibility at a time.</p></div><div ${surfaceAttributes({variant:"light",className:"thought-card"})}><div class="thought-top"><span class="thought-symbol" aria-hidden="true">✳</span><span>A small thought</span><span class="card-number">01</span></div><p>Every great idea<br>begins with<br><em>“what if?”</em></p><div class="card-bottom"><span>LET’S FIND OUT</span><span aria-hidden="true">↗</span></div></div></div>
+<div ${surfaceAttributes({variant:"dark",className:"showcase-body"})}><div class="showcase-copy"><span class="kicker">ROOM TO WONDER</span><h2 id="showcase-title">What if<br><em>is only the beginning.</em></h2><p>A place for the things we haven’t imagined yet.<br>One thought, one question, one possibility at a time.</p></div><div ${surfaceAttributes({variant:"light",className:"thought-card"})}><div class="thought-top"><span class="thought-symbol" aria-hidden="true">✳</span><span>A small thought</span><span class="card-number">01</span></div><p>Every great idea<br>begins with<br><em>“what if?”</em></p><div class="card-bottom"><span>ONE QUESTION AT A TIME</span></div></div></div>
 <div class="showcase-bottom"><span>Curiosity comes first.</span><span>Nothing is set in stone.</span></div>
 </div>
 </section>
-<section class="about" id="about" aria-labelledby="about-title"><span class="kicker">JUST THE BEGINNING</span><h2 id="about-title">A blank page.<br><em>Endless possibilities.</em></h2><p>A little room to think differently. A little space to try something new.<br>The rest of the story is still being written.</p>${Button({"label": "Back to the beginning", "href": "#top", "variant": "glass", "icon": "\u2191", "className": ""})}</section>
+<section class="about" id="about" tabindex="-1" aria-labelledby="about-title"><span class="kicker">JUST THE BEGINNING</span><h2 id="about-title">A blank page.<br><em>Endless possibilities.</em></h2><p>A little room to think differently. A little space to try something new.<br>The rest of the story is still being written.</p>${Button({"label": "Back to the beginning", "href": "#top", "variant": "glass", "icon": "\u2191", "className": ""})}</section>
 </main>
 <footer><a class="wordmark footer-mark" href="#top" aria-label="Project AGI home">${Logo()}project agi.</a><span>Made for what comes next.</span><span>© 2026 Project AGI</span></footer>
 </div>

@@ -19,3 +19,7 @@ Prior panel observations: neutral charcoal #21232a at 50% with 8px blur; 12px ov
 - Keep page layout rules in home.css; material and control rules belong in components.css and tokens.css.
 
 The catalog at /components/ demonstrates the same four materials. Reduced motion and visible keyboard focus apply throughout. Unsupported backdrop blur gets an opaque fallback. Automated checks cover component semantics and page assets; browser review of this revision was unavailable during this run.
+
+## Design theory review
+
+Design Director and Interaction Psychology review: retain the blue/serif/glass identity, make supporting hero copy and navigation dark for readable contrast, reserve white for large display text, simplify the duplicate header action, label same-page movement honestly, remove a decorative action-looking arrow, and expose the current section during scrolling. Narrow-screen headline minimum is 44px instead of 56px. These are source-supported corrections; rendered desktop/mobile verification is still pending because the in-app browser was unavailable and Safari was in active use.

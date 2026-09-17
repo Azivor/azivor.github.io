@@ -35,3 +35,6 @@
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.ui-surface--dark{background:#353a40}.ui-surface--light{background:#ffffffb8}.ui-surface--dark .ui-surface--light{background:#ffffff18}}
 
 .ui-surface--silver{background:var(--surface-silver);border-color:#ffffff73;box-shadow:var(--surface-feature-shadow);backdrop-filter:none;-webkit-backdrop-filter:none;color:var(--color-ink)}
+
+/* Location is visible without hover and follows manual scrolling. */
+.nav a[aria-current="location"]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:7px}

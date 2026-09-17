@@ -1,10 +1,10 @@
 /* Homepage composition. Materials and controls come from the shared UI library. */
-.page{overflow:hidden;background:radial-gradient(ellipse 75% 440px at 92% 0%,#46b2e763,transparent),linear-gradient(180deg,var(--color-sky) 0,var(--color-cyan) 390px,#9fd7eb 600px,#f2fafd 820px,#fff 980px)}
+.page{overflow:hidden;background:linear-gradient(180deg,var(--color-sky) 0,var(--color-cyan) 390px,#9fd7eb 600px,#f2fafd 820px,#fff 980px)}
 .header{max-width:1200px;margin:auto;display:flex;align-items:center;gap:64px;padding:18px 24px;color:white}
 .header-cta{margin-left:auto;font-size:.875rem;padding:9px 16px}
 .hero{text-align:center;padding:62px 24px 0}
 .hero h1{font:500 clamp(4rem,6.325vw,5rem)/.96 var(--font-display);letter-spacing:-1px;margin:0;color:white}
-.intro{color:white;font-size:18px;line-height:1.45;margin-top:28px;letter-spacing:-.2px}
+.intro{color:var(--color-on-sky);font-size:18px;line-height:1.45;margin-top:28px;letter-spacing:-.2px}
 .hero-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:31px}
 .hero-actions .secondary{font-size:.875rem;border-color:#ffffff3b}
 .hero-note{font-size:.8125rem;color:#234d70;margin-top:16px}
@@ -27,5 +27,7 @@ footer{max-width:1200px;border-top:1px solid #abbfdc45;margin:auto;display:flex;
 @media(max-width:1000px){.header{gap:38px}.showcase-body{margin:38px 36px 42px;padding:35px 32px}.showcase h2{font-size:47px}.thought-card{width:230px}}
 @media(max-width:800px){.header-cta{display:none}}
 @media(max-width:700px){.header{padding:18px 22px;justify-content:space-between;gap:20px;flex-wrap:wrap}.header .nav{gap:19px}.hero{padding-top:51px}.showcase-body{gap:27px;margin:30px 22px 34px;padding:29px 25px;flex-direction:column;align-items:stretch}.showcase-copy{max-width:100%}.showcase h2{font-size:48px}.showcase-copy>p{max-width:420px}.thought-card{width:100%;max-width:none;align-self:stretch}.thought-card p{font-size:33px;margin:16px 0 20px}.thought-card p br{display:none}.thought-card p em{white-space:nowrap}.about h2{font-size:59px}}
-@media(max-width:560px){.hero{padding-inline:18px}.hero h1{font-size:clamp(3.5rem,15.5vw,4.6rem)}.hero-actions{gap:10px}.intro{font-size:16px}.preview-label{letter-spacing:1px}.about{padding:78px 22px}.about>p{font-size:15px}.about>p br{display:none}footer{flex-wrap:wrap;padding:25px 22px;gap:17px}footer>span:last-child{width:100%}}
+@media(max-width:560px){.hero{padding-inline:18px}.hero h1{font-size:clamp(2.75rem,13.5vw,4.6rem)}.hero-actions{gap:10px}.intro{font-size:16px}.preview-label{letter-spacing:1px}.about{padding:78px 22px}.about>p{font-size:15px}.about>p br{display:none}footer{flex-wrap:wrap;padding:25px 22px;gap:17px}footer>span:last-child{width:100%}}
 @media(max-width:420px){.header{padding:18px;gap:16px}.header .wordmark{font-size:20px}.header .brand-mark{width:27px;height:27px;margin-right:5px}.header .nav{gap:15px}.header .nav a{font-size:.875rem;padding:8px 0}.hero{padding:42px 14px 0}.showcase{margin-top:44px;padding:0;border-radius:var(--radius-panel)}.showcase-body{margin:23px 15px 27px;padding:24px 19px}.showcase h2{font-size:42px}.thought-card{padding:18px}.thought-card p{font-size:30px}.showcase-bottom{padding:13px 16px}.about h2{font-size:52px}}
+
+.header .nav{color:var(--color-on-sky)}.hero-actions .secondary{color:var(--color-on-sky)}.hero-note{color:var(--color-on-sky)}.hero-actions .primary{flex-shrink:0}
