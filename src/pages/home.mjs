@@ -6,7 +6,7 @@ export default function Home(){ return `<!doctype html>
 <meta name="theme-color" content="#d7e8fc">
 <title>Project AGI — A little beyond the ordinary.</title>
 <meta name="description" content="A first look at Project AGI. A space for ideas, curiosity, and what comes next.">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%23e1f1fc%22%2F%3E%3Cg%20transform%3D%22translate%288%208%29%22%20color%3D%22%23265b99%22%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M4%2040%2035%204%2028%2025%2029%2032H17ZM21%2025H28L30%2014Z%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20opacity%3D%22.72%22%20d%3D%22m35%204%208%2036-14-8-1-7Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="icon" type="image/png" href="/project-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">

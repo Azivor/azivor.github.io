@@ -1,8 +1,7 @@
-import {logoPaths} from './logo.mjs';
 export const escapeHTML = (value = '') => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function choice(value, allowed, name) { if (!allowed.includes(value)) throw new TypeError(`Invalid ${name}: ${value}`); return value; }
 function url(value) { const s=String(value); if (!/^(#[^\s]*|\/(?!\/)[^\s\\]*|https?:\/\/[^\s]+|mailto:[^\s]+)$/.test(s)) throw new TypeError('Use a local path, fragment, HTTPS/HTTP URL, or mailto link'); return escapeHTML(s); }
-export function Logo() {return `<svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true" focusable="false">${logoPaths}</svg>`;}
+export function Logo() {return '<img class="brand-mark" src="/project-logo.png" width="512" height="408" alt="" aria-hidden="true" decoding="async">';}
 export function Brand({href='/',label='project agi.',className=''}={}) {return `<a class="wordmark ${escapeHTML(className)}" href="${url(href)}" aria-label="${escapeHTML(label)} home">${Logo()}${escapeHTML(label)}</a>`;}
 export function Button({label,href,variant='primary',size='default',icon='',className='',disabled=false,type='button'}={}) {
  choice(variant,['primary','glass','ghost'],'button variant');choice(size,['small','default','large'],'button size');choice(type,['button','submit','reset'],'button type');
