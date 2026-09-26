@@ -13,6 +13,7 @@ await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png
 await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
 await copyFile(join(root,'src/assets/earth-surface.jpg'),join(out,'earth-surface.jpg'));
 await copyFile(join(root,'src/assets/earth-clouds.jpg'),join(out,'earth-clouds.jpg'));
+await copyFile(join(root,'src/assets/earth-clouds-detail.webp'),join(out,'earth-clouds-detail.webp'));
 for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
 for(const name of ['home','catalog'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));

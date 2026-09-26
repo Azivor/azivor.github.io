@@ -62,7 +62,7 @@ vec3 spaceColor(vec3 rd,float descent){
 }
 void main(){
  float p=clamp(progress,0.,1.);
- float altitude=.004+.42*pow(1.-p,2.);
+ float altitude=.004+.55*(1.-smoothstep(.12,.75,p));
  // Keep the opening globe aligned with its photographic reference, then tip
  // the real camera toward the surface as the scroll begins.
  float pitch=.045+.52*smoothstep(.13,.30,p)+.15*smoothstep(.30,.82,p);
@@ -88,14 +88,13 @@ void main(){
   vec3 normal=normalize(ro+rd*cloudT-center);
   vec2 coords=earthUv(normal)+vec2(.82+p*.0006,.01);
   float coverage=texture(cloudMap,coords).r;
-  float fine=noise3(normal*780.);
-  coverage=clamp(coverage+(fine-.5)*.22,0.,1.);
+  float wisps=textureLod(cloudMap,fract(coords*4.1+vec2(.31,.17)),0.).r;
+  coverage*=mix(.64,1.16,wisps);
   float density=smoothstep(.33,.76,coverage)*mix(.39,.86,smoothstep(.20,.72,p));
   float shadow=texture(cloudMap,coords+vec2(.0016,-.0008)).r;
   float relief=clamp(.5+(coverage-shadow)*1.9,0.,1.);
   float light=clamp(.36+.45*max(0.,dot(normal,normalize(vec3(.85,.42,.32))))+.26*relief,0.,1.);
   vec3 cloudColor=mix(vec3(.055,.14,.32),vec3(.76,.84,.96),light);
-  cloudColor*=mix(.82,1.12,smoothstep(.32,.72,fine));
   cloudColor=mix(cloudColor,vec3(.82,.91,.98),smoothstep(.30,.75,p)*.55);
   color=mix(color,cloudColor,density);
  }
@@ -181,13 +180,18 @@ try{
    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+   const anisotropy=gl.getExtension('EXT_texture_filter_anisotropic');
+   if(anisotropy){
+    const maximum=gl.getParameter(anisotropy.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+    gl.texParameterf(gl.TEXTURE_2D,anisotropy.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(8,maximum));
+   }
    gl.uniform1i(gl.getUniformLocation(program,name),unit);
    resolve();
   };
   image.onerror=()=>reject(new Error(`${url} unavailable`));
   image.src=url;
  });
- Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,'/earth-clouds.jpg','cloudMap')]).then(()=>{
+ Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,'/earth-clouds-detail.webp','cloudMap')]).then(()=>{
   ready=true;document.body.classList.add('scene-model-ready');schedule();
  }).catch(error=>console.warn('Earth scene:',error));
 }catch(error){console.warn('Earth scene fallback:',error);document.documentElement.classList.add('sky-fallback');}
