@@ -1,12 +1,14 @@
 import {Button, Logo, Navigation, surfaceAttributes} from "../ui/components.mjs";
+
 export default function Home(){ return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#d7e8fc">
+<meta name="theme-color" content="#091633">
 <title>Azivor — A little beyond the ordinary.</title>
 <meta name="description" content="A first look at Azivor. A space for ideas, curiosity, and what comes next.">
 <link rel="icon" type="image/png" href="/azivor-logo.png">
+<link rel="preload" as="image" href="/space-orbit.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -24,17 +26,25 @@ ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibi
 </header>
 <main id="main">
 <section class="hero" aria-labelledby="hero-title">
-
+<div class="hero-scene" aria-hidden="true"></div>
+<div class="hero-content">
 <h1 id="hero-title">A little beyond<br>the ordinary.</h1>
 <p class="intro">Big ideas start with a little curiosity.<br>Welcome to the beginning of something new.</p>
-<div class="hero-actions">${Button({"label": "Explore", "href": "#possibilities", "variant": "primary", "icon": "\u2193", "className": ""})}${Button({"label": "About", "href": "#about", "variant": "glass", "icon": "", "className": "secondary"})}</div>
-
+<div class="hero-actions">${Button({label:"Explore",href:"#possibilities",variant:"primary",icon:"\u2193"})}${Button({label:"About",href:"#about",variant:"glass",className:"secondary"})}</div>
+</div>
+</section>
+<div class="descent" aria-hidden="true">
+<div class="descent-clouds"></div>
+<div class="descent-haze"></div>
+<div class="flight-path"><span class="contrail"></span><span class="flight-mark">${Logo()}</span></div>
+</div>
+<section class="reveal" aria-labelledby="showcase-title">
 <div ${surfaceAttributes({variant:"light",className:"showcase"})} id="possibilities" tabindex="-1" aria-labelledby="showcase-title">
 <div class="showcase-copy"><h2 id="showcase-title">What if<br><em>is only the beginning.</em></h2><p>A place for the things we haven’t imagined yet.</p></div>
 <div class="showcase-emblem" aria-hidden="true">${Logo()}</div>
 </div>
 </section>
-<section class="about" id="about" tabindex="-1" aria-labelledby="about-title"><h2 id="about-title">A blank page.<br><em>Endless possibilities.</em></h2><p>The rest of the story is still being written.</p>${Button({"label": "Back to top", "href": "#top", "variant": "glass", "icon": "\u2191", "className": ""})}</section>
+<section class="about" id="about" tabindex="-1" aria-labelledby="about-title"><h2 id="about-title">A blank page.<br><em>Endless possibilities.</em></h2><p>The rest of the story is still being written.</p>${Button({label:"Back to top",href:"#top",variant:"glass",icon:"\u2191"})}</section>
 </main>
 <footer><a class="wordmark footer-mark" href="#top" aria-label="Azivor home">${Logo()}azivor.</a><span>© 2026 Azivor</span></footer>
 </div>
