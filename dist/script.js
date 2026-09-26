@@ -37,3 +37,56 @@ if (navToggle) {
     if (window.innerWidth > 700) closeMenu();
   });
 }
+
+// Let the homepage action travel through the scroll-driven Earth scene.
+const descentLink = document.querySelector('.descent-link');
+if (descentLink) {
+  const destination = document.getElementById('first-content');
+  descentLink.addEventListener('click', event => {
+    if (!destination || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    console.log('descent clicked', event.button, window.scrollY);
+    event.preventDefault();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      destination.scrollIntoView({behavior: 'instant', block: 'start'});
+      destination.focus({preventScroll: true});
+      history.replaceState(null, '', '#first-content');
+      return;
+    }
+
+    const start = window.scrollY;
+    const end = destination.getBoundingClientRect().top + start;
+    const duration = 5100;
+    const oldBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+    let frame;
+    let started;
+    let stopped = false;
+    const cancelKeys = new Set(['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' ', 'Escape']);
+    const cleanup = () => {
+      cancelAnimationFrame(frame);
+      document.documentElement.style.scrollBehavior = oldBehavior;
+      window.removeEventListener('wheel', cancel);
+      window.removeEventListener('touchstart', cancel);
+      window.removeEventListener('keydown', onKey);
+    };
+    const cancel = () => { console.log('descent cancelled'); stopped = true; cleanup(); };
+    const onKey = keyEvent => { if (cancelKeys.has(keyEvent.key)) cancel(); };
+    window.addEventListener('wheel', cancel, {passive: true, once: true});
+    window.addEventListener('touchstart', cancel, {passive: true, once: true});
+    window.addEventListener('keydown', onKey);
+    const step = now => {
+      if (stopped) return;
+      started ??= now;
+      const t = Math.min((now - started) / duration, 1);
+      const eased = (1 - Math.cos(Math.PI * t)) / 2;
+      window.scrollTo(0, start + (end - start) * eased);
+      if (t < 1) frame = requestAnimationFrame(step);
+      else {
+        cleanup();
+        destination.focus({preventScroll: true});
+        history.replaceState(null, '', '#first-content');
+      }
+    };
+    frame = requestAnimationFrame(step);
+  });
+}
