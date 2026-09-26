@@ -1,26 +1,13 @@
-import {Button, Logo, Navigation, surfaceAttributes} from "../ui/components.mjs";
+import {Button, Logo, surfaceAttributes} from "../ui/components.mjs";
+import {footer, header, head} from "./site-shell.mjs";
 
 export default function Home(){ return `<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#081432">
-<title>Azivor — A little beyond the ordinary.</title>
-<meta name="description" content="A first look at Azivor. A space for ideas, curiosity, and what comes next.">
-<link rel="icon" type="image/png" href="/azivor-logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/ui/tokens.css"><link rel="stylesheet" href="/ui/base.css"><link rel="stylesheet" href="/ui/components.css"><link rel="stylesheet" href="/home.css">
-</head>
+${head({title:"Azivor — Build with what AI can do now.",description:"A student-led project testing how today's AI can help students make useful creative and technical work.",style:"home.css"})}
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="page" id="top">
-<header class="header">
-<a class="wordmark" href="#top" aria-label="Azivor home">${Logo()} azivor<span class="brand-period">.</span></a>
-<button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false"><span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
-${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibilities"},{label:"About",href:"#about"}],active:"#top"})}
-</header>
+${header("/")}
 <main id="main">
 <section class="journey" aria-labelledby="hero-title">
 <div class="journey-stage">
@@ -28,22 +15,30 @@ ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibi
 <div class="shooting-stars" aria-hidden="true"><span class="shooting-star"></span></div>
 <div class="scene-vignette" aria-hidden="true"></div>
 <div class="hero-content">
-<h1 id="hero-title">A little beyond<br>the ordinary.</h1>
-<p class="intro">Big ideas start with a little curiosity.<br>Welcome to the beginning of something new.</p>
-<div class="hero-actions">${Button({label:"Explore",href:"#possibilities",variant:"primary",icon:"\u2193"})}${Button({label:"About",href:"#about",variant:"glass",className:"secondary"})}</div>
+<h1 id="hero-title">Build with what<br>AI can do now.</h1>
+<p class="intro">Azivor is a student-led project testing how rapidly improving AI can help students make useful creative and technical work.</p>
+<div class="hero-actions">${Button({label:"Explore",href:"/explore/",variant:"primary",icon:"\u2197"})}</div>
 </div>
 <div class="scroll-cue" aria-hidden="true"><span>Scroll to descend</span><span class="cue-line"></span></div>
 <div class="landing-wash" aria-hidden="true"></div>
 <div ${surfaceAttributes({variant:"light",className:"showcase"})} tabindex="-1" aria-labelledby="showcase-title">
-<div class="showcase-copy"><h2 id="showcase-title">What if<br><span>is only the beginning.</span></h2><p>A place for the things we haven’t imagined yet.</p></div>
+<div class="showcase-copy"><h2 id="showcase-title">Make something.<br><span>See what holds up.</span></h2><p>Ideas become more useful when we put them to work.</p></div>
 <div class="showcase-emblem" aria-hidden="true">${Logo()}</div>
 </div>
 </div>
 <div class="journey-target" id="possibilities" aria-hidden="true"></div>
 </section>
-<section class="about" id="about" tabindex="-1" aria-labelledby="about-title"><h2 id="about-title">A blank page.<br><span>Endless possibilities.</span></h2><p>The rest of the story is still being written.</p>${Button({label:"Back to top",href:"#top",variant:"glass",icon:"\u2191"})}</section>
-</main>
-<footer><a class="wordmark footer-mark" href="#top" aria-label="Azivor home">${Logo()}azivor.</a><span>© 2026 Azivor</span></footer>
+<div class="content-flow">
+<section class="content-section lanes-section" aria-labelledby="lanes-title"><div class="section-intro"><p class="eyebrow">What we explore</p><h2 id="lanes-title">Three ways in.</h2><p>Each starts with a concrete question: what can a student make, improve, or understand with the tools available now?</p></div><div class="lane-grid">
+<article class="lane"><span class="lane-number">01</span><h3>Build</h3><p>Apps, sites, visuals, and other projects made with AI in the process.</p><a href="/explore/#build">Explore Build <span aria-hidden="true">↗</span></a></article>
+<article class="lane"><span class="lane-number">02</span><h3>Workflows</h3><p>How tools and human judgment fit together across a real task.</p><a href="/explore/#workflows">Explore Workflows <span aria-hidden="true">↗</span></a></article>
+<article class="lane"><span class="lane-number">03</span><h3>New capabilities</h3><p>What a new AI capability changes in practice, tested on a specific use.</p><a href="/explore/#new-capabilities">Explore New capabilities <span aria-hidden="true">↗</span></a></article>
+</div></section>
+<section class="content-section latest-section" aria-labelledby="latest-title"><div class="section-intro"><p class="eyebrow">Latest</p><h2 id="latest-title">From the workbench.</h2></div><a class="feature-link" href="/builds/#earth-descent"><span class="feature-kicker">Build · Tested 26 September 2026</span><strong>An Earth descent for the Azivor homepage</strong><span class="feature-description">A scroll-driven scene built with a globe, cloud layers, and a small WebGL shader. See the design choices and limits.</span><span class="feature-arrow" aria-hidden="true">↗</span></a></section>
+<section class="content-section method-section" aria-labelledby="method-title"><p class="eyebrow">How we work</p><h2 id="method-title">Test it first. Write about it second.</h2><p>We start with something we can try or inspect. Then we explain the useful part, the human decisions, and what still needs work.</p></section>
+<section class="content-section builds-preview" aria-labelledby="builds-title"><div class="section-intro"><p class="eyebrow">Builds</p><h2 id="builds-title">Look at the work.</h2><p>The first build note goes behind this site's opening scene.</p></div>${Button({label:"View the build",href:"/builds/#earth-descent",variant:"primary",icon:"\u2197"})}</section>
+</div>
+</main>${footer()}
 </div>
 <script src="/script.js" defer></script><script type="module" src="/sky-scene.js"></script>
 </body></html>`; }
