@@ -1,6 +1,6 @@
 # Azivor visual system
 
-Preserve the original paper-airplane A, placeholder content, and simple sky background. Adapt material hierarchy and typography from Cluely, not its product screens, imagery, or copy.
+Preserve the original paper-airplane A, Earth-descent scene, and blue/serif/glass visual direction. Current public content is limited to Home, Explore, Builds, and About; claims should follow work that can be shown.
 
 ## Evidence and decisions
 

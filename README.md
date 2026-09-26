@@ -1,6 +1,6 @@
 # Azivor component library
 
-A dependency-free static site built from reusable HTML-rendering components. The homepage and `/components/` catalog share the same implementation. Node 20+ and Python 3 are the only local requirements.
+A dependency-free static site built from reusable HTML-rendering components. Home, Explore, Builds, About, and the internal `/components/` catalog share the same implementation. Node 20+ and Python 3 are the only local requirements.
 
 ## Work locally
 
@@ -19,7 +19,8 @@ No install is needed. Rebuild after editing source; the preview is not a hot-rel
 | `src/styles/tokens.css` | Palette, fonts, spacing scale, radii, widths, blur, and motion tokens |
 | `src/styles/base.css` | Reset, focus treatment, layout and typography utilities |
 | `src/styles/components.css` | Shared component variants and interaction states |
-| `src/styles/home.css` | Existing homepage composition and responsive adjustments |
+| `src/styles/home.css` | Earth-descent homepage composition and responsive adjustments |
+| `src/styles/content.css` | Editorial pages and homepage content sections |
 | `src/styles/catalog.css` | Library reference-page layout only |
 | `src/pages/` | Page compositions using the shared UI |
 | `scripts/build.mjs` | Explicit page registry and deterministic static build |
@@ -27,7 +28,7 @@ No install is needed. Rebuild after editing source; the preview is not a hot-rel
 
 ## Add a page
 
-Create a module in `src/pages/` that returns an HTML document. Import components from `../ui/components.mjs`, and include `/ui/tokens.css`, `/ui/base.css`, and `/ui/components.css` in that order, followed by any page-specific stylesheet. Register the page output in `scripts/build.mjs`. Build, run tests, then publish through the existing Sites project. Use the `/components/` reference for examples.
+Create a module in `src/pages/` that returns an HTML document. Reuse `site-shell.mjs` for the public header, footer, and shared styles. Register the page output in `scripts/build.mjs`. Build and run tests before publishing through the existing Sites project. Use the `/components/` reference for UI examples.
 
 ```js
 import {Section, Card, Button} from '../ui/components.mjs';
