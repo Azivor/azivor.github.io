@@ -32,14 +32,12 @@ const navToggle = document.querySelector?.('.nav-toggle');
 if (navToggle) {
   const menu = document.getElementById(navToggle.getAttribute('aria-controls'));
   const closeMenu = () => {
-    console.log('menu-close');
     navToggle.setAttribute('aria-expanded', 'false');
     navToggle.setAttribute('aria-label', 'Open navigation menu');
     menu?.classList.remove('nav-open');
     document.body.classList.remove('menu-open');
   };
   navToggle.addEventListener('click', () => {
-    console.log('menu-toggle', navToggle.getAttribute('aria-expanded'));
     const open = navToggle.getAttribute('aria-expanded') !== 'true';
     navToggle.setAttribute('aria-expanded', String(open));
     navToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
