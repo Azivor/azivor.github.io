@@ -56,14 +56,16 @@ vec3 spaceColor(vec3 rd,float descent){
  float low=1.-smoothstep(-.22,.22,rd.y);
  stars*=1.-smoothstep(.08,.42,descent);
  stars*=1.-low*.65;
- return mix(vec3(.004,.019,.068),vec3(.035,.09,.26),low)+vec3(stars*.78,stars*.87,stars);
+ vec3 atmosphere=mix(vec3(.004,.019,.068),vec3(.035,.09,.26),low);
+ atmosphere+=vec3(.055,.095,.20)*smoothstep(.14,.42,descent)*(1.-smoothstep(.18,.7,rd.y));
+ return atmosphere+vec3(stars*.78,stars*.87,stars);
 }
 void main(){
  float p=clamp(progress,0.,1.);
- float altitude=.004+.146*pow(1.-p,2.);
+ float altitude=.004+.42*pow(1.-p,2.);
  // Keep the opening globe aligned with its photographic reference, then tip
  // the real camera toward the surface as the scroll begins.
- float pitch=.045+.30*smoothstep(.13,.30,p)+.30*smoothstep(.30,.82,p);
+ float pitch=.045+.52*smoothstep(.13,.30,p)+.15*smoothstep(.30,.82,p);
  vec3 ro=vec3(p*.002,altitude,p*.035);
  vec2 screen=(uv-.5)*vec2(resolution.x/resolution.y,1.)*.84;
  vec3 rd=normalize(vec3(screen.x,screen.y-pitch,1.));
@@ -84,15 +86,15 @@ void main(){
  }
  if(cloudT>0.&&(groundT<0.||cloudT<groundT)){
   vec3 normal=normalize(ro+rd*cloudT-center);
-  vec2 coords=earthUv(normal)+vec2(.79+p*.0006,.02);
-  float coverage=texture(cloudMap,coords).r;
+  vec2 coords=earthUv(normal)+vec2(.70+p*.0006,.01);
+  float coverage=textureLod(cloudMap,coords,0.).r;
   float fine=noise3(normal*780.);
   float micro=noise3(normal*2100.);
-  coverage=clamp(coverage+(fine-.5)*.27+(micro-.5)*.10,0.,1.);
-  float density=smoothstep(.19,.80,coverage)*mix(.34,.89,smoothstep(.12,.72,p));
+  coverage=clamp(coverage+(fine-.5)*.24+(micro-.5)*.08,0.,1.);
+  float density=smoothstep(.29,.73,coverage)*mix(.48,.89,smoothstep(.20,.72,p));
   float shadow=texture(cloudMap,coords+vec2(.0016,-.0008)).r;
   float relief=clamp(.5+(coverage-shadow)*1.9,0.,1.);
-  float light=clamp(.30+.45*max(0.,dot(normal,normalize(vec3(.85,.42,.32))))+.26*relief,0.,1.);
+  float light=clamp(.36+.45*max(0.,dot(normal,normalize(vec3(.85,.42,.32))))+.26*relief,0.,1.);
   vec3 cloudColor=mix(vec3(.055,.14,.32),vec3(.76,.84,.96),light);
   cloudColor=mix(cloudColor,vec3(.82,.91,.98),smoothstep(.30,.75,p)*.55);
   color=mix(color,cloudColor,density);
@@ -109,9 +111,9 @@ void main(){
  color+=limbColor*rimBoost*mix(glow*.16+rim*.28,rim*.16,edge);
  // Small volume within the cloud altitude band. World-space samples create
  // proper occlusion and near/far parallax as the camera passes through it.
- if(p>.43){
+ if(p>.63){
   float distanceLimit=min(groundT>0.?groundT:.8,.8);
-  float visibility=smoothstep(.43,.68,p);
+  float visibility=smoothstep(.63,.82,p);
   float transmittance=1.;
   vec3 scattered=vec3(0.);
   for(int i=0;i<10;i++){
