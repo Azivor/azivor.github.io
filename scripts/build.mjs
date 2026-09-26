@@ -10,7 +10,6 @@ await mkdir(join(out,'scene-test'),{recursive:true});
 await writeFile(join(out,'scene-test/index.html'),Home().replace('Azivor — A little beyond the ordinary.','Azivor — Descent study').replace('<body>', '<body class="descent-study">'));
 await writeFile(join(out,'components/index.html'),Catalog());
 await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png'));
-await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
 await copyFile(join(root,'src/assets/earth-surface.jpg'),join(out,'earth-surface.jpg'));
 await copyFile(join(root,'src/assets/earth-clouds.jpg'),join(out,'earth-clouds.jpg'));
 await copyFile(join(root,'src/assets/earth-clouds-detail.webp'),join(out,'earth-clouds-detail.webp'));
@@ -19,5 +18,5 @@ for(const name of ['home','catalog'])await copyFile(join(root,`src/styles/${name
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
-for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});
+for(const name of ['style.css','refinements.css','cloud-descent.webp','space-orbit.webp'])await rm(join(out,name),{force:true});
 console.log('Built homepage and /components/ from shared components.');

@@ -67,7 +67,7 @@ vec3 spaceColor(vec3 rd,float descent){
 }
 void main(){
  float p=clamp(progress,0.,1.);
- float altitude=.005+.32*pow(1.-p,2.);
+ float altitude=.005+.19*pow(1.-p,2.);
  // Keep the opening globe aligned with its photographic reference, then tip
  // the real camera toward the surface as the scroll begins.
  float pitch=.035+.38*smoothstep(.10,.42,p)+.23*smoothstep(.42,.86,p);
@@ -101,7 +101,7 @@ void main(){
    float broad=cloudSample(coords);
    float detail=cloudSample(world*64.+vec2(.21,.37));
    float micro=cloudSample(world*213.+vec2(.53,.29));
-   float coverage=clamp(broad*.68+detail*.56+micro*.14,0.,1.);
+   float coverage=clamp(broad*.72+detail*.56+micro*.10,0.,1.);
    float shadow=cloudSample(world*64.+vec2(.211,.369));
    float relief=clamp(.5+(detail-shadow)*2.4,0.,1.);
    float density=smoothstep(.15,.76,coverage);

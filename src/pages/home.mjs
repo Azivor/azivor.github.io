@@ -25,7 +25,6 @@ ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibi
 <section class="journey" aria-labelledby="hero-title">
 <div class="journey-stage">
 <canvas id="sky-scene" class="sky-scene" aria-hidden="true"></canvas>
-<div class="intro-space" aria-hidden="true"></div>
 <div class="shooting-stars" aria-hidden="true"><span class="shooting-star"></span></div>
 <div class="scene-vignette" aria-hidden="true"></div>
 <div class="hero-content">
