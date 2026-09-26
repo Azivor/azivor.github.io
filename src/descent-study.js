@@ -20,11 +20,15 @@ float hash(vec3 p){p=fract(p*.1031);p+=dot(p,p.yzx+33.33);return fract((p.x+p.y)
 float noise(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
 float fbm(vec3 p){return .55*noise(p)+.3*noise(p*2.04)+.15*noise(p*4.12);}
 float cloud(vec3 p){
- float s=1.-length((p-vec3(-2.45,-1.85,4.8))/vec3(1.8,1.05,1.1));
- s=max(s,1.-length((p-vec3(2.35,-1.45,4.4))/vec3(1.65,1.0,1.15)));
- s=max(s,1.-length((p-vec3(-.95,.85,1.35))/vec3(1.65,1.0,1.2)));
- s=max(s,1.-length((p-vec3(1.85,-.7,-.85))/vec3(1.65,1.15,1.15)));
- return smoothstep(.04,.38,s+(fbm(p*1.1)-.5)*.36);
+ float s=1.-length((p-vec3(-3.05,-1.95,4.95))/vec3(1.25,.8,1.0));
+ s=max(s,1.-length((p-vec3(-2.0,-1.62,4.65))/vec3(1.35,.95,1.15)));
+ s=max(s,1.-length((p-vec3(-.98,-2.06,4.25))/vec3(1.15,.7,1.0)));
+ s=max(s,1.-length((p-vec3(1.35,-1.85,4.85))/vec3(1.2,.9,1.1)));
+ s=max(s,1.-length((p-vec3(2.35,-1.48,4.45))/vec3(1.35,.9,1.05)));
+ s=max(s,1.-length((p-vec3(3.25,-1.9,4.15))/vec3(1.05,.7,.95)));
+ s=max(s,1.-length((p-vec3(-1.65,-1.35,1.2))/vec3(1.55,1.05,1.25)));
+ s=max(s,1.-length((p-vec3(1.7,-1.1,-.8))/vec3(1.6,1.05,1.3)));
+ return smoothstep(.04,.26,s+(fbm(p*1.65)-.5)*.65);
 }
 vec3 photograph(vec2 point){
  float ratio=resolution.x/resolution.y;
@@ -66,7 +70,8 @@ void main(){
   clouds+=transmittance*stepAlpha*color;
   transmittance*=1.-stepAlpha;
  }
- float cloudsVisible=smoothstep(.27,.43,p);
+ float cloudCeiling=mix(.51,1.2,smoothstep(.42,.7,p));
+ float cloudsVisible=smoothstep(.27,.43,p)*(1.-smoothstep(cloudCeiling-.12,cloudCeiling+.12,uv.y));
  base=mix(base,clouds+base*transmittance,cloudsVisible);
  float atmosphericHaze=smoothstep(.39,.61,p)*(1.-smoothstep(.73,.9,p))*.10;
  base=mix(base,vec3(.56,.73,.89),atmosphericHaze);
