@@ -27,3 +27,32 @@ window.addEventListener('resize', scheduleUpdate);
 window.addEventListener('hashchange', () => selectLink(location.hash || '#top'));
 window.addEventListener('load', scheduleUpdate);
 selectLink(location.hash || '#top');
+
+const navToggle = document.querySelector?.('.nav-toggle');
+if (navToggle) {
+  const menu = document.getElementById(navToggle.getAttribute('aria-controls'));
+  const closeMenu = () => {
+    navToggle.setAttribute('aria-expanded', 'false');
+    menu?.classList.remove('nav-open');
+  };
+  navToggle.addEventListener('click', () => {
+    const open = navToggle.getAttribute('aria-expanded') !== 'true';
+    navToggle.setAttribute('aria-expanded', String(open));
+    menu?.classList.toggle('nav-open', open);
+  });
+  menu?.addEventListener('click', event => {
+    if (event.target.closest('a')) closeMenu();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+      navToggle.focus();
+    }
+  });
+  document.addEventListener('click', event => {
+    if (!navToggle.contains(event.target) && !menu?.contains(event.target)) closeMenu();
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 700) closeMenu();
+  });
+}

@@ -192,6 +192,7 @@ function render(){
  const bounds=journey.getBoundingClientRect();
  const p=reduceMotion.matches?0:clamp(-bounds.top/Math.max(1,bounds.height-innerHeight));
  stage.style.setProperty('--journey-progress',p.toFixed(4));
+ stage.classList.toggle('scene-reveal',p>=.78);
  const scale=Math.min(devicePixelRatio||1,1);
  const fit=Math.min(1,Math.sqrt(950000/(innerWidth*innerHeight*scale*scale)));
  const width=Math.max(1,Math.round(innerWidth*scale*fit));

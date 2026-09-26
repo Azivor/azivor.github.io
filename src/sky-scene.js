@@ -115,8 +115,9 @@ function render() {
   if (!section || !stage || !gl) return;
   const rect = section.getBoundingClientRect();
   const range = Math.max(1, rect.height - innerHeight);
-  const p = reducedMotion.matches ? 1 : clamp(-rect.top/range);
+  const p = reducedMotion.matches ? 0 : clamp(-rect.top/range);
   stage.style.setProperty('--journey-progress', p.toFixed(4));
+  stage.classList.toggle('scene-reveal', p >= .78);
   const scale = Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1 : 1.2);
   const maxPixels = 1350000;
   const fit = Math.min(1, Math.sqrt(maxPixels/(innerWidth*innerHeight*scale*scale)));
