@@ -19,7 +19,7 @@ float hash(vec3 p){p=fract(p*.1031);p+=dot(p,p.yzx+33.33);return fract((p.x+p.y)
 float noise(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
 float fbm(vec3 p){return .55*noise(p)+.3*noise(p*2.03)+.15*noise(p*4.1);}
 vec2 sphere(vec3 ro,vec3 rd,float radius){float b=dot(ro,rd);float c=dot(ro,ro)-radius*radius;float h=b*b-c;if(h<0.)return vec2(-1.);h=sqrt(h);return vec2(-b-h,-b+h);}
-float cloud(vec3 p){float h=length(p)-R;float envelope=smoothstep(.43,.75,h)*(1.-smoothstep(2.15,2.6,h));float n=fbm(p*.15+vec3(0.,0.,5.));float macro=noise(p*.035);return envelope*smoothstep(.33,.60,n*.78+macro*.22);}
+float cloud(vec3 p){float h=length(p)-R;float envelope=smoothstep(.43,.75,h)*(1.-smoothstep(2.15,2.6,h));float n=fbm(p*.39+vec3(0.,0.,5.));float macro=noise(p*.085);return envelope*smoothstep(.49,.62,n*.70+macro*.30);}
 vec3 stars(vec3 rd){vec3 p=rd*230.;vec3 cell=floor(p);float seed=hash(cell);float star=step(.996,seed)*pow(1.-length(fract(p)-.5)*1.8,15.);return vec3(star)*(.45+.55*hash(cell+13.));}
 void main(){
  float p=clamp(progress,0.,1.);
@@ -40,7 +40,7 @@ void main(){
  float limb=exp(-pow(max(closest,0.)/2.2,1.3));
  col+=vec3(.08,.25,.62)*limb*(1.-air*.5);
  col+=vec3(.13,.33,.74)*pow(limb,3.)*.8;
- vec3 skyTop=vec3(.035,.19,.48),skyLow=vec3(.25,.59,.88);
+ vec3 skyTop=mix(vec3(.035,.19,.48),vec3(.12,.39,.70),smoothstep(.7,1.,p)),skyLow=mix(vec3(.25,.59,.88),vec3(.51,.79,.96),smoothstep(.7,1.,p));
  float horizon=smoothstep(-.43,.18,rd.z);
  vec3 sky=mix(skyLow,skyTop,horizon);
  sky+=vec3(.11,.18,.20)*pow(max(dot(rd,normalize(vec3(.6,.1,.6))),0.),24.);
@@ -60,12 +60,15 @@ void main(){
   if(groundT>0.)end=min(end,groundT);
   float span=max(0.,end-start);
   float alpha=0.;vec3 clouds=vec3(0.);
-  for(int i=0;i<22;i++){
-   float t=start+(float(i)+.35)*span/22.;
+  float jitter=hash(vec3(gl_FragCoord.xy,17.));
+  for(int i=0;i<32;i++){
+   float t=start+(float(i)+jitter)*span/32.;
    vec3 pos=ro+rd*t;
    float d=cloud(pos);
-   float localAlpha=1.-exp(-d*span*1.15/22.);
-   vec3 cloudColor=mix(vec3(.32,.50,.75),vec3(.89,.95,1.),clamp(.45+.45*rd.z+.22*noise(pos*.27),0.,1.));
+   float localAlpha=1.-exp(-d*span*1.55/32.);
+   float shadow=cloud(pos+normalize(vec3(.6,.1,.6))*.85);
+   float lit=clamp(.47+(d-shadow)*2.3+dot(normalize(pos),normalize(vec3(.6,.1,.6)))*.23,0.,1.);
+   vec3 cloudColor=mix(vec3(.18,.34,.56),vec3(.94,.97,1.),lit);
    cloudColor+=vec3(.06,.10,.12)*pow(max(dot(rd,normalize(vec3(.6,.1,.6))),0.),6.);
    clouds+=(1.-alpha)*localAlpha*cloudColor;
    alpha+=(1.-alpha)*localAlpha;
