@@ -87,11 +87,12 @@ void main(){
   float fine=noise3(normal*780.);
   float micro=noise3(normal*2100.);
   coverage=clamp(coverage+(fine-.5)*.27+(micro-.5)*.10,0.,1.);
-  float density=smoothstep(.23,.81,coverage)*mix(.38,.62,smoothstep(.12,.72,p));
+  float density=smoothstep(.23,.78,coverage)*mix(.38,.88,smoothstep(.12,.72,p));
   float shadow=texture(cloudMap,coords+vec2(.0016,-.0008)).r;
   float relief=clamp(.5+(coverage-shadow)*1.9,0.,1.);
   float light=clamp(.30+.45*max(0.,dot(normal,normalize(vec3(.85,.42,.32))))+.26*relief,0.,1.);
-  vec3 cloudColor=mix(vec3(.07,.15,.32),vec3(.66,.78,.94),light);
+  vec3 cloudColor=mix(vec3(.07,.15,.32),vec3(.79,.88,.98),light);
+  cloudColor=mix(cloudColor,vec3(.82,.91,.98),smoothstep(.30,.75,p)*.55);
   color=mix(color,cloudColor,density);
  }
  vec3 q=ro-center;
@@ -115,16 +116,18 @@ void main(){
    float t=(float(i)+.5)*distanceLimit/10.;
    vec3 pos=ro+rd*t;
    float height=length(pos-center)-R;
-   float band=smoothstep(.002,.008,height)*(1.-smoothstep(.025,.037,height));
+   float band=smoothstep(.001,.004,height)*(1.-smoothstep(.028,.042,height));
    float shape=.24*noise3(pos*28.)+.34*noise3(pos*96.)+.27*noise3(pos*210.)+.15*noise3(pos*420.);
-   float mass=1.-length((pos-vec3(-.029,.016,.055))/vec3(.016,.011,.024));
-   mass=max(mass,1.-length((pos-vec3(.032,.012,.063))/vec3(.017,.011,.026)));
-   mass=max(mass,1.-length((pos-vec3(-.017,.008,.043))/vec3(.011,.008,.017)));
-   mass=max(mass,1.-length((pos-vec3(.015,.007,.047))/vec3(.010,.008,.018)));
-   float density=max(smoothstep(.48,.65,shape)*.18,smoothstep(.18,.69,mass+(shape-.5)*.78))*band*visibility;
-   float alpha=1.-exp(-density*.52);
+   float mass=1.-length((pos-vec3(-.028,.010,.054))/vec3(.023,.014,.029));
+   mass=max(mass,1.-length((pos-vec3(.024,.008,.081))/vec3(.029,.013,.037)));
+   mass=max(mass,1.-length((pos-vec3(-.012,.007,.070))/vec3(.022,.012,.030)));
+   mass=max(mass,1.-length((pos-vec3(.006,.006,.052))/vec3(.016,.010,.022)));
+   mass=max(mass,1.-length((pos-vec3(-.030,.012,.136))/vec3(.038,.017,.050)));
+   mass=max(mass,1.-length((pos-vec3(.034,.011,.119))/vec3(.037,.016,.045)));
+   float density=max(smoothstep(.58,.74,shape)*.06,smoothstep(.37,.74,mass+(shape-.5)*1.65))*band*visibility;
+   float alpha=1.-exp(-density*.76);
    float light=clamp(.28+.36*noise3(pos*37.+vec3(.7,1.5,.4))+.30*clamp((height-.006)/.026,0.,1.)+.22*(shape-.5),0.,1.);
-   vec3 cloudLight=mix(vec3(.20,.39,.65),vec3(.89,.95,1.),light);
+   vec3 cloudLight=mix(vec3(.24,.44,.70),vec3(.94,.97,1.),light);
    scattered+=transmittance*alpha*cloudLight;
    transmittance*=1.-alpha;
   }
