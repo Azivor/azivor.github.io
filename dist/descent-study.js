@@ -53,7 +53,7 @@ void main(){
  float p=clamp(progress,0.,1.);
  float altitude=.004+.146*pow(1.-p,2.);
  float pitch=mix(.004,.63,smoothstep(.07,.94,p));
- vec3 ro=vec3(0.,altitude,0.);
+ vec3 ro=vec3(p*.002,altitude,p*.035);
  vec2 screen=(uv-.5)*vec2(resolution.x/resolution.y,1.)*.84;
  vec3 rd=normalize(vec3(screen.x,screen.y-pitch,1.));
  vec3 color=spaceColor(rd,p);
@@ -98,10 +98,14 @@ void main(){
    float t=(float(i)+.5)*distanceLimit/10.;
    vec3 pos=ro+rd*t;
    float height=length(pos-center)-R;
-   float band=smoothstep(.006,.014,height)*(1.-smoothstep(.031,.044,height));
-   float shape=.48*noise3(pos*28.)+.35*noise3(pos*57.)+.17*noise3(pos*117.);
-   float density=smoothstep(.49,.67,shape)*band*visibility;
-   float alpha=1.-exp(-density*.42);
+   float band=smoothstep(.002,.008,height)*(1.-smoothstep(.025,.037,height));
+   float shape=.24*noise3(pos*28.)+.34*noise3(pos*96.)+.27*noise3(pos*210.)+.15*noise3(pos*420.);
+   float mass=1.-length((pos-vec3(-.029,.016,.055))/vec3(.016,.011,.024));
+   mass=max(mass,1.-length((pos-vec3(.032,.012,.063))/vec3(.017,.011,.026)));
+   mass=max(mass,1.-length((pos-vec3(-.017,.008,.043))/vec3(.011,.008,.017)));
+   mass=max(mass,1.-length((pos-vec3(.015,.007,.047))/vec3(.010,.008,.018)));
+   float density=max(smoothstep(.46,.63,shape)*.27,smoothstep(.10,.66,mass+(shape-.5)*.68))*band*visibility;
+   float alpha=1.-exp(-density*.43);
    float light=.47+.48*noise3(pos*19.+vec3(.7,1.5,.4));
    vec3 cloudLight=mix(vec3(.28,.48,.72),vec3(.91,.96,1.),light);
    scattered+=transmittance*alpha*cloudLight;
@@ -110,7 +114,7 @@ void main(){
   color=scattered+transmittance*color;
  }
  float air=1.-smoothstep(.028,.11,altitude);
- color=mix(color,vec3(.12,.34,.70),air*.25);
+ color=mix(color,vec3(.20,.49,.78),air*.43);
  outColor=vec4(pow(max(color,vec3(0.)),vec3(.94)),1.);
 }`;
 function makeShader(gl,kind,source){

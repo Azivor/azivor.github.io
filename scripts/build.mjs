@@ -7,7 +7,7 @@ const root=fileURLToPath(new URL('../',import.meta.url));
 const out=join(root,'dist');await mkdir(join(out,'ui'),{recursive:true});await mkdir(join(out,'components'),{recursive:true});
 await writeFile(join(out,'index.html'),Home());
 await mkdir(join(out,'scene-test'),{recursive:true});
-await writeFile(join(out,'scene-test/index.html'),Home().replace('Azivor — A little beyond the ordinary.','Azivor — Descent study').replace('<body>','<body class="descent-study">').replace('/sky-scene.js','/descent-study.js'));
+await writeFile(join(out,'scene-test/index.html'),Home().replace('Azivor — A little beyond the ordinary.','Azivor — Descent study').replace('<link rel="preload" as="image" href="/space-orbit.webp" fetchpriority="high">','').replace('<body>','<body class="descent-study">').replace('/sky-scene.js','/descent-study.js'));
 await writeFile(join(out,'components/index.html'),Catalog());
 await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png'));
 await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
