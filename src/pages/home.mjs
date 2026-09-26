@@ -8,13 +8,12 @@ export default function Home(){ return `<!doctype html>
 <title>Azivor — A little beyond the ordinary.</title>
 <meta name="description" content="A first look at Azivor. A space for ideas, curiosity, and what comes next.">
 <link rel="icon" type="image/png" href="/azivor-logo.png">
-<link rel="preload" as="image" href="/space-orbit.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/ui/tokens.css"><link rel="stylesheet" href="/ui/base.css"><link rel="stylesheet" href="/ui/components.css"><link rel="stylesheet" href="/home.css">
 </head>
-<body>
+<body class="descent-study">
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="page" id="top">
 <header class="header">
@@ -46,5 +45,5 @@ ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibi
 </main>
 <footer><a class="wordmark footer-mark" href="#top" aria-label="Azivor home">${Logo()}azivor.</a><span>© 2026 Azivor</span></footer>
 </div>
-<script src="/script.js" defer></script><script type="module" src="/sky-scene.js"></script>
+<script src="/script.js" defer></script><script type="module" src="/descent-study.js"></script>
 </body></html>`; }
