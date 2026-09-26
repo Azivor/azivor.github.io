@@ -1,4 +1,4 @@
-html,body{background:#081432}
+html,body{background-color:#081432;background-image:linear-gradient(180deg,#081432 0%,#112a58 66%,#285a95 100%);background-size:100% 100dvh;background-repeat:no-repeat}
 .page{position:relative;overflow:clip;background:#fff}
 .header{position:absolute;inset:0 0 auto;z-index:6;width:min(100%,1248px);margin:auto;display:flex;align-items:center;gap:64px;padding:22px 24px;color:white}
 .nav-toggle{display:none}
@@ -39,7 +39,10 @@ footer{max-width:1200px;border-top:1px solid #cde6f1;margin:auto;display:flex;ju
  .header .nav a.selected{color:#b9dcff}
  .header .nav a:hover,.header .nav a:focus-visible{color:#d4ecff;opacity:1}
  body.menu-open{overflow:hidden}
- .journey-stage{min-height:0;height:100dvh}.showcase{padding:38px 30px;min-height:330px;gap:20px}.showcase-emblem .brand-mark{width:120px;height:auto}
+ .journey{background-color:var(--scene-edge-end,#35669d);background-image:linear-gradient(180deg,var(--scene-edge-color,#1e4881) calc(100% - 88px),var(--scene-edge-end,#35669d) 100%);background-size:100% 100dvh;background-repeat:no-repeat;background-position:0 var(--edge-scroll,0px)}
+ .journey-stage{min-height:0;height:calc(100dvh - 88px)}
+ .journey-stage::after{content:"";position:absolute;z-index:1;inset:auto 0 0;height:clamp(140px,27vh,220px);pointer-events:none;background:linear-gradient(180deg,transparent,var(--scene-edge-color,#1e4881))}
+ .showcase{padding:38px 30px;min-height:330px;gap:20px}.showcase-emblem .brand-mark{width:120px;height:auto}
 }
 @media(max-width:560px){.hero-content{top:44%;width:calc(100% - 36px)}.hero-content h1{font-size:clamp(2.75rem,13.5vw,4.6rem)}.intro{font-size:16px}.showcase{padding:40px 28px 36px;min-height:460px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:25px}.showcase-emblem{width:100%;justify-content:center}.showcase-emblem .brand-mark{width:115px}.showcase h2{font-size:44px}.showcase-copy>p{max-width:270px}.about{padding:105px 22px 78px}.about>p{font-size:15px}footer{padding:25px 22px;gap:17px;flex-wrap:wrap}}
 @media(max-width:420px){.header{padding:18px;gap:16px}.header .wordmark{font-size:20px}.header .brand-mark{height:27px;margin-right:5px}.hero-content h1{font-size:clamp(2.5rem,11vw,3.25rem)}.showcase{padding-inline:22px}.showcase h2{font-size:clamp(2.35rem,11vw,2.75rem)}}
@@ -50,8 +53,8 @@ footer{max-width:1200px;border-top:1px solid #cde6f1;margin:auto;display:flex;ju
 @media(min-width:701px){.header .nav{position:absolute;left:50%;transform:translateX(-50%)}}
 .landing-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#244c80 0%,#538bb8 36%,#99c8e3 72%,#d9eef8 100%);opacity:clamp(0,calc((var(--journey-progress,0) - .80)*5),1)}
 .shooting-stars{position:absolute;inset:0;pointer-events:none;opacity:clamp(0,calc(1 - var(--journey-progress,0)*8),1);overflow:hidden}
-.shooting-star{position:absolute;left:var(--meteor-x,68%);top:var(--meteor-y,16%);width:95px;height:1px;opacity:0;background:linear-gradient(90deg,transparent,#d8eaffb3);transform:rotate(24deg);transform-origin:right center}
-.shooting-star.is-shooting{animation:shooting-star 1.3s ease-out both}
-@keyframes shooting-star{0%{opacity:0;transform:translate(0,0) rotate(24deg) scaleX(.25)}18%{opacity:.42}65%{opacity:.25}100%{opacity:0;transform:translate(190px,85px) rotate(24deg) scaleX(1)}}
+.shooting-star{position:absolute;left:var(--meteor-x,68%);top:var(--meteor-y,16%);width:var(--meteor-length,95px);height:1px;opacity:0;background:linear-gradient(var(--meteor-gradient,90deg),transparent,#d8eaffb3);transform:rotate(var(--meteor-angle,24deg));transform-origin:var(--meteor-origin,right center)}
+.shooting-star.is-shooting{animation:shooting-star var(--meteor-duration,1.3s) ease-out both}
+@keyframes shooting-star{0%{opacity:0;transform:translate(0,0) rotate(var(--meteor-angle,24deg)) scaleX(.25)}18%{opacity:.42}65%{opacity:.25}100%{opacity:0;transform:translate(var(--meteor-dx,150px),var(--meteor-dy,85px)) rotate(var(--meteor-angle,24deg)) scaleX(1)}}
 @media(prefers-reduced-motion:reduce){.shooting-stars{display:none}.landing-wash{opacity:1}.journey-stage{background:#244c80}.landing-wash{background:linear-gradient(180deg,transparent 60%,#d9eef8 100%)}}
 .sky-fallback .landing-wash{opacity:1;background:linear-gradient(180deg,transparent 60%,#d9eef8 100%)}
