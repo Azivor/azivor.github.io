@@ -1,146 +1,156 @@
-// Bounded descent study: image-matched opening, then a camera passing through
-// several small procedural cloud volumes. Kept separate from the homepage.
-const journey = document.querySelector('.journey');
-const stage = document.querySelector('.journey-stage');
-const canvas = document.querySelector('#sky-scene');
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const clamp = x => Math.max(0, Math.min(1, x));
-const vertexSource = `#version 300 es
+// Camera ray intersections with a real spherical Earth and a separate cloud shell.
+// NASA global maps provide surface detail; the opening photo is never sampled.
+const journey=document.querySelector('.journey');
+const stage=document.querySelector('.journey-stage');
+const canvas=document.querySelector('#sky-scene');
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
+const clamp=x=>Math.max(0,Math.min(1,x));
+const vertexSource=`#version 300 es
 in vec2 position;
 out vec2 uv;
 void main(){uv=position*.5+.5;gl_Position=vec4(position,0.,1.);}`;
-const fragmentSource = `#version 300 es
+const fragmentSource=`#version 300 es
 precision highp float;
 in vec2 uv;
 out vec4 outColor;
 uniform vec2 resolution;
 uniform float progress;
-uniform sampler2D opening;
-float hash(vec3 p){p=fract(p*.1031);p+=dot(p,p.yzx+33.33);return fract((p.x+p.y)*p.z);}
-float noise(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
-float fbm(vec3 p){return .55*noise(p)+.3*noise(p*2.04)+.15*noise(p*4.12);}
-float cloud(vec3 p){
- float s=1.-length((p-vec3(-3.05,-1.95,4.95))/vec3(1.25,.8,1.0));
- s=max(s,1.-length((p-vec3(-2.0,-1.62,4.65))/vec3(1.35,.95,1.15)));
- s=max(s,1.-length((p-vec3(-.98,-2.06,4.25))/vec3(1.15,.7,1.0)));
- s=max(s,1.-length((p-vec3(1.35,-1.85,4.85))/vec3(1.2,.9,1.1)));
- s=max(s,1.-length((p-vec3(2.35,-1.48,4.45))/vec3(1.35,.9,1.05)));
- s=max(s,1.-length((p-vec3(3.25,-1.9,4.15))/vec3(1.05,.7,.95)));
- s=max(s,1.-length((p-vec3(-1.65,-1.35,1.2))/vec3(1.55,1.05,1.25)));
- s=max(s,1.-length((p-vec3(1.7,-1.1,-.8))/vec3(1.6,1.05,1.3)));
- return smoothstep(.04,.26,s+(fbm(p*1.65)-.5)*.65);
+uniform sampler2D surfaceMap;
+uniform sampler2D cloudMap;
+const float PI=3.141592653589793;
+const float R=6.371;
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float hitSphere(vec3 ro,vec3 rd,float radius){
+ vec3 q=ro-vec3(0.,-R,0.);
+ float b=dot(q,rd),c=dot(q,q)-radius*radius,d=b*b-c;
+ if(d<0.)return -1.;
+ float t=-b-sqrt(d);
+ return t>0.?t:-b+sqrt(d);
 }
-vec3 photograph(vec2 point){
- float ratio=resolution.x/resolution.y;
- vec2 crop=point;
- if(ratio<1.7768)crop.x=(point.x-.5)*ratio/1.7768+.5;
- else crop.y=(point.y-.5)*1.7768/ratio+.5;
- float approach=smoothstep(.24,.66,progress);
- crop=(crop-vec2(.5,.25))/(1.+approach*.34)+vec2(.5,.25);
- crop.y-=approach*.105;
- vec3 photo=texture(opening,clamp(crop,vec2(.001),vec2(.999))).rgb;
- float fromTop=1.-point.y;
- float shade=mix(.26,.055,smoothstep(0.,.56,fromTop));
- shade=mix(shade,.35,smoothstep(.56,.86,fromTop));
- shade=mix(shade,.97,smoothstep(.86,1.,fromTop));
- vec3 veil=mix(vec3(.02,.05,.15),vec3(.08,.20,.44),smoothstep(.56,1.,fromTop));
- return mix(photo,veil,shade);
+vec2 earthUv(vec3 normal){
+ vec3 center=normalize(vec3(-.925,-.10,-.337));
+ vec3 east=normalize(vec3(-center.z,0.,center.x));
+ vec3 north=cross(center,east);
+ vec3 n=normal.x*east+normal.y*center+normal.z*north;
+ return vec2(fract(atan(n.z,n.x)/(2.*PI)+.5),asin(clamp(n.y,-1.,1.))/PI+.5);
+}
+vec3 spaceColor(vec3 rd,float descent){
+ vec2 cell=floor(vec2(atan(rd.x,rd.z),asin(rd.y))*vec2(820.,720.));
+ float stars=step(.9987,hash(cell))*pow(hash(cell+13.7),2.)*.55*(1.-smoothstep(.08,.38,descent));
+ float low=smoothstep(.11,-.6,rd.y);
+ return mix(vec3(.002,.006,.025),vec3(.014,.035,.102),low)+vec3(stars);
 }
 void main(){
  float p=clamp(progress,0.,1.);
- vec3 image=photograph(uv);
- float skyBlend=smoothstep(.55,.83,p);
- vec3 sky=mix(vec3(.08,.29,.58),vec3(.43,.72,.91),smoothstep(0.,1.,uv.y));
- sky+=vec3(.1,.12,.13)*pow(max(0.,1.-abs(uv.y-.44)*2.),4.);
- vec3 base=mix(image,sky,skyBlend);
- float travel=smoothstep(.32,.94,p);
- vec3 ro=vec3(travel*.55,-travel*.8,10.5-travel*12.5);
- vec2 screen=(uv-.5)*vec2(resolution.x/resolution.y,1.);
- vec3 rd=normalize(vec3(screen.x*.9,screen.y*.9,-1.5));
- float transmittance=1.;vec3 clouds=vec3(0.);
- float jitter=.5;
- for(int i=0;i<28;i++){
-  float t=(float(i)+jitter)*.48;
-  vec3 pos=ro+rd*t;
-  float density=cloud(pos);
-  float shadow=cloud(pos+vec3(.44,.27,.62));
-  float light=clamp(.52+(density-shadow)*1.35+pos.y*.015,.16,.95);
-  vec3 color=mix(vec3(.17,.34,.58),vec3(.82,.91,.98),light);
-  float stepAlpha=1.-exp(-density*.22);
-  clouds+=transmittance*stepAlpha*color;
-  transmittance*=1.-stepAlpha;
+ float altitude=mix(.15,.007,pow(p,1.27));
+ float pitch=mix(.004,.63,smoothstep(.07,.94,p));
+ vec3 ro=vec3(0.,altitude,0.);
+ vec2 screen=(uv-.5)*vec2(resolution.x/resolution.y,1.)*.84;
+ vec3 rd=normalize(vec3(screen.x,screen.y-pitch,1.));
+ vec3 color=spaceColor(rd,p);
+ float groundT=hitSphere(ro,rd,R);
+ float cloudT=hitSphere(ro,rd,R+.012);
+ float atmosphereT=hitSphere(ro,rd,R+.075);
+ vec3 center=vec3(0.,-R,0.);
+ if(groundT>0.){
+  vec3 normal=normalize(ro+rd*groundT-center);
+  vec3 earth=texture(surfaceMap,earthUv(normal)).rgb;
+  float sun=max(0.,dot(normal,normalize(vec3(-.22,.77,.58))));
+  earth*=mix(.34,.96,sun);
+  earth=mix(earth,vec3(.025,.13,.33),.18);
+  float distanceHaze=pow(1.-max(0.,dot(normal,-rd)),3.);
+  color=mix(earth,vec3(.19,.39,.73),distanceHaze*.64);
  }
- float cloudCeiling=mix(.51,1.2,smoothstep(.42,.7,p));
- float cloudsVisible=smoothstep(.27,.43,p)*(1.-smoothstep(cloudCeiling-.12,cloudCeiling+.12,uv.y));
- base=mix(base,clouds+base*transmittance,cloudsVisible);
- float atmosphericHaze=smoothstep(.39,.61,p)*(1.-smoothstep(.73,.9,p))*.10;
- base=mix(base,vec3(.56,.73,.89),atmosphericHaze);
- outColor=vec4(base,1.);
+ if(cloudT>0.&&(groundT<0.||cloudT<groundT)){
+  vec3 normal=normalize(ro+rd*cloudT-center);
+  vec2 coords=earthUv(normal)+vec2(p*.0006,0.);
+  float coverage=texture(cloudMap,coords).r;
+  float density=smoothstep(.16,.88,coverage)*.78;
+  float light=.40+.55*max(0.,dot(normal,normalize(vec3(-.22,.77,.58))));
+  vec3 cloudColor=mix(vec3(.21,.38,.65),vec3(.88,.94,1.),light);
+  color=mix(color,cloudColor,density);
+ }
+ vec3 q=ro-center;
+ float nearest=length(q+rd*max(0.,-dot(q,rd)));
+ float heightAbove=max(0.,nearest-R);
+ float limb=exp(-heightAbove/.028)*step(0.,atmosphereT);
+ vec3 limbColor=mix(vec3(.35,.27,.68),vec3(.30,.67,.97),smoothstep(-.7,.8,rd.x));
+ color+=limbColor*limb*(groundT>0.?.32:.45);
+ float air=smoothstep(.11,.028,altitude);
+ color=mix(color,vec3(.12,.34,.70),air*.25);
+ outColor=vec4(pow(max(color,vec3(0.)),vec3(.94)),1.);
 }`;
-function makeShader(gl, kind, source) {
- const item = gl.createShader(kind);
- gl.shaderSource(item, source);
- gl.compileShader(item);
- if (!gl.getShaderParameter(item,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(item));
- return item;
+function makeShader(gl,kind,source){
+ const shader=gl.createShader(kind);
+ gl.shaderSource(shader,source);
+ gl.compileShader(shader);
+ if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader));
+ return shader;
 }
-let gl, progressUniform, resolutionUniform, photo;
-let ready = false;
-try {
+let gl,progressUniform,resolutionUniform,ready=false,queued=false;
+try{
  gl=canvas.getContext('webgl2',{alpha:false,antialias:false,powerPreference:'low-power'});
- if(!gl) throw new Error('WebGL2 unavailable');
+ if(!gl)throw new Error('WebGL2 unavailable');
  const program=gl.createProgram();
  gl.attachShader(program,makeShader(gl,gl.VERTEX_SHADER,vertexSource));
  gl.attachShader(program,makeShader(gl,gl.FRAGMENT_SHADER,fragmentSource));
  gl.linkProgram(program);
- if(!gl.getProgramParameter(program,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program));
+ if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(program));
  gl.useProgram(program);
+ const vao=gl.createVertexArray();
+ gl.bindVertexArray(vao);
  const buffer=gl.createBuffer();
  gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
- gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+ gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1]),gl.STATIC_DRAW);
  const location=gl.getAttribLocation(program,'position');
  gl.enableVertexAttribArray(location);
  gl.vertexAttribPointer(location,2,gl.FLOAT,false,0,0);
  progressUniform=gl.getUniformLocation(program,'progress');
  resolutionUniform=gl.getUniformLocation(program,'resolution');
- gl.uniform1i(gl.getUniformLocation(program,'opening'),0);
- photo=gl.createTexture();
- gl.activeTexture(gl.TEXTURE0);
- gl.bindTexture(gl.TEXTURE_2D,photo);
- gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
- gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
- gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
- gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
- const image=new Image();
- image.onload=()=>{
-  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
-  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,image);
-  ready=true;
-  document.body.classList.add('scene-photo-ready');
-  schedule();
- };
- image.onerror=()=>console.warn('Descent study: opening image unavailable');
- image.src='/space-orbit.webp';
-} catch(error) {
- console.warn('Descent study fallback:',error);
- document.documentElement.classList.add('sky-fallback');
-}
-let queued=false;
+ const loadTexture=(unit,url,name)=>new Promise((resolve,reject)=>{
+  const image=new Image();
+  image.onload=()=>{
+   const texture=gl.createTexture();
+   gl.activeTexture(gl.TEXTURE0+unit);
+   gl.bindTexture(gl.TEXTURE_2D,texture);
+   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,image);
+   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
+   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+   gl.uniform1i(gl.getUniformLocation(program,name),unit);
+   canvas.dataset.textureError=String(gl.getError());
+   resolve();
+  };
+  image.onerror=()=>reject(new Error(`${url} unavailable`));
+  image.src=url;
+ });
+ Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,'/earth-clouds.jpg','cloudMap')]).then(()=>{
+  gl.validateProgram(program);
+  canvas.dataset.validation=String(gl.getProgramParameter(program,gl.VALIDATE_STATUS));
+  canvas.dataset.programLog=gl.getProgramInfoLog(program)||'';
+  canvas.dataset.samplers=JSON.stringify([gl.getUniform(program,gl.getUniformLocation(program,'surfaceMap')),gl.getUniform(program,gl.getUniformLocation(program,'cloudMap'))]);
+  ready=true;document.body.classList.add('scene-model-ready');schedule();
+ }).catch(error=>console.warn('Earth scene:',error));
+}catch(error){console.warn('Earth scene fallback:',error);document.documentElement.classList.add('sky-fallback');}
 function render(){
  queued=false;
  if(!ready||!journey||!stage)return;
  const bounds=journey.getBoundingClientRect();
- const range=Math.max(1,bounds.height-innerHeight);
- const p=reduceMotion.matches?0:clamp(-bounds.top/range);
+ const p=reduceMotion.matches?0:clamp(-bounds.top/Math.max(1,bounds.height-innerHeight));
  stage.style.setProperty('--journey-progress',p.toFixed(4));
  const scale=Math.min(devicePixelRatio||1,innerWidth<700?.8:1);
- const fit=Math.min(1,Math.sqrt(850000/(innerWidth*innerHeight*scale*scale)));
+ const fit=Math.min(1,Math.sqrt(950000/(innerWidth*innerHeight*scale*scale)));
  const width=Math.max(1,Math.round(innerWidth*scale*fit));
  const height=Math.max(1,Math.round(innerHeight*scale*fit));
  if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;gl.viewport(0,0,width,height);}
  gl.uniform2f(resolutionUniform,width,height);
  gl.uniform1f(progressUniform,p);
+ canvas.dataset.uniformError=String(gl.getError());
  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+ canvas.dataset.glError=String(gl.getError());
+ canvas.dataset.progress=p.toFixed(4);
 }
 function schedule(){if(!queued){queued=true;requestAnimationFrame(render);}}
 addEventListener('scroll',schedule,{passive:true});
