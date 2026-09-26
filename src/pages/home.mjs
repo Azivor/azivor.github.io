@@ -8,6 +8,7 @@ export default function Home(){ return `<!doctype html>
 <title>Azivor — A little beyond the ordinary.</title>
 <meta name="description" content="A first look at Azivor. A space for ideas, curiosity, and what comes next.">
 <link rel="icon" type="image/png" href="/azivor-logo.png">
+<link rel="preload" as="image" href="/space-orbit.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -24,6 +25,7 @@ ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibi
 <section class="journey" aria-labelledby="hero-title">
 <div class="journey-stage">
 <canvas id="sky-scene" class="sky-scene" aria-hidden="true"></canvas>
+<div class="intro-space" aria-hidden="true"></div>
 <div class="scene-vignette" aria-hidden="true"></div>
 <div class="hero-content">
 <h1 id="hero-title">A little beyond<br>the ordinary.</h1>
