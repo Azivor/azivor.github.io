@@ -144,11 +144,6 @@ function updateBrowserBackdrop(p){
  const from=[8,20,50],to=[217,238,248];
  let color='#'+from.map((start,index)=>Math.round(start+(to[index]-start)*amount).toString(16).padStart(2,'0')).join('');
  if(document.querySelector('footer')?.getBoundingClientRect().top<innerHeight)color='#ffffff';
- const edgeColor=p>=.95?'#d9eef8':`rgb(${Math.round(30+(217-30)*p)},${Math.round(72+(238-72)*p)},${Math.round(129+(248-129)*p)})`;
- const edgeEnd=p>=.95?'#d9eef8':`rgb(${Math.round(53+(217-53)*p)},${Math.round(102+(238-102)*p)},${Math.round(157+(248-157)*p)})`;
- stage.style.setProperty('--scene-edge-color',edgeColor);
- journey.style.setProperty('--scene-edge-color',edgeColor);
- journey.style.setProperty('--scene-edge-end',edgeEnd);
  if(color===lastBackdrop)return;
  lastBackdrop=color;
  document.documentElement.style.backgroundColor=color;
@@ -210,7 +205,6 @@ function render(){
  if(!ready||!journey||!stage)return;
  const bounds=journey.getBoundingClientRect();
  const p=reduceMotion.matches?0:clamp(-bounds.top/Math.max(1,bounds.height-innerHeight));
- journey.style.setProperty('--edge-scroll',`${Math.max(0,-bounds.top)}px`);
  stage.style.setProperty('--journey-progress',p.toFixed(4));
  updateBrowserBackdrop(p);
  stage.classList.toggle('scene-reveal',p>=.78);
@@ -219,9 +213,9 @@ function render(){
  const showcase=document.querySelector('.showcase');
  if(showcase)showcase.inert=p<.78&&!reduceMotion.matches;
  const scale=Math.min(devicePixelRatio||1,1);
- const fit=Math.min(1,Math.sqrt(950000/(stage.clientWidth*stage.clientHeight*scale*scale)));
- const width=Math.max(1,Math.round(stage.clientWidth*scale*fit));
- const height=Math.max(1,Math.round(stage.clientHeight*scale*fit));
+ const fit=Math.min(1,Math.sqrt(950000/(innerWidth*innerHeight*scale*scale)));
+ const width=Math.max(1,Math.round(innerWidth*scale*fit));
+ const height=Math.max(1,Math.round(innerHeight*scale*fit));
  if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;gl.viewport(0,0,width,height);}
  gl.uniform2f(resolutionUniform,width,height);
  gl.uniform1f(progressUniform,p);
@@ -244,10 +238,10 @@ function planMeteor(){
   const p=Number(stage?.style.getPropertyValue('--journey-progress')||0);
   if(p<.08){
    const direction=Math.random()<.5?1:-1;
-   const horizontal=80+Math.random()*70;
-   const vertical=55+Math.random()*70;
+   const horizontal=130+Math.random()*60;
+   const vertical=25+Math.random()*13;
    const angle=Math.atan2(vertical,horizontal)*180/Math.PI;
-   meteor.style.setProperty('--meteor-x',`${25+Math.random()*50}%`);
+   meteor.style.setProperty('--meteor-x',`${direction>0?16+Math.random()*34:50+Math.random()*34}%`);
    meteor.style.setProperty('--meteor-y',`${8+Math.random()*22}%`);
    meteor.style.setProperty('--meteor-dx',`${direction*horizontal}px`);
    meteor.style.setProperty('--meteor-dy',`${vertical}px`);

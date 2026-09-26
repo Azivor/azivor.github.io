@@ -1,4 +1,4 @@
-html,body{background-color:#081432;background-image:linear-gradient(180deg,#081432 0%,#112a58 66%,#285a95 100%);background-size:100% 100dvh;background-repeat:no-repeat}
+html,body{background:#081432}
 .page{position:relative;overflow:clip;background:#fff}
 .header{position:absolute;inset:0 0 auto;z-index:6;width:min(100%,1248px);margin:auto;display:flex;align-items:center;gap:64px;padding:22px 24px;color:white}
 .nav-toggle{display:none}
@@ -39,10 +39,7 @@ footer{max-width:1200px;border-top:1px solid #cde6f1;margin:auto;display:flex;ju
  .header .nav a.selected{color:#b9dcff}
  .header .nav a:hover,.header .nav a:focus-visible{color:#d4ecff;opacity:1}
  body.menu-open{overflow:hidden}
- .journey{background-color:var(--scene-edge-end,#35669d);background-image:linear-gradient(180deg,var(--scene-edge-color,#1e4881) calc(100% - 88px),var(--scene-edge-end,#35669d) 100%);background-size:100% 100dvh;background-repeat:no-repeat;background-position:0 var(--edge-scroll,0px)}
- .journey-stage{min-height:0;height:calc(100dvh - 88px)}
- .journey-stage::after{content:"";position:absolute;z-index:1;inset:auto 0 0;height:clamp(140px,27vh,220px);pointer-events:none;background:linear-gradient(180deg,transparent,var(--scene-edge-color,#1e4881))}
- .showcase{padding:38px 30px;min-height:330px;gap:20px}.showcase-emblem .brand-mark{width:120px;height:auto}
+ .journey-stage{min-height:0;height:100dvh}.showcase{padding:38px 30px;min-height:330px;gap:20px}.showcase-emblem .brand-mark{width:120px;height:auto}
 }
 @media(max-width:560px){.hero-content{top:44%;width:calc(100% - 36px)}.hero-content h1{font-size:clamp(2.75rem,13.5vw,4.6rem)}.intro{font-size:16px}.showcase{padding:40px 28px 36px;min-height:460px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:25px}.showcase-emblem{width:100%;justify-content:center}.showcase-emblem .brand-mark{width:115px}.showcase h2{font-size:44px}.showcase-copy>p{max-width:270px}.about{padding:105px 22px 78px}.about>p{font-size:15px}footer{padding:25px 22px;gap:17px;flex-wrap:wrap}}
 @media(max-width:420px){.header{padding:calc(18px + env(safe-area-inset-top, 0px)) 18px 18px;gap:16px}.header .wordmark{font-size:20px}.header .brand-mark{height:27px;margin-right:5px}.hero-content h1{font-size:clamp(2.5rem,11vw,3.25rem)}.showcase{padding-inline:22px}.showcase h2{font-size:clamp(2.35rem,11vw,2.75rem)}}
