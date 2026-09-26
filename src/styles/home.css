@@ -7,7 +7,7 @@ html,body{background:#081432}
 .sky-scene{position:absolute;inset:0;width:100%;height:100%;display:block}
 .descent-study .scene-vignette{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#020a2445,transparent 35%,transparent 78%,#0519440b)}
 .hero-content{position:absolute;z-index:2;top:45%;left:50%;width:min(850px,calc(100% - 40px));text-align:center;transform:translate(-50%,calc(-50% - var(--journey-progress,0)*52px));opacity:clamp(0,calc(1 - var(--journey-progress,0)*5),1);pointer-events:auto}
-.hero h1,.hero-content h1{font:500 clamp(4rem,6.325vw,5rem)/.96 var(--font-display);letter-spacing:-1px;margin:0;text-wrap:balance;text-shadow:0 2px 30px #06153a77}
+.hero h1,.hero-content h1{font:500 clamp(4rem,6.325vw,5rem)/.96 var(--font-hero);letter-spacing:-1px;margin:0;text-wrap:balance;text-shadow:0 2px 30px #06153a77}
 .intro{color:#f4f7ff;font-size:18px;line-height:1.45;margin-top:28px;letter-spacing:-.2px;text-shadow:0 1px 14px #06153a88}
 .hero-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:31px}.hero-actions .secondary{color:white;border-color:#ffffff5c}
 @keyframes text-arrive{from{opacity:0;transform:translateY(22px);filter:blur(5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}

@@ -1,29 +1,21 @@
-# Azivor visual system
+# Azivor design system
 
-Preserve the original paper-airplane A, Earth-descent scene, and blue/serif/glass visual direction. Current public content is limited to Home, Explore, Builds, and About; claims should follow work that can be shown.
+This is the current visual rule for Home, Explore, Builds, About, and the `/components/` reference page. Preserve the paper-airplane mark, blue Earth-descent opening, restrained glass surfaces, and clear page hierarchy.
 
-## Evidence and decisions
+## Typography — one serif moment
 
-The initial same-conversation live audit measured EB Garamond 500 at 80px, 0.96 line-height, -1px tracking; Geist supporting text; and opaque radial-lit blue controls. The subsequent audit freshly inspected the hero in Safari but lower-page access was interrupted. Lower-panel measurements below are prior same-conversation observations, not newly reverified.
+**EB Garamond is only for the opening headline in the homepage Earth hero** (`.hero-content h1`). The rest of that hero, its glass panel, every section below it, all other pages, navigation, buttons, cards, forms, footer, and the component library use **Geist**. Do not use a serif for article titles or interior page heroes. This rule supersedes earlier notes describing EB Garamond as the general display font.
 
-Prior panel observations: neutral charcoal #21232a at 50% with 8px blur; 12px overlays, 6px small overlays; opaque silver radial fill #DDE2EE to #BBC5DD for supporting cards.
+The source tokens are `--font-hero` (EB Garamond) and `--font-body` (Geist) in `src/styles/tokens.css`. `--font-display` remains an alias for Geist so shared heading components stay sans-serif. The catalog at `/components/` labels the hero exception, but its own headings use Geist. System fallbacks are Georgia for the hero and Arial for the rest.
 
-## Adaptation
+Use type size, weight, spacing, and color to distinguish headings after the hero. Large type elsewhere should still feel clean and direct, as in the original “A blank page. Endless possibilities.” section.
 
-- Primary actions keep blue radial illumination, a soft directional rim, and short interaction-only shimmer.
-- Dark overlay: neutral #21232a at 60%, blur 8px, radius 12px. The slightly stronger fill is a readability adaptation over the light silver panel.
-- Light glass: restrained transparent white with directional top lighting and a short contact shadow. When nested inside dark glass, use a 10% black fill to preserve small-label contrast; white-on-white layering otherwise weakens it.
-- Silver feature surface: cool opaque radial gradient, radius 20px, small elevation. This replaces the generic multicolor backdrop without borrowing product imagery.
-- Solid cards: white, neutral hairline border, no blur. Used for dense content and forms.
-- Fonts: EB Garamond for display, Geist for interface/body, system fallbacks retained.
-- Keep page layout rules in home.css; material and control rules belong in components.css and tokens.css.
+## Color, materials, and motion
 
-The catalog at /components/ demonstrates the same four materials. Reduced motion and visible keyboard focus apply throughout. Unsupported backdrop blur gets an opaque fallback. Automated checks cover component semantics and page assets; browser review of this revision was unavailable during this run.
+The Earth scene and the shift from dark blue through cloud blue to a light page belong to the homepage. Keep the transition gradual and preserve readable white hero text. Use one clear cyan-tinted glass feature panel in the descent; avoid stacking glass layers for decoration. Shared buttons, surfaces, radii, and focus states live in `src/styles/components.css`, with reusable values in `src/styles/tokens.css`. Page composition lives in `src/styles/home.css` and `src/styles/content.css`.
 
-## Design theory review
+The three plain menu bars animate into an X and open a full-screen overlay on narrow screens. Maintain visible keyboard focus and a usable reduced-motion layout. The Earth canvas should remain a visual layer behind real HTML text and controls.
 
-Design Director and Interaction Psychology review: retain the blue/serif/glass identity, make supporting hero copy and navigation dark for readable contrast, reserve white for large display text, simplify the duplicate header action, label same-page movement honestly, remove a decorative action-looking arrow, and expose the current section during scrolling. Narrow-screen headline minimum is 44px instead of 56px. These are source-supported corrections; rendered desktop/mobile verification is still pending because the in-app browser was unavailable and Safari was in active use.
+## Keeping the guide and examples aligned
 
-
-## Superseding user direction — 2026-09-16
-White type on the sky; concise Explore and About controls; no current-section underline or placeholder micro-labels. Homepage uses one clear cyan-tinted glass panel, without silver shell, dark inner container, or nested thought card. Earlier dark-on-sky and silver hero recommendations are superseded. Semantic navigation state and keyboard focus remain.
+`DESIGN.md` records the rule; the visual component library renders the shared tokens and components. The file is not parsed by the site build. When changing a shared visual rule, update the source styles/components, the relevant library example, and this guide together, then inspect the actual Home and interior pages at desktop and phone widths. The Earth shader and other scene-specific values are not all represented by catalog swatches.

@@ -59,6 +59,6 @@ Layout utilities: `ui-container`, `ui-stack`, `ui-cluster`, `ui-grid`, `ui-secti
 
 ## Hosting and provenance
 
-Reuse `.openai/hosting.json`; never create another Site for updates. GitHub repository: https://github.com/Azivor/azivor-site (private). The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond and Geist, with system fallbacks.
+Reuse `.openai/hosting.json`; never create another Site for updates. GitHub repository: https://github.com/Azivor/azivor-site (private). The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond for the homepage opening headline and Geist for every other heading and text element, with system fallbacks.
 
 Design reference decisions are recorded in DESIGN.md. Dark overlays deliberately use 60% charcoal for readable text over the silver feature surface; reference measurements suggested 50% as a starting point.
