@@ -19,7 +19,7 @@ export default function Home(){ return `<!doctype html>
 <div class="page" id="top">
 <header class="header">
 <a class="wordmark" href="#top" aria-label="Azivor home">${Logo()} azivor<span class="brand-period">.</span></a>
-<button class="nav-toggle" type="button" aria-controls="site-navigation" aria-expanded="false"><span>Menu</span><span class="nav-toggle-icon" aria-hidden="true"></span></button>
+<button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false"><span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span></button>
 ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibilities"},{label:"About",href:"#about"}],active:"#top"})}
 </header>
 <main id="main">
