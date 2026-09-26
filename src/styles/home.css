@@ -4,6 +4,7 @@
 .journey-stage{position:sticky;top:0;height:100svh;min-height:620px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse 120% 45% at 50% 100%,#245cb1 0%,#092359 65%,#070d29 100%)}
 .sky-scene{position:absolute;inset:0;width:100%;height:100%;display:block}
 .intro-space{position:absolute;inset:0;pointer-events:none;background:url("/space-orbit.webp") center bottom/cover no-repeat;opacity:clamp(0,calc((.26 - var(--journey-progress,0))*20),1)}
+.descent-study .intro-space{display:none}
 .intro-space::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#050d254d 0%,#09153612 56%,#102c695c 86%,#143574 100%)}
 .scene-vignette{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#020a2445,transparent 35%,transparent 78%,#0519440b)}
 .hero-content{position:absolute;z-index:2;top:45%;left:50%;width:min(850px,calc(100% - 40px));text-align:center;transform:translate(-50%,calc(-50% - var(--journey-progress,0)*52px));opacity:clamp(0,calc(1 - var(--journey-progress,0)*5),1);pointer-events:auto}
