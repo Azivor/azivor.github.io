@@ -44,7 +44,6 @@ if (descentLink) {
   const destination = document.getElementById('first-content');
   descentLink.addEventListener('click', event => {
     if (!destination || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    console.log('descent clicked', event.button, window.scrollY);
     event.preventDefault();
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       destination.scrollIntoView({behavior: 'instant', block: 'start'});
@@ -69,7 +68,7 @@ if (descentLink) {
       window.removeEventListener('touchstart', cancel);
       window.removeEventListener('keydown', onKey);
     };
-    const cancel = () => { console.log('descent cancelled'); stopped = true; cleanup(); };
+    const cancel = () => { stopped = true; cleanup(); };
     const onKey = keyEvent => { if (cancelKeys.has(keyEvent.key)) cancel(); };
     window.addEventListener('wheel', cancel, {passive: true, once: true});
     window.addEventListener('touchstart', cancel, {passive: true, once: true});
