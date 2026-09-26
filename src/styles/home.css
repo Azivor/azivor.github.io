@@ -1,5 +1,5 @@
 html,body{background:#081432}
-.page{position:relative;overflow:clip;background:#081432}
+.page{position:relative;overflow:clip;background:#fff}
 .header{position:absolute;inset:0 0 auto;z-index:6;width:min(100%,1248px);margin:auto;display:flex;align-items:center;gap:64px;padding:22px 24px;color:white}
 .nav-toggle{display:none}
 .journey{height:320svh;position:relative;background:#081432;color:#fff}
