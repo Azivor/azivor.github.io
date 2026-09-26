@@ -43,6 +43,11 @@ vec2 earthUv(vec3 normal){
  vec3 n=normal.x*east+normal.y*center+normal.z*north;
  return vec2(fract(atan(n.z,n.x)/(2.*PI)+.5),asin(clamp(n.y,-1.,1.))/PI+.5);
 }
+float cloudSample(vec2 coords){
+ // Mirror the latitude within temperate bands to avoid polar-map seams.
+ vec2 tile=vec2(fract(coords.x),.18+.64*(1.-abs(fract(coords.y)*2.-1.)));
+ return texture(cloudMap,tile).r;
+}
 vec3 spaceColor(vec3 rd,float descent){
  // Angular positions keep the stars fixed in space while the camera moves.
  vec2 sky=vec2(atan(rd.x,rd.z),asin(rd.y))*110.;
@@ -62,10 +67,10 @@ vec3 spaceColor(vec3 rd,float descent){
 }
 void main(){
  float p=clamp(progress,0.,1.);
- float altitude=.004+.42*pow(1.-p,2.);
+ float altitude=.005+.32*pow(1.-p,2.);
  // Keep the opening globe aligned with its photographic reference, then tip
  // the real camera toward the surface as the scroll begins.
- float pitch=.045+.52*smoothstep(.13,.30,p)+.15*smoothstep(.30,.82,p);
+ float pitch=.035+.38*smoothstep(.10,.42,p)+.23*smoothstep(.42,.86,p);
  vec3 ro=vec3(p*.002,altitude,p*.035);
  vec2 screen=(uv-.5)*vec2(resolution.x/resolution.y,1.)*.84;
  vec3 rd=normalize(vec3(screen.x,screen.y-pitch,1.));
@@ -84,19 +89,29 @@ void main(){
   float distanceHaze=pow(1.-max(0.,dot(normal,-rd)),3.);
   color=mix(earth,vec3(.14,.32,.68),distanceHaze*.66);
  }
- if(cloudT>0.&&(groundT<0.||cloudT<groundT)){
-  vec3 normal=normalize(ro+rd*cloudT-center);
-  vec2 coords=earthUv(normal)+vec2(.82+p*.0006,.01);
-  float coverage=texture(cloudMap,coords).r;
-  float wisps=textureLod(cloudMap,fract(coords*4.1+vec2(.31,.17)),0.).r;
-  coverage*=mix(.64,1.16,wisps);
-  float density=smoothstep(.33,.76,coverage)*mix(.39,.86,smoothstep(.20,.72,p));
-  float shadow=texture(cloudMap,coords+vec2(.0016,-.0008)).r;
-  float relief=clamp(.5+(coverage-shadow)*1.9,0.,1.);
-  float light=clamp(.36+.45*max(0.,dot(normal,normalize(vec3(.85,.42,.32))))+.26*relief,0.,1.);
-  vec3 cloudColor=mix(vec3(.055,.14,.32),vec3(.76,.84,.96),light);
-  cloudColor=mix(cloudColor,vec3(.82,.91,.98),smoothstep(.30,.75,p)*.55);
-  color=mix(color,cloudColor,density);
+ // Multiple curved cloud decks retain the fine satellite structure during
+ // approach; displaced samples provide directional self-shadow and parallax.
+ for(int layer=0;layer<3;layer++){
+  float shell=R+.009+float(layer)*.004;
+  float t=hitSphere(ro,rd,shell);
+  if(t>0.&&(groundT<0.||t<groundT)){
+   vec3 normal=normalize(ro+rd*t-center);
+   vec2 world=earthUv(normal);
+   vec2 coords=fract(world*vec2(2.6,2.6)+vec2(.413,.173)+float(layer)*vec2(.002,-.001));
+   float broad=cloudSample(coords);
+   float detail=cloudSample(world*64.+vec2(.21,.37));
+   float micro=cloudSample(world*213.+vec2(.53,.29));
+   float coverage=clamp(broad*.68+detail*.56+micro*.14,0.,1.);
+   float shadow=cloudSample(world*64.+vec2(.211,.369));
+   float relief=clamp(.5+(detail-shadow)*2.4,0.,1.);
+   float density=smoothstep(.15,.76,coverage);
+   density*=mix(.48,.77,smoothstep(.10,.65,p));
+   density*=layer==0?1.:.26;
+   float light=.27+.46*relief+.18*coverage;
+   vec3 cloudColor=mix(vec3(.09,.19,.37),vec3(.87,.93,1.),light);
+   cloudColor=mix(cloudColor,vec3(.12,.27,.55),min(.45,t*.10));
+   color=mix(color,cloudColor,density);
+  }
  }
  vec3 q=ro-center;
  float nearest=length(q+rd*max(0.,-dot(q,rd)));
@@ -108,36 +123,9 @@ void main(){
  vec3 limbColor=mix(vec3(.47,.25,.70),vec3(.53,.80,.99),smoothstep(.02,.96,uv.x));
  float rimBoost=mix(1.,1.4,smoothstep(.48,1.,uv.x));
  color+=limbColor*rimBoost*mix(glow*.16+rim*.28,rim*.16,edge);
- // Small volume within the cloud altitude band. World-space samples create
- // proper occlusion and near/far parallax as the camera passes through it.
- if(p>.58){
-  float distanceLimit=min(groundT>0.?groundT:.8,.8);
-  float visibility=smoothstep(.58,.78,p);
-  float transmittance=1.;
-  vec3 scattered=vec3(0.);
-  for(int i=0;i<10;i++){
-   float t=(float(i)+.5)*distanceLimit/10.;
-   vec3 pos=ro+rd*t;
-   float height=length(pos-center)-R;
-   float band=smoothstep(.001,.004,height)*(1.-smoothstep(.028,.042,height));
-   float shape=.24*noise3(pos*28.)+.34*noise3(pos*96.)+.27*noise3(pos*210.)+.15*noise3(pos*420.);
-   float mass=1.-length((pos-vec3(-.028,.010,.054))/vec3(.023,.014,.029));
-   mass=max(mass,1.-length((pos-vec3(.024,.008,.081))/vec3(.029,.013,.037)));
-   mass=max(mass,1.-length((pos-vec3(-.012,.007,.070))/vec3(.022,.012,.030)));
-   mass=max(mass,1.-length((pos-vec3(.006,.006,.052))/vec3(.016,.010,.022)));
-   mass=max(mass,1.-length((pos-vec3(-.030,.012,.136))/vec3(.038,.017,.050)));
-   mass=max(mass,1.-length((pos-vec3(.034,.011,.119))/vec3(.037,.016,.045)));
-   float density=max(smoothstep(.57,.70,shape)*.10,smoothstep(.43,.68,mass+(shape-.5)*2.0))*band*visibility;
-   float alpha=1.-exp(-density*1.2);
-   float light=clamp(.28+.36*noise3(pos*37.+vec3(.7,1.5,.4))+.30*clamp((height-.006)/.026,0.,1.)+.22*(shape-.5),0.,1.);
-   vec3 cloudLight=mix(vec3(.24,.44,.70),vec3(.94,.97,1.),light);
-   scattered+=transmittance*alpha*cloudLight;
-   transmittance*=1.-alpha;
-  }
-  color=scattered+transmittance*color;
- }
- float air=1.-smoothstep(.028,.11,altitude);
- color=mix(color,vec3(.20,.49,.78),air*.43);
+ // A restrained atmospheric veil preserves contrast in the cloud deck.
+ float air=1.-smoothstep(.012,.085,altitude);
+ color=mix(color,vec3(.28,.52,.77),air*.15);
  outColor=vec4(pow(max(color,vec3(0.)),vec3(.94)),1.);
 }`;
 function makeShader(gl,kind,source){
@@ -191,7 +179,7 @@ try{
   image.onerror=()=>reject(new Error(`${url} unavailable`));
   image.src=url;
  });
- const cloudAsset=innerWidth>700&&gl.getParameter(gl.MAX_TEXTURE_SIZE)>=6144
+ const cloudAsset=gl.getParameter(gl.MAX_TEXTURE_SIZE)>=6144
   ?'/earth-clouds-detail.webp':'/earth-clouds.jpg';
  Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,cloudAsset,'cloudMap')]).then(()=>{
   ready=true;document.body.classList.add('scene-model-ready');schedule();
@@ -204,6 +192,10 @@ function render(){
  const p=reduceMotion.matches?0:clamp(-bounds.top/Math.max(1,bounds.height-innerHeight));
  stage.style.setProperty('--journey-progress',p.toFixed(4));
  stage.classList.toggle('scene-reveal',p>=.78);
+ const hero=document.querySelector('.hero-content');
+ if(hero)hero.inert=p>.24&&!reduceMotion.matches;
+ const showcase=document.querySelector('.showcase');
+ if(showcase)showcase.inert=p<.78&&!reduceMotion.matches;
  const scale=Math.min(devicePixelRatio||1,1);
  const fit=Math.min(1,Math.sqrt(950000/(innerWidth*innerHeight*scale*scale)));
  const width=Math.max(1,Math.round(innerWidth*scale*fit));
@@ -218,3 +210,25 @@ addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',schedule);
 addEventListener('pageshow',schedule);
 reduceMotion.addEventListener?.('change',schedule);
+
+// Occasional, non-looping meteors, only while the opening is visible.
+const meteor=document.querySelector('.shooting-star');
+let meteorTimer;
+function planMeteor(){
+ clearTimeout(meteorTimer);
+ if(reduceMotion.matches||document.hidden||!meteor)return;
+ meteorTimer=setTimeout(()=>{
+  const p=Number(stage?.style.getPropertyValue('--journey-progress')||0);
+  if(p<.08){
+   meteor.style.setProperty('--meteor-x',`${18+Math.random()*52}%`);
+   meteor.style.setProperty('--meteor-y',`${8+Math.random()*20}%`);
+   meteor.classList.remove('is-shooting');
+   requestAnimationFrame(()=>meteor.classList.add('is-shooting'));
+  }
+  planMeteor();
+ },9000+Math.random()*15000);
+}
+meteor?.addEventListener('animationend',()=>meteor.classList.remove('is-shooting'));
+document.addEventListener('visibilitychange',planMeteor);
+reduceMotion.addEventListener?.('change',()=>{meteor?.classList.remove('is-shooting');planMeteor();});
+planMeteor();
