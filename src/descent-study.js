@@ -44,9 +44,18 @@ vec2 earthUv(vec3 normal){
  return vec2(fract(atan(n.z,n.x)/(2.*PI)+.5),asin(clamp(n.y,-1.,1.))/PI+.5);
 }
 vec3 spaceColor(vec3 rd,float descent){
- vec2 cell=floor(vec2(atan(rd.x,rd.z),asin(rd.y))*vec2(820.,720.));
- float stars=step(.99980,hash(cell))*(.24+.76*pow(hash(cell+13.7),2.))*.24*(1.-smoothstep(.08,.38,descent));
+ // Angular positions keep the stars fixed in space while the camera moves.
+ vec2 sky=vec2(atan(rd.x,rd.z),asin(rd.y))*110.;
+ vec2 cell=floor(sky),within=fract(sky);
+ vec2 starPoint=.15+.7*vec2(hash(cell+vec2(4.1,9.3)),hash(cell+vec2(8.7,2.5)));
+ float distanceToStar=length(within-starPoint);
+ float starShape=1.-smoothstep(.055,.19,distanceToStar);
+ float brightness=.31+.48*hash(cell+vec2(13.7,6.2));
+ float stars=step(.990,hash(cell))*starShape*brightness;
+ stars+=step(.997,hash(cell))*exp(-distanceToStar*distanceToStar*42.)*.08;
  float low=1.-smoothstep(-.22,.22,rd.y);
+ stars*=1.-smoothstep(.08,.42,descent);
+ stars*=1.-low*.65;
  return mix(vec3(.004,.019,.068),vec3(.035,.09,.26),low)+vec3(stars*.78,stars*.87,stars);
 }
 void main(){
@@ -75,10 +84,14 @@ void main(){
   vec3 normal=normalize(ro+rd*cloudT-center);
   vec2 coords=earthUv(normal)+vec2(p*.0006,0.);
   float coverage=texture(cloudMap,coords).r;
-  coverage=clamp(coverage+(noise3(normal*1300.)-.5)*.22,0.,1.);
-  float density=smoothstep(.15,.77,coverage)*mix(.34,.60,smoothstep(.12,.72,p));
-  float light=.33+.65*max(0.,dot(normal,normalize(vec3(.85,.42,.32))));
-  vec3 cloudColor=mix(vec3(.07,.16,.33),vec3(.49,.65,.84),light);
+  float fine=noise3(normal*780.);
+  float micro=noise3(normal*2100.);
+  coverage=clamp(coverage+(fine-.5)*.27+(micro-.5)*.10,0.,1.);
+  float density=smoothstep(.23,.81,coverage)*mix(.38,.62,smoothstep(.12,.72,p));
+  float shadow=texture(cloudMap,coords+vec2(.0016,-.0008)).r;
+  float relief=clamp(.5+(coverage-shadow)*1.9,0.,1.);
+  float light=clamp(.30+.45*max(0.,dot(normal,normalize(vec3(.85,.42,.32))))+.26*relief,0.,1.);
+  vec3 cloudColor=mix(vec3(.07,.15,.32),vec3(.66,.78,.94),light);
   color=mix(color,cloudColor,density);
  }
  vec3 q=ro-center;
@@ -108,10 +121,10 @@ void main(){
    mass=max(mass,1.-length((pos-vec3(.032,.012,.063))/vec3(.017,.011,.026)));
    mass=max(mass,1.-length((pos-vec3(-.017,.008,.043))/vec3(.011,.008,.017)));
    mass=max(mass,1.-length((pos-vec3(.015,.007,.047))/vec3(.010,.008,.018)));
-   float density=max(smoothstep(.46,.63,shape)*.27,smoothstep(.10,.66,mass+(shape-.5)*.68))*band*visibility;
-   float alpha=1.-exp(-density*.43);
-   float light=.47+.48*noise3(pos*19.+vec3(.7,1.5,.4));
-   vec3 cloudLight=mix(vec3(.28,.48,.72),vec3(.91,.96,1.),light);
+   float density=max(smoothstep(.48,.65,shape)*.18,smoothstep(.18,.69,mass+(shape-.5)*.78))*band*visibility;
+   float alpha=1.-exp(-density*.52);
+   float light=clamp(.28+.36*noise3(pos*37.+vec3(.7,1.5,.4))+.30*clamp((height-.006)/.026,0.,1.)+.22*(shape-.5),0.,1.);
+   vec3 cloudLight=mix(vec3(.20,.39,.65),vec3(.89,.95,1.),light);
    scattered+=transmittance*alpha*cloudLight;
    transmittance*=1.-alpha;
   }

@@ -44,9 +44,16 @@ vec2 earthUv(vec3 normal){
  return vec2(fract(atan(n.z,n.x)/(2.*PI)+.5),asin(clamp(n.y,-1.,1.))/PI+.5);
 }
 vec3 spaceColor(vec3 rd,float descent){
- vec2 cell=floor(vec2(atan(rd.x,rd.z),asin(rd.y))*vec2(820.,720.));
- float stars=step(.99980,hash(cell))*(.24+.76*pow(hash(cell+13.7),2.))*.24*(1.-smoothstep(.08,.38,descent));
+ // Angular positions keep the stars fixed in space while the camera moves.
+ vec2 sky=vec2(atan(rd.x,rd.z),asin(rd.y))*110.;
+ vec2 cell=floor(sky),within=fract(sky);
+ vec2 starPoint=.15+.7*vec2(hash(cell+vec2(4.1,9.3)),hash(cell+vec2(8.7,2.5)));
+ float distanceToStar=length(within-starPoint);
+ float starShape=1.-smoothstep(.05,.14,distanceToStar);
+ float stars=step(.994,hash(cell))*starShape*(.19+.37*hash(cell+vec2(13.7,6.2)));
  float low=1.-smoothstep(-.22,.22,rd.y);
+ stars*=1.-smoothstep(.08,.42,descent);
+ stars*=1.-low*.65;
  return mix(vec3(.004,.019,.068),vec3(.035,.09,.26),low)+vec3(stars*.78,stars*.87,stars);
 }
 void main(){
