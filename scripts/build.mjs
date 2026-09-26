@@ -6,6 +6,8 @@ import Catalog from '../src/pages/components.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const out=join(root,'dist');await mkdir(join(out,'ui'),{recursive:true});await mkdir(join(out,'components'),{recursive:true});
 await writeFile(join(out,'index.html'),Home());
+await mkdir(join(out,'scene-test'),{recursive:true});
+await writeFile(join(out,'scene-test/index.html'),Home().replace('Azivor — A little beyond the ordinary.','Azivor — Descent study').replace('/sky-scene.js','/descent-study.js'));
 await writeFile(join(out,'components/index.html'),Catalog());
 await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png'));
 await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
@@ -13,5 +15,6 @@ for(const name of ['tokens','base','components'])await copyFile(join(root,`src/s
 for(const name of ['home','catalog'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
+await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
 for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});
 console.log('Built homepage and /components/ from shared components.');
