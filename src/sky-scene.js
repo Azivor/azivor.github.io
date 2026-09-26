@@ -191,9 +191,11 @@ try{
   image.onerror=()=>reject(new Error(`${url} unavailable`));
   image.src=url;
  });
- Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,'/earth-clouds-detail.webp','cloudMap')]).then(()=>{
+ const cloudAsset=innerWidth>700&&gl.getParameter(gl.MAX_TEXTURE_SIZE)>=6144
+  ?'/earth-clouds-detail.webp':'/earth-clouds.jpg';
+ Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,cloudAsset,'cloudMap')]).then(()=>{
   ready=true;document.body.classList.add('scene-model-ready');schedule();
- }).catch(error=>console.warn('Earth scene:',error));
+ }).catch(error=>{console.warn('Earth scene:',error);document.documentElement.classList.add('sky-fallback');});
 }catch(error){console.warn('Earth scene fallback:',error);document.documentElement.classList.add('sky-fallback');}
 function render(){
  queued=false;

@@ -62,7 +62,7 @@ vec3 spaceColor(vec3 rd,float descent){
 }
 void main(){
  float p=clamp(progress,0.,1.);
- float altitude=.004+.55*(1.-smoothstep(.12,.75,p));
+ float altitude=.004+.42*pow(1.-p,2.);
  // Keep the opening globe aligned with its photographic reference, then tip
  // the real camera toward the surface as the scroll begins.
  float pitch=.045+.52*smoothstep(.13,.30,p)+.15*smoothstep(.30,.82,p);
@@ -191,9 +191,11 @@ try{
   image.onerror=()=>reject(new Error(`${url} unavailable`));
   image.src=url;
  });
- Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,'/earth-clouds-detail.webp','cloudMap')]).then(()=>{
+ const cloudAsset=innerWidth>700&&gl.getParameter(gl.MAX_TEXTURE_SIZE)>=6144
+  ?'/earth-clouds-detail.webp':'/earth-clouds.jpg';
+ Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,cloudAsset,'cloudMap')]).then(()=>{
   ready=true;document.body.classList.add('scene-model-ready');schedule();
- }).catch(error=>console.warn('Earth scene:',error));
+ }).catch(error=>{console.warn('Earth scene:',error);document.documentElement.classList.add('sky-fallback');});
 }catch(error){console.warn('Earth scene fallback:',error);document.documentElement.classList.add('sky-fallback');}
 function render(){
  queued=false;
