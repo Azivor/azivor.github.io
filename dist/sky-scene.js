@@ -136,6 +136,21 @@ function makeShader(gl,kind,source){
  return shader;
 }
 let gl,progressUniform,resolutionUniform,ready=false,queued=false;
+const themeColor=document.querySelector('meta[name="theme-color"]');
+let lastBackdrop='';
+function updateBrowserBackdrop(p){
+ // Safari may show the document background behind its translucent controls.
+ const amount=Math.round(clamp((p-.78)/.22)*20)/20;
+ const from=[8,20,50],to=[217,238,248];
+ let color='#'+from.map((start,index)=>Math.round(start+(to[index]-start)*amount).toString(16).padStart(2,'0')).join('');
+ if(document.querySelector('footer')?.getBoundingClientRect().top<innerHeight)color='#ffffff';
+ if(color===lastBackdrop)return;
+ lastBackdrop=color;
+ document.documentElement.style.backgroundColor=color;
+ document.body.style.backgroundColor=color;
+ themeColor?.setAttribute('content',color);
+}
+
 try{
  gl=canvas.getContext('webgl2',{alpha:false,antialias:false,powerPreference:'low-power'});
  if(!gl)throw new Error('WebGL2 unavailable');
@@ -191,6 +206,7 @@ function render(){
  const bounds=journey.getBoundingClientRect();
  const p=reduceMotion.matches?0:clamp(-bounds.top/Math.max(1,bounds.height-innerHeight));
  stage.style.setProperty('--journey-progress',p.toFixed(4));
+ updateBrowserBackdrop(p);
  stage.classList.toggle('scene-reveal',p>=.78);
  const hero=document.querySelector('.hero-content');
  if(hero)hero.inert=p>.24&&!reduceMotion.matches;
@@ -214,9 +230,12 @@ reduceMotion.addEventListener?.('change',schedule);
 // Occasional, non-looping meteors, only while the opening is visible.
 const meteor=document.querySelector('.shooting-star');
 let meteorTimer;
+let firstMeteor=true;
 function planMeteor(){
  clearTimeout(meteorTimer);
  if(reduceMotion.matches||document.hidden||!meteor)return;
+ const delay=firstMeteor?2500+Math.random()*2000:6000+Math.random()*5000;
+ firstMeteor=false;
  meteorTimer=setTimeout(()=>{
   const p=Number(stage?.style.getPropertyValue('--journey-progress')||0);
   if(p<.08){
@@ -226,7 +245,7 @@ function planMeteor(){
    requestAnimationFrame(()=>meteor.classList.add('is-shooting'));
   }
   planMeteor();
- },9000+Math.random()*15000);
+ },delay);
 }
 meteor?.addEventListener('animationend',()=>meteor.classList.remove('is-shooting'));
 document.addEventListener('visibilitychange',planMeteor);
