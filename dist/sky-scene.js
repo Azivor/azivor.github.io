@@ -57,7 +57,7 @@ vec3 spaceColor(vec3 rd,float descent){
  stars*=1.-smoothstep(.08,.42,descent);
  stars*=1.-low*.65;
  vec3 atmosphere=mix(vec3(.004,.019,.068),vec3(.035,.09,.26),low);
- atmosphere+=vec3(.055,.095,.20)*smoothstep(.14,.42,descent)*(1.-smoothstep(.18,.7,rd.y));
+ atmosphere+=vec3(.08,.12,.23)*smoothstep(.14,.42,descent)*(1.-smoothstep(.18,.7,rd.y));
  return atmosphere+vec3(stars*.78,stars*.87,stars);
 }
 void main(){
@@ -78,24 +78,24 @@ void main(){
   vec3 earthData=texture(surfaceMap,earthUv(normal)).rgb;
   float sun=max(0.,dot(normal,normalize(vec3(.85,.42,.32))));
   float land=smoothstep(.09,.22,dot(earthData,vec3(.30,.59,.11)));
-  vec3 ocean=mix(vec3(.012,.047,.15),vec3(.047,.18,.44),sun);
+  vec3 ocean=mix(vec3(.016,.058,.18),vec3(.057,.205,.48),sun);
   ocean+=vec3(.012,.018,.025)*(noise3(normal*185.)-.5);
   vec3 earth=mix(ocean,earthData*mix(.42,.82,sun),land);
   float distanceHaze=pow(1.-max(0.,dot(normal,-rd)),3.);
-  color=mix(earth,vec3(.12,.29,.63),distanceHaze*.66);
+  color=mix(earth,vec3(.14,.32,.68),distanceHaze*.66);
  }
  if(cloudT>0.&&(groundT<0.||cloudT<groundT)){
   vec3 normal=normalize(ro+rd*cloudT-center);
-  vec2 coords=earthUv(normal)+vec2(.70+p*.0006,.01);
-  float coverage=textureLod(cloudMap,coords,0.).r;
+  vec2 coords=earthUv(normal)+vec2(.82+p*.0006,.01);
+  float coverage=texture(cloudMap,coords).r;
   float fine=noise3(normal*780.);
-  float micro=noise3(normal*2100.);
-  coverage=clamp(coverage+(fine-.5)*.24+(micro-.5)*.08,0.,1.);
-  float density=smoothstep(.29,.73,coverage)*mix(.48,.89,smoothstep(.20,.72,p));
+  coverage=clamp(coverage+(fine-.5)*.22,0.,1.);
+  float density=smoothstep(.33,.76,coverage)*mix(.39,.86,smoothstep(.20,.72,p));
   float shadow=texture(cloudMap,coords+vec2(.0016,-.0008)).r;
   float relief=clamp(.5+(coverage-shadow)*1.9,0.,1.);
   float light=clamp(.36+.45*max(0.,dot(normal,normalize(vec3(.85,.42,.32))))+.26*relief,0.,1.);
   vec3 cloudColor=mix(vec3(.055,.14,.32),vec3(.76,.84,.96),light);
+  cloudColor*=mix(.82,1.12,smoothstep(.32,.72,fine));
   cloudColor=mix(cloudColor,vec3(.82,.91,.98),smoothstep(.30,.75,p)*.55);
   color=mix(color,cloudColor,density);
  }
@@ -104,16 +104,16 @@ void main(){
  float edge=1.-smoothstep(-max(.004,2.*fwidth(nearest)),max(.004,2.*fwidth(nearest)),nearest-R);
  color=mix(spaceColor(rd,p),color,edge);
  float offset=nearest-R;
- float rim=exp(-abs(offset)/.018);
- float glow=exp(-max(0.,offset)/.11);
+ float rim=exp(-abs(offset)/.024);
+ float glow=exp(-max(0.,offset)/.15);
  vec3 limbColor=mix(vec3(.47,.25,.70),vec3(.53,.80,.99),smoothstep(.02,.96,uv.x));
  float rimBoost=mix(1.,1.4,smoothstep(.48,1.,uv.x));
  color+=limbColor*rimBoost*mix(glow*.16+rim*.28,rim*.16,edge);
  // Small volume within the cloud altitude band. World-space samples create
  // proper occlusion and near/far parallax as the camera passes through it.
- if(p>.63){
+ if(p>.58){
   float distanceLimit=min(groundT>0.?groundT:.8,.8);
-  float visibility=smoothstep(.63,.82,p);
+  float visibility=smoothstep(.58,.78,p);
   float transmittance=1.;
   vec3 scattered=vec3(0.);
   for(int i=0;i<10;i++){
@@ -128,8 +128,8 @@ void main(){
    mass=max(mass,1.-length((pos-vec3(.006,.006,.052))/vec3(.016,.010,.022)));
    mass=max(mass,1.-length((pos-vec3(-.030,.012,.136))/vec3(.038,.017,.050)));
    mass=max(mass,1.-length((pos-vec3(.034,.011,.119))/vec3(.037,.016,.045)));
-   float density=max(smoothstep(.58,.74,shape)*.06,smoothstep(.37,.74,mass+(shape-.5)*1.65))*band*visibility;
-   float alpha=1.-exp(-density*.76);
+   float density=max(smoothstep(.57,.70,shape)*.10,smoothstep(.43,.68,mass+(shape-.5)*2.0))*band*visibility;
+   float alpha=1.-exp(-density*1.2);
    float light=clamp(.28+.36*noise3(pos*37.+vec3(.7,1.5,.4))+.30*clamp((height-.006)/.026,0.,1.)+.22*(shape-.5),0.,1.);
    vec3 cloudLight=mix(vec3(.24,.44,.70),vec3(.94,.97,1.),light);
    scattered+=transmittance*alpha*cloudLight;
