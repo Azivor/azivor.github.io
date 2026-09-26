@@ -7,7 +7,7 @@ const root=fileURLToPath(new URL('../',import.meta.url));
 const out=join(root,'dist');await mkdir(join(out,'ui'),{recursive:true});await mkdir(join(out,'components'),{recursive:true});
 await writeFile(join(out,'index.html'),Home());
 await writeFile(join(out,'components/index.html'),Catalog());
-await copyFile(join(root,'src/assets/project-logo.png'),join(out,'project-logo.png'));
+await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png'));
 for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
 for(const name of ['home','catalog'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));

@@ -1,4 +1,4 @@
-# Project AGI component library
+# Azivor component library
 
 A dependency-free static site built from reusable HTML-rendering components. The homepage and `/components/` catalog share the same implementation. Node 20+ and Python 3 are the only local requirements.
 
@@ -58,6 +58,6 @@ Layout utilities: `ui-container`, `ui-stack`, `ui-cluster`, `ui-grid`, `ui-secti
 
 ## Hosting and provenance
 
-Reuse `.openai/hosting.json`; never create another Site for updates. Source is backed up privately under KineticLogicLabs/project-agi-site. The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond and Geist, with system fallbacks.
+Reuse `.openai/hosting.json`; never create another Site for updates. The source repository should be private. The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond and Geist, with system fallbacks.
 
 Design reference decisions are recorded in DESIGN.md. Dark overlays deliberately use 60% charcoal for readable text over the silver feature surface; reference measurements suggested 50% as a starting point.

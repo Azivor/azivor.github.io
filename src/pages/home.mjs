@@ -4,9 +4,9 @@ export default function Home(){ return `<!doctype html>
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#d7e8fc">
-<title>Project AGI — A little beyond the ordinary.</title>
-<meta name="description" content="A first look at Project AGI. A space for ideas, curiosity, and what comes next.">
-<link rel="icon" type="image/png" href="/project-logo.png">
+<title>Azivor — A little beyond the ordinary.</title>
+<meta name="description" content="A first look at Azivor. A space for ideas, curiosity, and what comes next.">
+<link rel="icon" type="image/png" href="/azivor-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@ export default function Home(){ return `<!doctype html>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="page" id="top">
 <header class="header">
-<a class="wordmark" href="#top" aria-label="Project AGI home">${Logo()} project agi<span class="brand-period">.</span></a>
+<a class="wordmark" href="#top" aria-label="Azivor home">${Logo()} azivor<span class="brand-period">.</span></a>
 ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibilities"},{label:"About",href:"#about"}],active:"#top"})}
 </header>
 <main id="main">
@@ -36,7 +36,7 @@ ${Navigation({items:[{label:"Home",href:"#top"},{label:"The idea",href:"#possibi
 </section>
 <section class="about" id="about" tabindex="-1" aria-labelledby="about-title"><h2 id="about-title">A blank page.<br><em>Endless possibilities.</em></h2><p>The rest of the story is still being written.</p>${Button({"label": "Back to top", "href": "#top", "variant": "glass", "icon": "\u2191", "className": ""})}</section>
 </main>
-<footer><a class="wordmark footer-mark" href="#top" aria-label="Project AGI home">${Logo()}project agi.</a><span>© 2026 Project AGI</span></footer>
+<footer><a class="wordmark footer-mark" href="#top" aria-label="Azivor home">${Logo()}azivor.</a><span>© 2026 Azivor</span></footer>
 </div>
 <script src="/script.js" defer></script>
 </body></html>`; }
