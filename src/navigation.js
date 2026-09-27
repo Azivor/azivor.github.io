@@ -90,29 +90,40 @@ if (descentLink) {
   });
 }
 
-// The reference header belongs to the top of each page; the pill takes over once it leaves view.
+// Keep one set of links on inner pages; reserve the second, floating set for Home's long scene.
 const probe = typeof CSS !== 'undefined' && CSS.supports('background', 'paint(gg-glass-probe)') && CSS.supports('backdrop-filter', 'url(#gg-glass-probe)');
 document.documentElement?.classList.toggle('gg-refraction-ready', probe);
 const scrollNav = document.querySelector('.floating-nav');
 const topHeader = document.querySelector('.header');
-if (scrollNav && topHeader) {
+const headerNav = document.querySelector('.inner-page .header .nav');
+if (topHeader && (scrollNav || headerNav)) {
+  const journey = document.querySelector('.journey');
   const lightBoundary = document.querySelector('.content-flow') || document.querySelector('.page-hero');
+  const wordmark = topHeader.querySelector('.wordmark');
   let scrollFrame = 0;
   const updateScrollNav = () => {
     scrollFrame = 0;
-    const show = topHeader.getBoundingClientRect().bottom <= 0 && !document.body.classList.contains('menu-open');
-    topHeader.inert = show;
-    if (!show && scrollNav.contains(document.activeElement)) {
-      const replacement = window.innerWidth <= 700 ? navToggle : document.querySelector('.header .nav a[aria-current="page"]');
-      replacement?.focus({preventScroll:true});
+    const desktop = window.innerWidth > 700;
+    if (scrollNav) {
+      const bounds = journey?.getBoundingClientRect();
+      const journeyProgress = bounds ? Math.max(0, Math.min(1, -bounds.top / Math.max(1, bounds.height - window.innerHeight))) : 0;
+      const afterScene = bounds ? journeyProgress >= .8 : topHeader.getBoundingClientRect().bottom <= 0;
+      const reducedScene = document.documentElement.classList.contains('sky-fallback') || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const show = desktop && !document.body.classList.contains('menu-open') && (reducedScene ? (lightBoundary?.getBoundingClientRect().top ?? Infinity) <= window.innerHeight : afterScene);
+      topHeader.inert = show;
+      if (!show && scrollNav.contains(document.activeElement)) {
+        topHeader.querySelector('.nav a[aria-current="page"]')?.focus({preventScroll:true});
+      }
+      scrollNav.classList.toggle('is-visible', show);
+      scrollNav.setAttribute('aria-hidden', String(!show));
+      scrollNav.inert = !show;
+      if (lightBoundary) scrollNav.classList.toggle('is-over-light', lightBoundary.getBoundingClientRect().top <= 145);
     }
-    scrollNav.classList.toggle('is-visible', show);
-    scrollNav.setAttribute('aria-hidden', String(!show));
-    scrollNav.inert = !show;
-    if (lightBoundary) {
-      const bounds = lightBoundary.getBoundingClientRect();
-      const overLight = lightBoundary.classList.contains('content-flow') ? bounds.top <= 145 : bounds.bottom <= 175;
-      scrollNav.classList.toggle('is-over-light', overLight);
+    if (headerNav) {
+      const glass = desktop && window.scrollY > 8;
+      headerNav.classList.toggle('is-glass', glass);
+      headerNav.classList.toggle('is-over-light', glass && (lightBoundary?.getBoundingClientRect().bottom ?? Infinity) <= 175);
+      if (wordmark) wordmark.inert = desktop && topHeader.getBoundingClientRect().bottom <= 0;
     }
   };
   const scheduleScrollNav = () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollNav); };

@@ -21,17 +21,34 @@ test('full-screen mobile menu opens, closes on navigation, and supports Escape',
  callbacks['toggle-click']();documentEvents.keydown({key:'Escape'});assert.equal(menuOpen,false);assert.equal(focused,true);assert.equal(toggle.getAttribute('aria-label'),'Open navigation menu');
 });
 
-test('floating navigation takes over only after the top header leaves view',()=>{
- const events={};let headerBottom=70;let sectionTop=500;
+test('Home glass navigation waits for the Earth reveal and never appears on mobile',()=>{
+ const events={};let sceneTop=0;let sectionTop=500;
  const classes=new Set();
  const pill={attributes:{'aria-hidden':'true'},inert:true,contains:()=>false,classList:{toggle(name,on){if(on)classes.add(name);else classes.delete(name)}},setAttribute(name,value){this.attributes[name]=value}};
- const header={getBoundingClientRect:()=>({bottom:headerBottom})};
+ const header={getBoundingClientRect:()=>({bottom:-20}),querySelector:()=>null};
+ const journey={getBoundingClientRect:()=>({top:sceneTop,height:2400})};
  const content={classList:{contains:name=>name==='content-flow'},getBoundingClientRect:()=>({top:sectionTop})};
- const document={querySelectorAll:()=>[],querySelector:selector=>({'.floating-nav':pill,'.header':header,'.content-flow':content}[selector]??null),documentElement:{classList:{toggle(){}}},body:{classList:{contains:()=>false}},addEventListener(){}};
- const window={addEventListener:(name,fn)=>events[name]=fn};
+ const document={querySelectorAll:()=>[],querySelector:selector=>({'.floating-nav':pill,'.header':header,'.journey':journey,'.content-flow':content}[selector]??null),documentElement:{classList:{toggle(){},contains:()=>false}},body:{classList:{contains:()=>false}},addEventListener(){}};
+ const window={innerWidth:1200,innerHeight:800,matchMedia:()=>({matches:false}),addEventListener:(name,fn)=>events[name]=fn};
  vm.runInNewContext(readFileSync('src/navigation.js','utf8'),{document,window,location:{pathname:'/'},requestAnimationFrame:fn=>{fn();return 0}});
  assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');assert.equal(header.inert,false);
- headerBottom=-1;events.scroll();assert.equal(pill.inert,false);assert.equal(pill.attributes['aria-hidden'],'false');assert.equal(classes.has('is-visible'),true);assert.equal(header.inert,true);
+ sceneTop=-1120;events.scroll();assert.equal(pill.inert,true);
+ sceneTop=-1280;events.scroll();assert.equal(pill.inert,false);assert.equal(pill.attributes['aria-hidden'],'false');assert.equal(classes.has('is-visible'),true);assert.equal(header.inert,true);
  sectionTop=100;events.scroll();assert.equal(classes.has('is-over-light'),true);
- headerBottom=70;events.scroll();assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');assert.equal(classes.has('is-visible'),false);assert.equal(header.inert,false);
+ window.innerWidth=390;events.resize();assert.equal(pill.inert,true);assert.equal(classes.has('is-visible'),false);assert.equal(header.inert,false);
+});
+
+test('inner pages add glass to the original links after scrolling',()=>{
+ const events={};let heroBottom=600;const classes=new Set();let wordmarkInert=false;
+ const nav={classList:{toggle(name,on){if(on)classes.add(name);else classes.delete(name)}}};
+ const wordmark={set inert(value){wordmarkInert=value}};
+ const header={querySelector:()=>wordmark,getBoundingClientRect:()=>({bottom:window.scrollY? -10:70})};
+ const hero={getBoundingClientRect:()=>({bottom:heroBottom})};
+ const document={querySelectorAll:()=>[],querySelector:selector=>({'.header':header,'.inner-page .header .nav':nav,'.page-hero':hero}[selector]??null),documentElement:{classList:{toggle(){}}},body:{classList:{contains:()=>false}},addEventListener(){}};
+ const window={innerWidth:1200,scrollY:0,addEventListener:(name,fn)=>events[name]=fn};
+ vm.runInNewContext(readFileSync('src/navigation.js','utf8'),{document,window,location:{pathname:'/explore/'},requestAnimationFrame:fn=>{fn();return 0}});
+ assert.equal(classes.has('is-glass'),false);
+ window.scrollY=30;events.scroll();assert.equal(classes.has('is-glass'),true);assert.equal(wordmarkInert,true);
+ heroBottom=100;events.scroll();assert.equal(classes.has('is-over-light'),true);
+ window.innerWidth=390;events.resize();assert.equal(classes.has('is-glass'),false);assert.equal(wordmarkInert,false);
 });
