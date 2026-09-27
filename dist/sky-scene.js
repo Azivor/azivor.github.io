@@ -151,6 +151,52 @@ function updateBrowserBackdrop(p){
  themeColor?.setAttribute('content',color);
 }
 
+// Clip the stationary opening copy at the same spherical limb drawn by the shader.
+// The canvas remains behind the HTML so the text and Explore link stay accessible.
+function earthCovers(screenX,screenY,p,rect){
+ const uvX=(screenX-rect.left)/rect.width;
+ const uvY=1-(screenY-rect.top)/rect.height;
+ const altitude=.005+.19*(1-p)**2;
+ const smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
+ const pitch=.035+.38*smooth(.10,.42,p)+.23*smooth(.42,.86,p);
+ const dx=(uvX-.5)*(rect.width/rect.height)*.84;
+ const dy=(uvY-.5)*.84-pitch;
+ const length=Math.hypot(dx,dy,1);
+ const ray=[dx/length,dy/length,1/length];
+ const q=[p*.002,altitude+6.371,p*.035];
+ const b=q[0]*ray[0]+q[1]*ray[1]+q[2]*ray[2];
+ const c=q[0]**2+q[1]**2+q[2]**2-6.371**2;
+ const discriminant=b*b-c;
+ return discriminant>=0&&-b+Math.sqrt(discriminant)>0;
+}
+function coverHeroWithEarth(hero,p){
+ const action=hero.querySelector('.descent-link');
+ if(reduceMotion.matches){hero.style.clipPath='';hero.inert=false;if(action)action.inert=false;return;}
+ const scene=stage.getBoundingClientRect();
+ const box=hero.getBoundingClientRect();
+ const horizon=x=>{
+  if(!earthCovers(x,scene.bottom,p,scene))return scene.bottom;
+  if(earthCovers(x,scene.top,p,scene))return scene.top;
+  let upper=scene.top,lower=scene.bottom;
+  for(let i=0;i<12;i++){
+   const middle=(upper+lower)/2;
+   if(earthCovers(x,middle,p,scene))lower=middle;
+   else upper=middle;
+  }
+  return lower;
+ };
+ const cuts=Array.from({length:49},(_,i)=>clamp((horizon(box.left+box.width*i/48)-box.top-2)/box.height));
+ const fullyCovered=cuts.every(y=>y<=0);
+ if(cuts.every(y=>y>=1))hero.style.clipPath='';
+ else if(fullyCovered)hero.style.clipPath='inset(0 0 100% 0)';
+ else hero.style.clipPath=`polygon(0 0,100% 0,${cuts.map((y,i)=>`${(i/48*100).toFixed(2)}% ${(y*100).toFixed(2)}%`).reverse().join(',')})`;
+ hero.inert=fullyCovered;
+ if(action){
+  const button=action.getBoundingClientRect();
+  action.inert=fullyCovered||horizon(button.left+button.width/2)<=button.bottom;
+ }
+}
+
 try{
  gl=canvas.getContext('webgl2',{alpha:false,antialias:false,powerPreference:'low-power'});
  if(!gl)throw new Error('WebGL2 unavailable');
@@ -209,7 +255,7 @@ function render(){
  updateBrowserBackdrop(p);
  stage.classList.toggle('scene-reveal',p>=.78);
  const hero=document.querySelector('.hero-content');
- if(hero)hero.inert=p>.24&&!reduceMotion.matches;
+ if(hero)coverHeroWithEarth(hero,p);
  const showcase=document.querySelector('.showcase');
  if(showcase)showcase.inert=p<.78&&!reduceMotion.matches;
  const scale=Math.min(devicePixelRatio||1,1);

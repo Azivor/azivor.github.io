@@ -26,6 +26,8 @@ The shared glass uses the supplied tint, rim, shine, and SVG refraction map with
 
 The three plain menu bars animate into an X and open a full-screen overlay on narrow screens. Maintain visible keyboard focus and a usable reduced-motion layout. The Earth canvas should remain a visual layer behind real HTML text and controls.
 
+The opening headline, supporting text, and Explore control stay fixed during the Earth descent. As the globe rises, its curved edge progressively hides that copy; do not fade or move the copy away. Keep the HTML controls above the canvas and use the scene's sphere geometry to clip the copy. Reduced-motion and fallback views keep the opening copy fully visible.
+
 ## Keeping the guide and examples aligned
 
 `DESIGN.md` records the rule; the visual component library renders the shared tokens and components. The file is not parsed by the site build. When changing a shared visual rule, update the source styles/components, the relevant library example, and this guide together, then inspect the actual Home and interior pages at desktop and phone widths. The Earth shader and other scene-specific values are not all represented by catalog swatches.
