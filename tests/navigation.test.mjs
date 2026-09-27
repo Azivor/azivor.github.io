@@ -20,3 +20,18 @@ test('full-screen mobile menu opens, closes on navigation, and supports Escape',
  callbacks['menu-click']({target:{closest:()=>true}});assert.equal(menuOpen,false);assert.equal(bodyLocked,false);
  callbacks['toggle-click']();documentEvents.keydown({key:'Escape'});assert.equal(menuOpen,false);assert.equal(focused,true);assert.equal(toggle.getAttribute('aria-label'),'Open navigation menu');
 });
+
+test('floating navigation takes over only after the top header leaves view',()=>{
+ const events={};let headerBottom=70;let sectionTop=500;
+ const classes=new Set();
+ const pill={attributes:{'aria-hidden':'true'},inert:true,contains:()=>false,classList:{toggle(name,on){if(on)classes.add(name);else classes.delete(name)}},setAttribute(name,value){this.attributes[name]=value}};
+ const header={getBoundingClientRect:()=>({bottom:headerBottom})};
+ const content={classList:{contains:name=>name==='content-flow'},getBoundingClientRect:()=>({top:sectionTop})};
+ const document={querySelectorAll:()=>[],querySelector:selector=>({'.floating-nav':pill,'.header':header,'.content-flow':content}[selector]??null),documentElement:{classList:{toggle(){}}},body:{classList:{contains:()=>false}},addEventListener(){}};
+ const window={addEventListener:(name,fn)=>events[name]=fn};
+ vm.runInNewContext(readFileSync('src/navigation.js','utf8'),{document,window,location:{pathname:'/'},requestAnimationFrame:fn=>{fn();return 0}});
+ assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');
+ headerBottom=-1;events.scroll();assert.equal(pill.inert,false);assert.equal(pill.attributes['aria-hidden'],'false');assert.equal(classes.has('is-visible'),true);
+ sectionTop=100;events.scroll();assert.equal(classes.has('is-over-light'),true);
+ headerBottom=70;events.scroll();assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');assert.equal(classes.has('is-visible'),false);
+});
