@@ -21,6 +21,7 @@ No install is needed. Rebuild after editing source; the preview is not a hot-rel
 | `src/styles/components.css` | Shared component variants and interaction states |
 | `src/styles/home.css` | Earth-descent homepage composition and responsive adjustments |
 | `src/styles/content.css` | Editorial pages and homepage content sections |
+| `src/styles/category-cards.css` | Category card treatments shared by Home and the component library |
 | `src/styles/catalog.css` | Library reference-page layout only |
 | `src/pages/` | Page compositions using the shared UI |
 | `scripts/build.mjs` | Explicit page registry and deterministic static build |
@@ -43,7 +44,7 @@ Section({id: 'research', title: 'New ideas', children:
 
 | Component | Options |
 | --- | --- |
-| Button | required `label`; `href` makes a link, otherwise native button; variant `primary/glass/ghost`; size `small/default/large`; `className`, `disabled`, `type` |
+| Button | required `label`; `href` makes a link, otherwise native button; variant `primary/glass/ghost`; size `small/default/large`; optional SVG `icon: 'down'`; `className`, `disabled`, `type` |
 | Brand | `href`, `label`, `className`; includes decorative Logo |
 | Logo | Shared decorative SVG; provide an accessible label on its containing link when icon-only |
 | Navigation | `items: [{label,href}]`, `active`, accessible `label` |

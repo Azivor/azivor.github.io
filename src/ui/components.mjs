@@ -3,12 +3,12 @@ function choice(value, allowed, name) { if (!allowed.includes(value)) throw new 
 function url(value) { const s=String(value); if (!/^(#[^\s]*|\/(?!\/)[^\s\\]*|https?:\/\/[^\s]+|mailto:[^\s]+)$/.test(s)) throw new TypeError('Use a local path, fragment, HTTPS/HTTP URL, or mailto link'); return escapeHTML(s); }
 export function Logo() {return '<img class="brand-mark" src="/azivor-logo.png" width="512" height="408" alt="" aria-hidden="true" decoding="async">';}
 export function Brand({href='/',label='azivor.',className=''}={}) {return `<a class="wordmark ${escapeHTML(className)}" href="${url(href)}" aria-label="${escapeHTML(label)} home">${Logo()}${escapeHTML(label)}</a>`;}
-export function Button({label,href,variant='primary',size='default',className='',disabled=false,type='button'}={}) {
- choice(variant,['primary','glass','ghost'],'button variant');choice(size,['small','default','large'],'button size');choice(type,['button','submit','reset'],'button type');
+export function Button({label,href,variant='primary',size='default',icon='',className='',disabled=false,type='button'}={}) {
+ choice(variant,['primary','glass','ghost'],'button variant');choice(size,['small','default','large'],'button size');choice(type,['button','submit','reset'],'button type');choice(icon,['','down'],'button icon');
  if (!label) throw new TypeError('Button label is required');
  if (href && disabled) throw new TypeError('Disabled links are not supported; use a button or remove the link');
  const classes=`button ${variant} button--${size} ${className}`;
- const body=escapeHTML(label);
+ const body=escapeHTML(label)+(icon==='down'?'<svg class="button-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false"><path d="M9 2.5v12m-5-5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>':'');
  return href?`<a class="${escapeHTML(classes)}" href="${url(href)}">${body}</a>`:`<button class="${escapeHTML(classes)}" type="${type}"${disabled?' disabled':''}>${body}</button>`;
 }
 export function Navigation({items=[],active='',label='Main navigation',glass=false}={}) {return `<nav class="nav${glass?' glass-pill':''}" id="site-navigation" aria-label="${escapeHTML(label)}">${items.map(i=>`<a href="${url(i.href)}"${i.href===active?' class="selected" aria-current="location"':''}>${escapeHTML(i.label)}</a>`).join('')}${glass?'<span class="glass-pill__shine" aria-hidden="true"></span><span class="glass-nav-highlight" aria-hidden="true"></span>':''}</nav>`;}

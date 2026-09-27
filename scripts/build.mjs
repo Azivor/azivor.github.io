@@ -19,7 +19,7 @@ await copyFile(join(root,'src/assets/earth-clouds.jpg'),join(out,'earth-clouds.j
 await copyFile(join(root,'src/assets/earth-clouds-detail.webp'),join(out,'earth-clouds-detail.webp'));
 await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
 for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
-for(const name of ['home','content','catalog'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
+for(const name of ['home','content','catalog','category-cards'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
