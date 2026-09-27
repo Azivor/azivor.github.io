@@ -61,7 +61,9 @@ footer{max-width:1200px;border-top:1px solid #cde6f1;margin:auto;display:flex;ju
 .floating-nav{position:fixed;z-index:8;top:18px;left:50%;transform:translate(-50%,-10px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .4s ease,transform .55s cubic-bezier(.22,1,.36,1),visibility 0s linear .55s;color:#fff}
 .floating-nav.is-visible{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto;transition:opacity .4s ease,transform .55s cubic-bezier(.22,1,.36,1),visibility 0s}
 .floating-nav.is-over-light{color:#143b59}.floating-nav.is-over-light .floating-nav__links a{text-shadow:none}.floating-nav.is-over-light .floating-nav__links a:hover,.floating-nav.is-over-light .floating-nav__links a:focus-visible{background:#ffffff70}
-.floating-nav.is-over-light .floating-nav__links a[aria-current="page"]{background:rgba(80,133,171,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(69,120,153,.18),0 2px 8px rgba(10,38,73,.09)}
+.floating-nav.is-switching .floating-nav__links a:hover,.floating-nav.is-switching .floating-nav__links a:focus-visible{background:transparent}
+.floating-nav.is-over-light .glass-nav-highlight,.inner-page .header .nav.is-over-light .glass-nav-highlight{background:rgba(80,133,171,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(69,120,153,.18),0 2px 8px rgba(10,38,73,.09)}
+.floating-nav.is-over-light:not(.has-highlight) .floating-nav__links a[aria-current="page"]{background:rgba(80,133,171,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(69,120,153,.18),0 2px 8px rgba(10,38,73,.09)}
 body.menu-open .floating-nav{opacity:0;visibility:hidden;pointer-events:none}
 /* On inner pages the same four links stay in place while glass forms around them. */
 @media(min-width:701px){
@@ -70,10 +72,10 @@ body.menu-open .floating-nav{opacity:0;visibility:hidden;pointer-events:none}
  .inner-page .header .nav:not(.is-glass)::before,.inner-page .header .nav:not(.is-glass) .glass-pill__shine{opacity:0}
  .inner-page .header .nav::before,.inner-page .header .nav .glass-pill__shine{transition:opacity .42s ease}
  .inner-page .header .nav a{position:relative;z-index:1;white-space:nowrap}
- .inner-page .header .nav.is-glass a[aria-current="page"]{background:rgba(255,255,255,.23);box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 0 0 1px rgba(255,255,255,.33),0 2px 8px rgba(10,38,73,.12);border-radius:18px}
+ .inner-page .header .nav.is-glass:not(.has-highlight) a[aria-current="page"]{background:rgba(255,255,255,.23);box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 0 0 1px rgba(255,255,255,.33),0 2px 8px rgba(10,38,73,.12);border-radius:18px}
  .inner-page .header .nav.is-over-light{color:#143b59}
  .inner-page .header .nav.is-over-light a{text-shadow:none}
- .inner-page .header .nav.is-over-light a[aria-current="page"]{background:rgba(80,133,171,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(69,120,153,.18),0 2px 8px rgba(10,38,73,.09)}
+ .inner-page .header .nav.is-over-light:not(.has-highlight) a[aria-current="page"]{background:rgba(80,133,171,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(69,120,153,.18),0 2px 8px rgba(10,38,73,.09)}
 }
-@media(max-width:700px){.floating-nav{display:none!important}.inner-page .header .nav.glass-pill{border:0;border-radius:0;box-shadow:none}.inner-page .header .nav.glass-pill::before,.inner-page .header .nav .glass-pill__shine{display:none}}
+@media(max-width:700px){.floating-nav{display:none!important}.inner-page .header .nav.glass-pill{border:0;border-radius:0;box-shadow:none}.inner-page .header .nav.glass-pill::before,.inner-page .header .nav .glass-pill__shine,.glass-nav-highlight{display:none}}
 @media(prefers-reduced-motion:reduce){.floating-nav,.floating-nav.is-visible,.inner-page .header .nav{transition:none!important}}

@@ -133,3 +133,34 @@ if (topHeader && (scrollNav || headerNav)) {
   document.addEventListener('keydown', event => { if (event.key === 'Escape') scheduleScrollNav(); });
   updateScrollNav();
 }
+
+// Let the selected capsule travel to the clicked route before a desktop page change.
+for (const bar of [scrollNav, headerNav]) {
+  const highlight = bar?.querySelector?.('.glass-nav-highlight');
+  const current = bar?.querySelector?.('a[aria-current="page"]');
+  if (!highlight || !current) continue;
+
+  const placeHighlight = link => {
+    const barBounds = bar.getBoundingClientRect();
+    const linkBounds = link.getBoundingClientRect();
+    highlight.style.setProperty('--highlight-x', `${linkBounds.left - barBounds.left}px`);
+    highlight.style.setProperty('--highlight-width', `${linkBounds.width}px`);
+  };
+  placeHighlight(current);
+  bar.classList.add('has-highlight');
+  requestAnimationFrame(() => highlight.classList.add('is-ready'));
+  document.fonts?.ready.then(() => placeHighlight(current));
+  window.addEventListener('resize', () => placeHighlight(current));
+
+  let routeTimer;
+  bar.addEventListener('click', event => {
+    const link = event.target.closest?.('a[href]');
+    if (!link || event.defaultPrevented || event.button !== 0 || event.detail === 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (window.innerWidth <= 700 || !(bar.classList.contains('is-visible') || bar.classList.contains('is-glass'))) return;
+    if (link.getAttribute('href') === currentPath || link.origin !== location.origin || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    event.preventDefault();
+    placeHighlight(link);
+    clearTimeout(routeTimer);
+    routeTimer = setTimeout(() => { window.location.assign(link.href); }, 280);
+  });
+}

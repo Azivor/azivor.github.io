@@ -11,7 +11,7 @@ export function Button({label,href,variant='primary',size='default',icon='',clas
  const body=escapeHTML(label)+(icon?` <span class="arrow" aria-hidden="true">${escapeHTML(icon)}</span>`:'');
  return href?`<a class="${escapeHTML(classes)}" href="${url(href)}">${body}</a>`:`<button class="${escapeHTML(classes)}" type="${type}"${disabled?' disabled':''}>${body}</button>`;
 }
-export function Navigation({items=[],active='',label='Main navigation',glass=false}={}) {return `<nav class="nav${glass?' glass-pill':''}" id="site-navigation" aria-label="${escapeHTML(label)}">${items.map(i=>`<a href="${url(i.href)}"${i.href===active?' class="selected" aria-current="location"':''}>${escapeHTML(i.label)}</a>`).join('')}${glass?'<span class="glass-pill__shine" aria-hidden="true"></span>':''}</nav>`;}
+export function Navigation({items=[],active='',label='Main navigation',glass=false}={}) {return `<nav class="nav${glass?' glass-pill':''}" id="site-navigation" aria-label="${escapeHTML(label)}">${items.map(i=>`<a href="${url(i.href)}"${i.href===active?' class="selected" aria-current="location"':''}>${escapeHTML(i.label)}</a>`).join('')}${glass?'<span class="glass-pill__shine" aria-hidden="true"></span><span class="glass-nav-highlight" aria-hidden="true"></span>':''}</nav>`;}
 export function surfaceAttributes({variant='light',className=''}={}) {choice(variant,['light','dark','solid','silver'],'surface variant');return `class="ui-surface ui-surface--${variant} ${escapeHTML(className)}"`;}
 // children is trusted, author-written HTML, never untrusted user content.
 export function Card({variant='light',className='',children=''}={}) {return `<div ${surfaceAttributes({variant,className})}>${children}</div>`;}
