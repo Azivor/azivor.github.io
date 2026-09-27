@@ -10,6 +10,8 @@ The source tokens are `--font-hero` (EB Garamond) and `--font-body` (Geist) in `
 
 Use type size, weight, spacing, and color to distinguish headings after the hero. Large type elsewhere should still feel clean and direct, as in the original “A blank page. Endless possibilities.” section.
 
+Do not use Unicode symbols or emoji-prone characters as website icons or decorative cues. They can change appearance across browsers and phones. Prefer clear text without an icon; when an icon is necessary, draw it with SVG or CSS and check it at desktop and phone widths. Use a Unicode symbol only when the user specifically requests one.
+
 ## Color, materials, and motion
 
 The Earth scene belongs to the homepage. The shift from dark blue through cloud blue to a light page sets the palette for all four pages. Keep the transition gradual and preserve readable white hero text. Use one clear cyan-tinted glass feature panel in the descent; avoid stacking glass layers for decoration. Shared buttons, surfaces, radii, and focus states live in `src/styles/components.css`, with reusable values in `src/styles/tokens.css`. Page composition lives in `src/styles/home.css` and `src/styles/content.css`.

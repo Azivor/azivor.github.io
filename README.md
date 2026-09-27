@@ -43,7 +43,7 @@ Section({id: 'research', title: 'New ideas', children:
 
 | Component | Options |
 | --- | --- |
-| Button | required `label`; `href` makes a link, otherwise native button; variant `primary/glass/ghost`; size `small/default/large`; `icon`, `className`, `disabled`, `type` |
+| Button | required `label`; `href` makes a link, otherwise native button; variant `primary/glass/ghost`; size `small/default/large`; `className`, `disabled`, `type` |
 | Brand | `href`, `label`, `className`; includes decorative Logo |
 | Logo | Shared decorative SVG; provide an accessible label on its containing link when icon-only |
 | Navigation | `items: [{label,href}]`, `active`, accessible `label` |

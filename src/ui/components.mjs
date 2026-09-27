@@ -3,12 +3,12 @@ function choice(value, allowed, name) { if (!allowed.includes(value)) throw new 
 function url(value) { const s=String(value); if (!/^(#[^\s]*|\/(?!\/)[^\s\\]*|https?:\/\/[^\s]+|mailto:[^\s]+)$/.test(s)) throw new TypeError('Use a local path, fragment, HTTPS/HTTP URL, or mailto link'); return escapeHTML(s); }
 export function Logo() {return '<img class="brand-mark" src="/azivor-logo.png" width="512" height="408" alt="" aria-hidden="true" decoding="async">';}
 export function Brand({href='/',label='azivor.',className=''}={}) {return `<a class="wordmark ${escapeHTML(className)}" href="${url(href)}" aria-label="${escapeHTML(label)} home">${Logo()}${escapeHTML(label)}</a>`;}
-export function Button({label,href,variant='primary',size='default',icon='',className='',disabled=false,type='button'}={}) {
+export function Button({label,href,variant='primary',size='default',className='',disabled=false,type='button'}={}) {
  choice(variant,['primary','glass','ghost'],'button variant');choice(size,['small','default','large'],'button size');choice(type,['button','submit','reset'],'button type');
  if (!label) throw new TypeError('Button label is required');
  if (href && disabled) throw new TypeError('Disabled links are not supported; use a button or remove the link');
  const classes=`button ${variant} button--${size} ${className}`;
- const body=escapeHTML(label)+(icon?` <span class="arrow" aria-hidden="true">${escapeHTML(icon)}</span>`:'');
+ const body=escapeHTML(label);
  return href?`<a class="${escapeHTML(classes)}" href="${url(href)}">${body}</a>`:`<button class="${escapeHTML(classes)}" type="${type}"${disabled?' disabled':''}>${body}</button>`;
 }
 export function Navigation({items=[],active='',label='Main navigation',glass=false}={}) {return `<nav class="nav${glass?' glass-pill':''}" id="site-navigation" aria-label="${escapeHTML(label)}">${items.map(i=>`<a href="${url(i.href)}"${i.href===active?' class="selected" aria-current="location"':''}>${escapeHTML(i.label)}</a>`).join('')}${glass?'<span class="glass-pill__shine" aria-hidden="true"></span><span class="glass-nav-highlight" aria-hidden="true"></span>':''}</nav>`;}

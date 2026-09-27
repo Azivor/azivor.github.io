@@ -17,7 +17,7 @@ ${header("/")}
 <div class="hero-content">
 <h1 id="hero-title">Build with what<br>AI can do now.</h1>
 <p class="intro">Azivor is a student-led project testing how rapidly improving AI can help students make useful creative and technical work.</p>
-<div class="hero-actions">${Button({label:"Explore",href:"#first-content",variant:"primary",icon:"\u2193",className:"descent-link"})}</div>
+<div class="hero-actions">${Button({label:"Explore",href:"#first-content",variant:"primary",className:"descent-link"})}</div>
 </div>
 <div class="scroll-cue" aria-hidden="true"><span>Scroll to descend</span><span class="cue-line"></span></div>
 <div class="landing-wash" aria-hidden="true"></div>
@@ -30,11 +30,11 @@ ${header("/")}
 </section>
 <div class="content-flow">
 <section class="content-section lanes-section" id="first-content" tabindex="-1" aria-labelledby="lanes-title"><div class="section-intro"><p class="eyebrow">What we explore</p><h2 id="lanes-title">Three ways in.</h2><p>Each starts with a concrete question: what can a student make, improve, or understand with the tools available now?</p></div><div class="lane-grid">
-<a class="lane" href="/explore/#build"><span class="lane-meta"><span>01 / BUILD</span><span aria-hidden="true">↗</span></span><h3>Build</h3><p>Apps, sites, visuals, and other projects made with AI in the process.</p></a>
-<a class="lane" href="/explore/#workflows"><span class="lane-meta"><span>02 / WORKFLOWS</span><span aria-hidden="true">↗</span></span><h3>Workflows</h3><p>How tools and human judgment fit together across a real task.</p></a>
-<a class="lane" href="/explore/#new-capabilities"><span class="lane-meta"><span>03 / NEW CAPABILITIES</span><span aria-hidden="true">↗</span></span><h3>New capabilities</h3><p>What a new AI capability changes in practice, tested on a specific use.</p></a>
+<a class="lane" href="/explore/#build"><span class="lane-meta">01 / BUILD</span><h3>Build</h3><p>Apps, sites, visuals, and other projects made with AI in the process.</p></a>
+<a class="lane" href="/explore/#workflows"><span class="lane-meta">02 / WORKFLOWS</span><h3>Workflows</h3><p>How tools and human judgment fit together across a real task.</p></a>
+<a class="lane" href="/explore/#new-capabilities"><span class="lane-meta">03 / NEW CAPABILITIES</span><h3>New capabilities</h3><p>What a new AI capability changes in practice, tested on a specific use.</p></a>
 </div></section>
-<section class="content-section latest-section" aria-labelledby="latest-title"><div class="section-intro"><p class="eyebrow">Latest</p><h2 id="latest-title">From the workbench.</h2></div><a class="feature-link" href="/builds/#earth-descent"><span class="feature-kicker">Build · Tested 26 September 2026</span><strong>An Earth descent for the Azivor homepage</strong><span class="feature-description">A scroll-driven scene built with a globe, cloud layers, and a small WebGL shader. See the design choices and limits.</span><span class="feature-arrow" aria-hidden="true">↗</span></a></section>
+<section class="content-section latest-section" aria-labelledby="latest-title"><div class="section-intro"><p class="eyebrow">Latest</p><h2 id="latest-title">From the workbench.</h2></div><a class="feature-link" href="/builds/#earth-descent"><span class="feature-kicker">Build · Tested 26 September 2026</span><strong>An Earth descent for the Azivor homepage</strong><span class="feature-description">A scroll-driven scene built with a globe, cloud layers, and a small WebGL shader. See the design choices and limits.</span></a></section>
 <section class="content-section method-section" aria-labelledby="method-title"><p class="eyebrow">How we work</p><h2 id="method-title">Test it first. Write about it second.</h2><p>We start with something we can try or inspect. Then we explain the useful part, the human decisions, and what still needs work.</p></section>
 </div>
 </main>${footer()}

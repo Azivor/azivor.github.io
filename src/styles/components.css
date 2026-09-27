@@ -13,7 +13,7 @@
 .button.primary:hover::before,.button.primary:focus-visible::before{animation:glass-sweep 1.1s ease-out both}@keyframes glass-sweep{from{transform:translateX(-75%)}to{transform:translateX(75%)}}
 .button.glass{background:var(--glass-light-fill);border:1px solid var(--glass-light-border);border-top-color:var(--glass-light-highlight);box-shadow:var(--glass-light-shadow);backdrop-filter:blur(var(--blur-glass)) saturate(115%);-webkit-backdrop-filter:blur(var(--blur-glass)) saturate(115%)}
 .button.glass:hover{background-color:#ffffff1a;box-shadow:inset 0 1px 2px #ffffff9e,0 5px 14px #19629d1a}.button.ghost{background:transparent;border-color:currentColor;box-shadow:none}
-.button.button--small{font-size:.875rem;padding-inline:16px}.button.button--large{min-height:52px;padding:13px 24px}.button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}.button:disabled::before{display:none}.arrow{font-size:19px;font-weight:400}
+.button.button--small{font-size:.875rem;padding-inline:16px}.button.button--large{min-height:52px;padding:13px 24px}.button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}.button:disabled::before{display:none}
 .ui-surface{padding:var(--space-6);border-radius:var(--radius-panel);border:1px solid var(--glass-light-border);backdrop-filter:blur(var(--blur-glass)) saturate(115%);-webkit-backdrop-filter:blur(var(--blur-glass)) saturate(115%)}
 
 .ui-surface--dark .ui-body{color:#f1f6fc}
