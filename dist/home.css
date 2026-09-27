@@ -61,6 +61,7 @@ footer{max-width:1200px;border-top:1px solid #cde6f1;margin:auto;display:flex;ju
 .floating-nav{position:fixed;z-index:8;top:18px;left:50%;transform:translate(-50%,-10px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .4s ease,transform .55s cubic-bezier(.22,1,.36,1),visibility 0s linear .55s;color:#fff}
 .floating-nav.is-visible{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto;transition:opacity .4s ease,transform .55s cubic-bezier(.22,1,.36,1),visibility 0s}
 .floating-nav.is-over-light{color:#143b59}.floating-nav.is-over-light .floating-nav__links a{text-shadow:none}.floating-nav.is-over-light .floating-nav__links a:hover,.floating-nav.is-over-light .floating-nav__links a:focus-visible{background:#ffffff70}
+.floating-nav.is-switching .floating-nav__links a:hover,.floating-nav.is-switching .floating-nav__links a:focus-visible{background:transparent}
 .floating-nav.is-over-light .glass-nav-highlight,.inner-page .header .nav.is-over-light .glass-nav-highlight{background:rgba(80,133,171,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(69,120,153,.18),0 2px 8px rgba(10,38,73,.09)}
 .floating-nav.is-over-light:not(.has-highlight) .floating-nav__links a[aria-current="page"]{background:rgba(80,133,171,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(69,120,153,.18),0 2px 8px rgba(10,38,73,.09)}
 body.menu-open .floating-nav{opacity:0;visibility:hidden;pointer-events:none}

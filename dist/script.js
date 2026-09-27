@@ -159,6 +159,7 @@ for (const bar of [scrollNav, headerNav]) {
     if (window.innerWidth <= 700 || !(bar.classList.contains('is-visible') || bar.classList.contains('is-glass'))) return;
     if (link.getAttribute('href') === currentPath || link.origin !== location.origin || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     event.preventDefault();
+    bar.classList.add('is-switching');
     placeHighlight(link);
     clearTimeout(routeTimer);
     routeTimer = setTimeout(() => { window.location.assign(link.href); }, 280);
