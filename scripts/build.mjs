@@ -17,10 +17,11 @@ await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png
 await copyFile(join(root,'src/assets/earth-surface.jpg'),join(out,'earth-surface.jpg'));
 await copyFile(join(root,'src/assets/earth-clouds.jpg'),join(out,'earth-clouds.jpg'));
 await copyFile(join(root,'src/assets/earth-clouds-detail.webp'),join(out,'earth-clouds-detail.webp'));
+await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
 for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
 for(const name of ['home','content','catalog'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
-for(const name of ['style.css','refinements.css','cloud-descent.webp','space-orbit.webp'])await rm(join(out,name),{force:true});
+for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});
 console.log('Built Home, Explore, Builds, About, and /components/.');
