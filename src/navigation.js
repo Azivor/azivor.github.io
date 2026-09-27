@@ -101,6 +101,7 @@ if (scrollNav && topHeader) {
   const updateScrollNav = () => {
     scrollFrame = 0;
     const show = topHeader.getBoundingClientRect().bottom <= 0 && !document.body.classList.contains('menu-open');
+    topHeader.inert = show;
     if (!show && scrollNav.contains(document.activeElement)) {
       const replacement = window.innerWidth <= 700 ? navToggle : document.querySelector('.header .nav a[aria-current="page"]');
       replacement?.focus({preventScroll:true});

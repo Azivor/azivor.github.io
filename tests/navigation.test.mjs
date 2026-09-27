@@ -30,8 +30,8 @@ test('floating navigation takes over only after the top header leaves view',()=>
  const document={querySelectorAll:()=>[],querySelector:selector=>({'.floating-nav':pill,'.header':header,'.content-flow':content}[selector]??null),documentElement:{classList:{toggle(){}}},body:{classList:{contains:()=>false}},addEventListener(){}};
  const window={addEventListener:(name,fn)=>events[name]=fn};
  vm.runInNewContext(readFileSync('src/navigation.js','utf8'),{document,window,location:{pathname:'/'},requestAnimationFrame:fn=>{fn();return 0}});
- assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');
- headerBottom=-1;events.scroll();assert.equal(pill.inert,false);assert.equal(pill.attributes['aria-hidden'],'false');assert.equal(classes.has('is-visible'),true);
+ assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');assert.equal(header.inert,false);
+ headerBottom=-1;events.scroll();assert.equal(pill.inert,false);assert.equal(pill.attributes['aria-hidden'],'false');assert.equal(classes.has('is-visible'),true);assert.equal(header.inert,true);
  sectionTop=100;events.scroll();assert.equal(classes.has('is-over-light'),true);
- headerBottom=70;events.scroll();assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');assert.equal(classes.has('is-visible'),false);
+ headerBottom=70;events.scroll();assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');assert.equal(classes.has('is-visible'),false);assert.equal(header.inert,false);
 });
