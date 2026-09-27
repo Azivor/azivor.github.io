@@ -28,7 +28,7 @@ No install is needed. Rebuild after editing source; the preview is not a hot-rel
 
 ## Add a page
 
-Create a module in `src/pages/` that returns an HTML document. Reuse `site-shell.mjs` for the public header, footer, and shared styles. Register the page output in `scripts/build.mjs`. Build and run tests before publishing through the existing Sites project. Use the `/components/` reference for UI examples.
+Create a module in `src/pages/` that returns an HTML document. Reuse `site-shell.mjs` for the public header, footer, and shared styles. Register the page output in `scripts/build.mjs`. Build and run tests before publishing. Pushing to `main` deploys the site to GitHub Pages. Use the `/components/` reference for UI examples.
 
 ```js
 import {Section, Card, Button} from '../ui/components.mjs';
@@ -59,6 +59,6 @@ Layout utilities: `ui-container`, `ui-stack`, `ui-cluster`, `ui-grid`, `ui-secti
 
 ## Hosting and provenance
 
-Reuse `.openai/hosting.json`; never create another Site for updates. GitHub repository: https://github.com/Azivor/azivor-site (private). The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond for the homepage opening headline and Geist for every other heading and text element, with system fallbacks.
+GitHub repository: https://github.com/Azivor/azivor.github.io (public). The workflow in `.github/workflows/pages.yml` tests, builds, and publishes `dist/` to https://azivor.github.io after each push to `main`. The existing Sites project remains configured in `.openai/hosting.json`. The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond for the homepage opening headline and Geist for every other heading and text element, with system fallbacks.
 
 Design reference decisions are recorded in DESIGN.md. Dark overlays deliberately use 60% charcoal for readable text over the silver feature surface; reference measurements suggested 50% as a starting point.
