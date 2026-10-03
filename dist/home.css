@@ -40,7 +40,7 @@ footer{min-height:300px;margin:0;display:flex;justify-content:space-between;alig
  .header .nav a.selected{color:#b9dcff}
  .header .nav a:hover,.header .nav a:focus-visible{color:#d4ecff;opacity:1}
  body.menu-open{overflow:hidden}
- .journey-stage{min-height:0;height:100svh}.showcase{padding:38px 30px;min-height:330px;gap:20px}.showcase-emblem .brand-mark{width:120px;height:auto}
+ .journey-stage{min-height:0;height:100lvh}.showcase{padding:38px 30px;min-height:330px;gap:20px}.showcase-emblem .brand-mark{width:120px;height:auto}
 }
 @media(max-width:560px){.hero-content{top:44%;width:calc(100% - 36px)}.hero-content h1{font-size:clamp(2.75rem,13.5vw,4.6rem)}.intro{font-size:16px}.showcase{padding:40px 28px 36px;min-height:460px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:25px}.showcase-emblem{width:100%;justify-content:center}.showcase-emblem .brand-mark{width:115px}.showcase h2{font-size:44px}.showcase-copy>p{max-width:270px}.about{padding:105px 22px 78px}.about>p{font-size:15px}footer{min-height:240px;padding:85px 22px 26px;gap:17px;flex-wrap:wrap}}
 @media(max-width:420px){.header{padding:calc(18px + env(safe-area-inset-top, 0px)) 18px 18px;gap:16px}.header .wordmark{font-size:20px}.header .brand-mark{height:27px;margin-right:5px}.hero-content h1{font-size:clamp(2.5rem,11vw,3.25rem)}.showcase{padding-inline:22px}.showcase h2{font-size:clamp(2.35rem,11vw,2.75rem)}}
@@ -92,3 +92,10 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .sky-fallback .scene-status{position:relative;left:auto;bottom:auto;transform:none;flex:none}
 .sky-fallback .sky-scene{visibility:hidden!important}.sky-fallback .journey-target{top:0}
 @media(prefers-reduced-motion:reduce){.scene-status{position:relative;left:auto;bottom:auto;transform:none;flex:none}}
+
+/* Keep opening cues inside the smallest visible phone viewport, even though
+   the stable Earth canvas fills the larger viewport behind browser controls. */
+@media(max-width:700px) and (prefers-reduced-motion:no-preference){
+ html:not(.sky-fallback) .scene-status{top:calc(100svh - 104px);bottom:auto}
+ html:not(.sky-fallback) .scroll-cue{top:calc(100svh - 54px);bottom:auto}
+}
