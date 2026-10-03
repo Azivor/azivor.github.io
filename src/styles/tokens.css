@@ -41,3 +41,5 @@
 
 /* Informational surface roles: white reading, cyan process, silver support. */
 :root{--information-ground:#f4f8fc;--information-white:#fff;--information-blue:#e2f0f8;--information-silver:#e9edf6;--information-border:#c5d7e5;--information-radius:20px}
+
+:root{--footer-background:#1a4776 url('/footer-fade.svg') center/100% 100% no-repeat;--footer-ink:#f3f9ff}
