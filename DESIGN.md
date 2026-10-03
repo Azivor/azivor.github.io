@@ -37,3 +37,11 @@ The opening headline, supporting text, and Explore control stay fixed during the
 ## Design review workflow
 
 For changes to layout, typography, color, cards, or motion, apply the design-director skill and ask a design-review agent to critique the result. Compare the relevant composition and interaction patterns against polished contemporary sites and the supplied references, then inspect the actual pages at desktop and phone widths. Use comparisons to improve hierarchy, spacing, materials, and clarity; preserve Azivor’s existing identity and factual content. Update this guide and the visual component library when a shared rule changes.
+
+## Information hierarchy
+
+Below the homepage journey and on Explore, Builds, and About, use a split editorial composition: a narrower orientation column and a wider reading column. Section introductions remain in view on desktop; stack them above content at 700px and below. Geist section headings use a 36–54px scale, module headings 22–28px, body text 16px with a 64ch maximum, and metadata 12px. Preserve the existing inner-page heroes and the homepage Earth sequence.
+
+Give content a format that matches its role: actual project screenshot plus linked title for builds; ordered rows for the Human Loop and revision exercise; one inset prompt; a comparison recipe with result/correction/effort criteria; visible notes for guidance and limitations. Page contents are native fragment links with at least 44px targets, including every major chapter. They reflow without horizontal scrolling. All desktop anchor destinations clear the centered glass navigation. Shared examples live in the component library; no fabricated projects or decorative stacked glass.
+
+The informational design references were Linear Method (grouped navigation and article rhythm), Anthropic Engineering (separated summary and reading detail), and GOV.UK layout/paragraph guidance (readable measure and distinct prose roles). These are design references, not measured evidence of learning improvement.

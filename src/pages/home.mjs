@@ -1,4 +1,5 @@
 import {Button, Logo, surfaceAttributes} from "../ui/components.mjs";
+import {BuildFeature} from "./editorial.mjs";
 import {footer, header, head} from "./site-shell.mjs";
 
 export default function Home({study=false}={}){ return `<!doctype html>
@@ -36,8 +37,8 @@ ${study?'<section class="content-section" aria-labelledby="study-title"><p class
 <a class="category-card category-card--editorial" href="/explore/#workflows"><span class="category-card-copy"><h3>Workflows</h3><p>See how scattered steps become one useful way of working.</p></span></a>
 <a class="category-card category-card--compact" href="/explore/#new-capabilities"><span class="category-card-copy"><h3>New capabilities</h3><p>Find out what changes in practice when the tools change.</p></span></a>
 </div></section>
-<section class="content-section latest-section" aria-labelledby="latest-title"><div class="section-intro"><p class="eyebrow">Latest</p><h2 id="latest-title">From the workbench.</h2></div><a class="feature-link" href="/builds/#earth-descent"><span class="feature-kicker">Build · Tested 26 September 2026</span><strong>An Earth descent for the Azivor homepage</strong><span class="feature-description">A scroll-driven scene built with a globe, cloud layers, and a small WebGL shader. See the design choices and limits.</span></a></section>
-<section class="content-section method-section" aria-labelledby="method-title"><p class="eyebrow">How we work</p><h2 id="method-title">Test it first. Write about it second.</h2><p>We start with work we can try or inspect, then share the useful part and its limits. The goal is a result you can explain, verify, and make your own.</p><a class="text-link" href="/explore/#workflows">Try a workflow that keeps you thinking</a></section>
+<section class="content-section latest-section editorial-split" aria-labelledby="latest-title"><div class="section-intro"><p class="eyebrow">Latest</p><h2 id="latest-title">From the workbench.</h2></div><div class="section-body">${BuildFeature({description:"A scroll-driven scene built with a globe, cloud layers, and a small WebGL shader. See the design choices and limits."})}</div></section>
+<section class="content-section method-section editorial-split" aria-labelledby="method-title"><div class="section-intro"><p class="eyebrow">How we work</p><h2 id="method-title">Test it first. Write about it second.</h2></div><div class="section-body prose"><p>We start with work we can try or inspect, then share the useful part and its limits. The goal is a result you can explain, verify, and make your own.</p><a class="text-link" href="/explore/#workflows">Try a workflow that keeps you thinking</a></div></section>
 </div>
 </main>${footer()}
 </div>
