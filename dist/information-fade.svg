@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="320" viewBox="0 0 1600 320" preserveAspectRatio="none">
+  <!-- OKLab interpolation sampled along smootherstep: zero slope at both seams. -->
+  <defs>
+    <linearGradient id="cloud" x2="0" y2="1">
+    <stop offset="0%" stop-color="#234f78"/>
+    <stop offset="1.5625%" stop-color="#234f78"/>
+    <stop offset="3.125%" stop-color="#234f78"/>
+    <stop offset="4.6875%" stop-color="#234f78"/>
+    <stop offset="6.25%" stop-color="#234f78"/>
+    <stop offset="7.8125%" stop-color="#245079"/>
+    <stop offset="9.375%" stop-color="#255079"/>
+    <stop offset="10.9375%" stop-color="#255179"/>
+    <stop offset="12.5%" stop-color="#26527a"/>
+    <stop offset="14.0625%" stop-color="#28537b"/>
+    <stop offset="15.625%" stop-color="#29547c"/>
+    <stop offset="17.1875%" stop-color="#2b557d"/>
+    <stop offset="18.75%" stop-color="#2d577e"/>
+    <stop offset="20.3125%" stop-color="#305980"/>
+    <stop offset="21.875%" stop-color="#325b81"/>
+    <stop offset="23.4375%" stop-color="#355d83"/>
+    <stop offset="25%" stop-color="#385f85"/>
+    <stop offset="26.5625%" stop-color="#3c6288"/>
+    <stop offset="28.125%" stop-color="#3f658a"/>
+    <stop offset="29.6875%" stop-color="#43688d"/>
+    <stop offset="31.25%" stop-color="#486c8f"/>
+    <stop offset="32.8125%" stop-color="#4c6f92"/>
+    <stop offset="34.375%" stop-color="#517395"/>
+    <stop offset="35.9375%" stop-color="#557798"/>
+    <stop offset="37.5%" stop-color="#5b7b9c"/>
+    <stop offset="39.0625%" stop-color="#607f9f"/>
+    <stop offset="40.625%" stop-color="#6584a3"/>
+    <stop offset="42.1875%" stop-color="#6b88a6"/>
+    <stop offset="43.75%" stop-color="#708daa"/>
+    <stop offset="45.3125%" stop-color="#7692ae"/>
+    <stop offset="46.875%" stop-color="#7c97b2"/>
+    <stop offset="48.4375%" stop-color="#829cb5"/>
+    <stop offset="50%" stop-color="#88a0b9"/>
+    <stop offset="51.5625%" stop-color="#8ea5bd"/>
+    <stop offset="53.125%" stop-color="#94aac1"/>
+    <stop offset="54.6875%" stop-color="#9aafc5"/>
+    <stop offset="56.25%" stop-color="#a0b4c9"/>
+    <stop offset="57.8125%" stop-color="#a6b9cc"/>
+    <stop offset="59.375%" stop-color="#acbed0"/>
+    <stop offset="60.9375%" stop-color="#b2c3d4"/>
+    <stop offset="62.5%" stop-color="#b8c7d7"/>
+    <stop offset="64.0625%" stop-color="#bdccda"/>
+    <stop offset="65.625%" stop-color="#c2d0de"/>
+    <stop offset="67.1875%" stop-color="#c7d4e1"/>
+    <stop offset="68.75%" stop-color="#ccd8e4"/>
+    <stop offset="70.3125%" stop-color="#d1dce7"/>
+    <stop offset="71.875%" stop-color="#d5dfe9"/>
+    <stop offset="73.4375%" stop-color="#d9e2ec"/>
+    <stop offset="75%" stop-color="#dde5ee"/>
+    <stop offset="76.5625%" stop-color="#e0e8f0"/>
+    <stop offset="78.125%" stop-color="#e4ebf2"/>
+    <stop offset="79.6875%" stop-color="#e7edf4"/>
+    <stop offset="81.25%" stop-color="#e9eff5"/>
+    <stop offset="82.8125%" stop-color="#ebf1f7"/>
+    <stop offset="84.375%" stop-color="#edf3f8"/>
+    <stop offset="85.9375%" stop-color="#eff4f9"/>
+    <stop offset="87.5%" stop-color="#f0f5fa"/>
+    <stop offset="89.0625%" stop-color="#f2f6fb"/>
+    <stop offset="90.625%" stop-color="#f2f7fb"/>
+    <stop offset="92.1875%" stop-color="#f3f7fb"/>
+    <stop offset="93.75%" stop-color="#f4f8fc"/>
+    <stop offset="95.3125%" stop-color="#f4f8fc"/>
+    <stop offset="96.875%" stop-color="#f4f8fc"/>
+    <stop offset="98.4375%" stop-color="#f4f8fc"/>
+    <stop offset="100%" stop-color="#f4f8fc"/>
+    </linearGradient>
+    <linearGradient id="grain-envelope" x2="0" y2="1">
+      <stop stop-color="black"/><stop offset="12%" stop-color="white"/>
+      <stop offset="88%" stop-color="white"/><stop offset="100%" stop-color="black"/>
+    </linearGradient>
+    <mask id="grain-mask"><rect width="1600" height="320" fill="url(#grain-envelope)"/></mask>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="1" seed="17" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="320" fill="url(#cloud)"/>
+  <g mask="url(#grain-mask)" opacity=".018"><rect width="1600" height="320" filter="url(#grain)"/></g>
+</svg>

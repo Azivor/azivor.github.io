@@ -14,6 +14,7 @@ await mkdir(join(out,'scene-test'),{recursive:true});
 await writeFile(join(out,'scene-test/index.html'),Home({study:true}));
 await writeFile(join(out,'components/index.html'),Catalog());
 await copyFile(join(root,'src/assets/earth-descent-preview.jpg'),join(out,'earth-descent-preview.jpg'));
+await copyFile(join(root,'src/assets/information-fade.svg'),join(out,'information-fade.svg'));
 await copyFile(join(root,'src/assets/social-preview.jpg'),join(out,'social-preview.jpg'));
 await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png'));
 await copyFile(join(root,'src/assets/earth-surface.jpg'),join(out,'earth-surface.jpg'));
