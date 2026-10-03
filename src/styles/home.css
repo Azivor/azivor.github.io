@@ -4,7 +4,7 @@ html,body{background:#081432}
 .nav-toggle{display:none}
 .journey{height:320svh;position:relative;background:#081432;color:#fff}
 .journey-stage{position:sticky;top:0;height:100svh;min-height:620px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse 120% 45% at 50% 100%,#245cb1 0%,#092359 65%,#070d29 100%)}
-.sky-scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sky-scene{visibility:hidden;position:absolute;inset:0;width:100%;height:100%;display:block}
 .descent-study .scene-vignette{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#020a2445,transparent 35%,transparent 78%,#0519440b)}
 .hero-content{position:absolute;z-index:2;top:45%;left:50%;width:min(850px,calc(100% - 40px));text-align:center;transform:translate(-50%,-50%);pointer-events:auto}
 .hero h1,.hero-content h1{font:500 clamp(4rem,6.325vw,5rem)/.96 var(--font-hero);letter-spacing:-1px;margin:0;text-wrap:balance;text-shadow:0 2px 30px #06153a77}
@@ -83,3 +83,12 @@ body.menu-open .floating-nav{opacity:0;visibility:hidden;pointer-events:none}
 .study-label{color:#bfe8fa;font-size:.8rem;letter-spacing:.06em;margin-bottom:18px}
 
 footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;border-radius:4px}
+
+/* A truthful loading state; the only Earth shown is the live 3D renderer. */
+.scene-status{position:absolute;z-index:3;left:50%;bottom:82px;transform:translateX(-50%);width:calc(100% - 40px);text-align:center;color:#d5e7f7;font-size:.85rem;line-height:1.5}
+.scene-status[hidden],.scene-retry[hidden]{display:none}
+.scene-retry{min-height:44px;margin-top:10px;padding:10px 18px;background:#193653;border:1px solid #adc9e2;border-radius:8px;color:#f1f7fc;font:500 .9rem var(--font-body);cursor:pointer}
+.scene-retry:hover{background:#244966}.scene-retry:focus-visible{outline:3px solid #c9eaff;outline-offset:4px}
+.sky-fallback .scene-status{position:relative;left:auto;bottom:auto;transform:none;flex:none}
+.sky-fallback .sky-scene{visibility:hidden!important}.sky-fallback .journey-target{top:0}
+@media(prefers-reduced-motion:reduce){.scene-status{position:relative;left:auto;bottom:auto;transform:none;flex:none}}

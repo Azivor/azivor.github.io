@@ -132,10 +132,15 @@ function makeShader(gl,kind,source){
  const shader=gl.createShader(kind);
  gl.shaderSource(shader,source);
  gl.compileShader(shader);
- if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader));
+ if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){const message=gl.getShaderInfoLog(shader);gl.deleteShader(shader);throw new Error(message);}
  return shader;
 }
-let gl,progressUniform,resolutionUniform,ready=false,queued=false;
+let gl,program,progressUniform,resolutionUniform,ready=false,queued=false;
+let generation=0,startedAt=0,baseLoadMs=Infinity,detailRequested=false,resources=[];
+const pendingImages=new Set();
+const sceneStatus=document.querySelector('.scene-status');
+const statusText=document.querySelector('.scene-status-text');
+const retryButton=document.querySelector('.scene-retry');
 const themeColor=document.querySelector('meta[name="theme-color"]');
 let lastBackdrop='';
 function updateBrowserBackdrop(p){
@@ -197,55 +202,151 @@ function coverHeroWithEarth(hero,p){
  }
 }
 
-try{
- gl=canvas.getContext('webgl2',{alpha:false,antialias:false,powerPreference:'low-power'});
- if(!gl)throw new Error('WebGL2 unavailable');
- const program=gl.createProgram();
- gl.attachShader(program,makeShader(gl,gl.VERTEX_SHADER,vertexSource));
- gl.attachShader(program,makeShader(gl,gl.FRAGMENT_SHADER,fragmentSource));
- gl.linkProgram(program);
- if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(program));
- gl.useProgram(program);
- const vao=gl.createVertexArray();
- gl.bindVertexArray(vao);
- const buffer=gl.createBuffer();
- gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
- gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
- const location=gl.getAttribLocation(program,'position');
- gl.enableVertexAttribArray(location);
- gl.vertexAttribPointer(location,2,gl.FLOAT,false,0,0);
- progressUniform=gl.getUniformLocation(program,'progress');
- resolutionUniform=gl.getUniformLocation(program,'resolution');
- const loadTexture=(unit,url,name)=>new Promise((resolve,reject)=>{
+function resetCopy(){
+ const hero=document.querySelector('.hero-content');
+ if(hero){hero.style.clipPath='';hero.inert=false;const action=hero.querySelector('.descent-link');if(action)action.inert=false;}
+ const showcase=document.querySelector('.showcase');
+ if(showcase)showcase.inert=false;
+}
+function cancelImages(){for(const cancel of [...pendingImages])cancel();}
+function releaseResources(){
+ if(gl&&!gl.isContextLost())for(const [kind,item] of resources)gl[kind](item);
+ resources=[];
+}
+function failScene(error,attempt=generation){
+ if(attempt!==generation)return;
+ generation++;ready=false;cancelImages();releaseResources();
+ canvas.style.visibility='hidden';
+ document.body.classList.remove('scene-model-ready');
+ document.documentElement.classList.add('sky-fallback');
+ resetCopy();
+ if(sceneStatus)sceneStatus.hidden=false;
+ if(statusText)statusText.textContent='Earth couldn’t load. You can retry or keep exploring.';
+ if(retryButton)retryButton.hidden=false;
+ console.warn('Earth scene:',error);
+}
+function loadImage(url,priority='high'){
+ return new Promise((resolve,reject)=>{
   const image=new Image();
-  image.onload=()=>{
-   const texture=gl.createTexture();
-   gl.activeTexture(gl.TEXTURE0+unit);
-   gl.bindTexture(gl.TEXTURE_2D,texture);
-   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
-   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,image);
-   gl.generateMipmap(gl.TEXTURE_2D);
-   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
-   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
-   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
-   const anisotropy=gl.getExtension('EXT_texture_filter_anisotropic');
-   if(anisotropy){
-    const maximum=gl.getParameter(anisotropy.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-    gl.texParameterf(gl.TEXTURE_2D,anisotropy.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(8,maximum));
-   }
-   gl.uniform1i(gl.getUniformLocation(program,name),unit);
-   resolve();
+  image.fetchPriority=priority;
+  const finish=error=>{
+   clearTimeout(timer);pendingImages.delete(cancel);
+   image.onload=null;image.onerror=null;
+   if(error){image.src='';reject(error);}else resolve(image);
   };
-  image.onerror=()=>reject(new Error(`${url} unavailable`));
+  const cancel=()=>finish(new Error('Earth load cancelled'));
+  // Allow a slow transfer to complete, but never leave an indefinite blank scene.
+  const timer=setTimeout(()=>finish(new Error(`${url} timed out`)),20000);
+  pendingImages.add(cancel);
+  image.onload=()=>finish();
+  image.onerror=()=>finish(new Error(`${url} unavailable`));
   image.src=url;
  });
- const cloudAsset=gl.getParameter(gl.MAX_TEXTURE_SIZE)>=6144
-  ?'/earth-clouds-detail.webp':'/earth-clouds.jpg';
- Promise.all([loadTexture(0,'/earth-surface.jpg','surfaceMap'),loadTexture(1,cloudAsset,'cloudMap')]).then(()=>{
-  ready=true;document.body.classList.add('scene-model-ready');schedule();
- }).catch(error=>{console.warn('Earth scene:',error);document.documentElement.classList.add('sky-fallback');});
-}catch(error){console.warn('Earth scene fallback:',error);document.documentElement.classList.add('sky-fallback');}
+}
+function uploadTexture(unit,image,name){
+ let source=image;
+ const maximum=gl.getParameter(gl.MAX_TEXTURE_SIZE);
+ if(image.width>maximum||image.height>maximum){
+  const resized=document.createElement('canvas');
+  const ratio=maximum/Math.max(image.width,image.height);
+  resized.width=Math.max(1,Math.floor(image.width*ratio));
+  resized.height=Math.max(1,Math.floor(image.height*ratio));
+  const context=resized.getContext('2d');
+  if(!context)throw new Error('Texture resizing unavailable');
+  context.drawImage(image,0,0,resized.width,resized.height);source=resized;
+ }
+ const texture=gl.createTexture();
+ if(!texture)throw new Error('Earth texture allocation failed');
+ resources.push(['deleteTexture',texture]);
+ gl.activeTexture(gl.TEXTURE0+unit);
+ gl.bindTexture(gl.TEXTURE_2D,texture);
+ gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+ gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,source);
+ gl.generateMipmap(gl.TEXTURE_2D);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+ const anisotropy=gl.getExtension('EXT_texture_filter_anisotropic');
+ if(anisotropy)gl.texParameterf(gl.TEXTURE_2D,anisotropy.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(8,gl.getParameter(anisotropy.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
+ if(gl.isContextLost()||gl.getError()!==gl.NO_ERROR)throw new Error('Earth texture upload failed');
+ gl.uniform1i(gl.getUniformLocation(program,name),unit);
+ return texture;
+}
+function startScene(){
+ const attempt=++generation;
+ ready=false;cancelImages();releaseResources();detailRequested=false;baseLoadMs=Infinity;
+ startedAt=performance.now();
+ canvas.style.visibility='hidden';
+ document.body.classList.remove('scene-model-ready');
+ document.documentElement.classList.remove('sky-fallback');
+ resetCopy();
+ if(sceneStatus)sceneStatus.hidden=false;
+ if(statusText)statusText.textContent='Preparing Earth…';
+ if(retryButton)retryButton.hidden=true;
+ // Start both real texture requests in parallel, before compiling the shader.
+ const images=Promise.all([loadImage('/earth-surface.jpg'),loadImage('/earth-clouds.jpg')]);
+ images.then(([surface,clouds])=>{
+  if(attempt!==generation)return;
+  uploadTexture(0,surface,'surfaceMap');uploadTexture(1,clouds,'cloudMap');
+  baseLoadMs=performance.now()-startedAt;ready=true;schedule();
+ }).catch(error=>failScene(error,attempt));
+ try{
+  gl=canvas.getContext('webgl2',{alpha:false,antialias:false,powerPreference:'low-power'});
+  if(!gl||gl.isContextLost())throw new Error('WebGL2 unavailable');
+  program=gl.createProgram();resources.push(['deleteProgram',program]);
+  for(const [kind,source] of [[gl.VERTEX_SHADER,vertexSource],[gl.FRAGMENT_SHADER,fragmentSource]]){
+   const shader=makeShader(gl,kind,source);resources.push(['deleteShader',shader]);gl.attachShader(program,shader);
+  }
+  gl.linkProgram(program);
+  if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(program));
+  gl.useProgram(program);
+  const vao=gl.createVertexArray();resources.push(['deleteVertexArray',vao]);gl.bindVertexArray(vao);
+  const buffer=gl.createBuffer();resources.push(['deleteBuffer',buffer]);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const location=gl.getAttribLocation(program,'position');
+  gl.enableVertexAttribArray(location);gl.vertexAttribPointer(location,2,gl.FLOAT,false,0,0);
+  progressUniform=gl.getUniformLocation(program,'progress');resolutionUniform=gl.getUniformLocation(program,'resolution');
+  gl.viewport(0,0,canvas.width,canvas.height);
+ }catch(error){failScene(error,attempt);}
+}
+function requestCloudDetail(p){
+ const connection=navigator.connection;
+ if(detailRequested||p<.18||innerWidth<1000||gl.getParameter(gl.MAX_TEXTURE_SIZE)<6144)return;
+ if(connection?.saveData||['slow-2g','2g','3g'].includes(connection?.effectiveType))return;
+ if(baseLoadMs>1800)return;
+ detailRequested=true;
+ const attempt=generation;
+ // Detail is optional: the same 3D Earth is already visible and usable.
+ gl.activeTexture(gl.TEXTURE0+1);
+ const previous=gl.getParameter(gl.TEXTURE_BINDING_2D);
+ loadImage('/earth-clouds-detail.webp','low').then(image=>{
+  if(attempt!==generation||!ready)return;
+  try{
+   uploadTexture(1,image,'cloudMap');
+   if(previous){gl.deleteTexture(previous);resources=resources.filter(([,item])=>item!==previous);}
+   schedule();
+  }catch(error){
+   if(gl.isContextLost()){failScene(error,attempt);return;}
+   // Keep the working base texture if the optional enhancement cannot upload.
+   gl.activeTexture(gl.TEXTURE0+1);gl.bindTexture(gl.TEXTURE_2D,previous);
+   console.warn('Earth detail:',error);
+  }
+ }).catch(error=>{if(attempt===generation)console.warn('Earth detail:',error);});
+}
+canvas.addEventListener('webglcontextlost',event=>{
+ event.preventDefault();failScene(new Error('Graphics context lost'));
+});
+canvas.addEventListener('webglcontextrestored',startScene);
+retryButton?.addEventListener('click',()=>{
+ if(gl?.isContextLost()){
+  const recovery=gl.getExtension('WEBGL_lose_context');
+  if(recovery){recovery.restoreContext();return;}
+ }
+ startScene();
+});
+startScene();
+
 function render(){
  queued=false;
  if(!ready||!journey||!stage)return;
@@ -263,9 +364,18 @@ function render(){
  const width=Math.max(1,Math.round(innerWidth*scale*fit));
  const height=Math.max(1,Math.round(innerHeight*scale*fit));
  if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;gl.viewport(0,0,width,height);}
- gl.uniform2f(resolutionUniform,width,height);
- gl.uniform1f(progressUniform,p);
- gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+ try{
+  gl.uniform2f(resolutionUniform,width,height);
+  gl.uniform1f(progressUniform,p);
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  if(gl.isContextLost()||gl.getError()!==gl.NO_ERROR)throw new Error('Earth draw failed');
+  if(!document.body.classList.contains('scene-model-ready')){
+   // Reveal only a successfully painted frame, never an uninitialized canvas.
+   canvas.style.visibility='visible';document.body.classList.add('scene-model-ready');
+   if(sceneStatus)sceneStatus.hidden=true;
+  }
+  requestCloudDetail(p);
+ }catch(error){failScene(error);}
 }
 function schedule(){if(!queued){queued=true;requestAnimationFrame(render);}}
 addEventListener('scroll',schedule,{passive:true});

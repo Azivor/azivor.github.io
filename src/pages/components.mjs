@@ -1,4 +1,4 @@
-import {BuildFeature, Steps, Contents, Prompt} from "./editorial.mjs";
+import {BuildFeature, Steps, Prompt} from "./editorial.mjs";
 import {socialMetadata} from "./site-shell.mjs";
 import {glassFilter} from "./glass-filter.mjs";
 import {Button,Brand,Card,Badge,Section,Field,Disclosure,escapeHTML} from '../ui/components.mjs';

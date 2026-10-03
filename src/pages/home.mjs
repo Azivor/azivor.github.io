@@ -21,6 +21,7 @@ ${study?'<p class="study-label">Developer visual reference · Earth descent stud
 <p class="intro">Azivor helps students discover what modern AI makes possible—and turn it into something they can make, understand, and own.</p>
 <div class="hero-actions">${Button({label:"Explore",href:"#first-content",variant:"primary",className:"descent-link",icon:"down"})}</div>
 </div>
+<div class="scene-status"><p class="scene-status-text" role="status" aria-live="polite">Preparing Earth…</p><button class="scene-retry" type="button" hidden>Retry Earth</button></div>
 <div class="scroll-cue" aria-hidden="true"><span>Scroll to descend</span><span class="cue-line"></span></div>
 <div class="landing-wash" aria-hidden="true"></div>
 <div ${surfaceAttributes({variant:"light",className:"showcase"})} tabindex="-1" aria-labelledby="showcase-title">
