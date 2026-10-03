@@ -281,6 +281,8 @@ function startScene(){
  document.body.classList.remove('scene-model-ready');
  document.documentElement.classList.remove('sky-fallback');
  resetCopy();
+ const showcase=document.querySelector('.showcase');
+ if(showcase)showcase.inert=!reduceMotion.matches;
  if(sceneStatus)sceneStatus.hidden=false;
  if(statusText)statusText.textContent='Preparing Earth…';
  if(retryButton)retryButton.hidden=true;
