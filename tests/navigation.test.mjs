@@ -106,12 +106,15 @@ test('Home glass navigation waits for the Earth reveal and never appears on mobi
  const header={getBoundingClientRect:()=>({bottom:-20}),querySelector:()=>null};
  const journey={getBoundingClientRect:()=>({top:sceneTop,height:2400})};
  const content={classList:{contains:name=>name==='content-flow'},getBoundingClientRect:()=>({top:sectionTop})};
- const document={querySelectorAll:()=>[],querySelector:selector=>({'.floating-nav':pill,'.header':header,'.journey':journey,'.content-flow':content}[selector]??null),documentElement:{classList:{toggle(){},contains:()=>false}},body:{classList:{contains:()=>false}},addEventListener(){}};
+ const stage={getBoundingClientRect:()=>({height:700})};
+ const document={querySelectorAll:()=>[],querySelector:selector=>({'.floating-nav':pill,'.header':header,'.journey':journey,'.journey-stage':stage,'.content-flow':content}[selector]??null),documentElement:{classList:{toggle(){},contains:()=>false}},body:{classList:{contains:()=>false}},addEventListener(){}};
  const window={innerWidth:1200,innerHeight:800,matchMedia:()=>({matches:false}),addEventListener:(name,fn)=>events[name]=fn};
  vm.runInNewContext(readFileSync('src/navigation.js','utf8'),{document,window,location:{pathname:'/'},requestAnimationFrame:fn=>{fn();return 0}});
  assert.equal(pill.inert,true);assert.equal(pill.attributes['aria-hidden'],'true');assert.equal(header.inert,false);
  sceneTop=-1120;events.scroll();assert.equal(pill.inert,true);
- sceneTop=-1280;events.scroll();assert.equal(pill.inert,false);assert.equal(pill.attributes['aria-hidden'],'false');assert.equal(classes.has('is-visible'),true);assert.equal(header.inert,true);
+ sceneTop=-1280;events.scroll();assert.equal(pill.inert,true,'stage height controls the reveal threshold');
+ sceneTop=-1360;events.scroll();assert.equal(pill.inert,false);assert.equal(pill.attributes['aria-hidden'],'false');assert.equal(classes.has('is-visible'),true);assert.equal(header.inert,true);
+ window.innerHeight=900;events.resize();assert.equal(pill.inert,false,'browser chrome must not change a stable stage reveal');
  sectionTop=100;events.scroll();assert.equal(classes.has('is-over-light'),true);
  window.innerWidth=390;events.resize();assert.equal(pill.inert,true);assert.equal(classes.has('is-visible'),false);assert.equal(header.inert,false);
 });
@@ -129,4 +132,69 @@ test('inner pages add glass to the original links after scrolling',()=>{
  window.scrollY=30;events.scroll();assert.equal(classes.has('is-glass'),true);assert.equal(wordmarkInert,true);
  heroBottom=100;events.scroll();assert.equal(classes.has('is-over-light'),true);
  window.innerWidth=390;events.resize();assert.equal(classes.has('is-glass'),false);assert.equal(wordmarkInert,false);
+});
+
+function descentHarness({ready=true,fallback=false,reduced=false}={}){
+ const listeners=new Map(),frames=new Map(),scrolls=[],sceneFrames=[],historyChanges=[];
+ let nextFrame=0,destinationY=2200,stageHeight=800;
+ const eventTarget=()=>({
+  addEventListener(name,fn,options={}){const items=listeners.get(name)||[];items.push({fn,once:options.once});listeners.set(name,items);},
+  removeEventListener(name,fn){listeners.set(name,(listeners.get(name)||[]).filter(item=>item.fn!==fn));},
+  dispatchEvent(event){for(const item of [...(listeners.get(event.type)||[])]){if(item.once)this.removeEventListener(event.type,item.fn);item.fn(event);}return !event.defaultPrevented;}
+ });
+ const clickListeners=[];
+ const link={addEventListener(name,fn){if(name==='click')clickListeners.push(fn);}};
+ const stage={getBoundingClientRect:()=>({height:stageHeight})};
+ const destination={getBoundingClientRect:()=>({top:destinationY-window.scrollY}),focus(){document.activeElement=this;},scrollIntoView(){window.scrollY=destinationY;}};
+ const document={activeElement:null,body:{classList:{contains:name=>name==='scene-model-ready'&&ready}},documentElement:{style:{scrollBehavior:'smooth'},classList:{contains:name=>name==='sky-fallback'&&fallback,toggle(){}}},
+  querySelectorAll:()=>[],querySelector:selector=>selector==='.descent-link'?link:selector==='.journey-stage'?stage:null,getElementById:id=>id==='first-content'?destination:null,addEventListener(){}};
+ const window={...eventTarget(),innerWidth:1200,innerHeight:800,scrollY:0,matchMedia:()=>({matches:reduced}),
+  scrollTo(options){assert.equal(typeof options,'object');assert.equal(options.behavior,'instant');scrolls.push({...options});this.scrollY=options.top;}};
+ window.addEventListener('azivor:descent-frame',()=>sceneFrames.push(window.scrollY));
+ const requestAnimationFrame=fn=>{const id=++nextFrame;frames.set(id,fn);return id;};
+ const cancelAnimationFrame=id=>frames.delete(id);
+ vm.runInNewContext(readFileSync('src/navigation.js','utf8'),{document,window,location:{pathname:'/'},Event,requestAnimationFrame,cancelAnimationFrame,history:{replaceState(...args){historyChanges.push(args);}}});
+ return {document,window,destination,scrolls,sceneFrames,historyChanges,
+  click(extra={}){const event={button:0,defaultPrevented:false,preventDefault(){this.defaultPrevented=true;},...extra};clickListeners.forEach(fn=>fn(event));return event;},
+  frame(now){const batch=[...frames];frames.clear();for(const [,fn] of batch)fn(now);},
+  interrupt(type,extra={}){window.dispatchEvent({type,...extra});},
+  resize({width=window.innerWidth,height=window.innerHeight,stage=stageHeight}={}){window.innerWidth=width;window.innerHeight=height;stageHeight=stage;window.dispatchEvent({type:'resize'});},
+  loseScene(){ready=false;fallback=true;},
+  moveDestination(top){destinationY=top;},pendingFrames:()=>frames.size,
+  cancellationListeners:()=>['wheel','touchstart','keydown','resize','pointerdown'].reduce((count,name)=>count+(listeners.get(name)||[]).length,0)};
+}
+
+test('Explore uses one animation owner and renders each explicitly instant scroll in the same frame',()=>{
+ const h=descentHarness();h.click();h.frame(0);h.frame(1000);const before=h.scrolls.length;
+ h.click();assert.equal(h.pendingFrames(),1);h.frame(1016);assert.equal(h.scrolls.length,before+1,'replacement click must not leave two writers');
+ h.moveDestination(2400);h.frame(6200);
+ assert.equal(h.scrolls.at(-1).top,2400);assert.deepEqual(h.sceneFrames,h.scrolls.map(scroll=>scroll.top));
+ assert.equal(h.document.documentElement.style.scrollBehavior,'smooth');assert.equal(h.document.activeElement,h.destination);
+ assert.equal(h.pendingFrames(),0);assert.equal(h.cancellationListeners(),0);assert.equal(h.historyChanges.length,1);
+});
+for(const [type,event] of [['wheel',{}],['touchstart',{}],['pointerdown',{}],['resize',{}],['keydown',{key:'Escape'}]])test(`manual ${type} input cancels Explore and restores scroll behavior`,()=>{
+ const h=descentHarness();h.click();h.frame(0);h.frame(1000);const count=h.scrolls.length;
+ if(type==='resize')h.resize({width:900});else h.interrupt(type,event);h.frame(6000);assert.equal(h.scrolls.length,count);assert.equal(h.pendingFrames(),0);
+ assert.equal(h.cancellationListeners(),0);assert.equal(h.document.documentElement.style.scrollBehavior,'smooth');assert.equal(h.historyChanges.length,0);
+});
+test('browser toolbar resize preserves Explore while actual stage resizing cancels it',()=>{
+ const h=descentHarness();h.click();h.frame(0);h.resize({height:900});h.frame(1000);
+ assert.equal(h.scrolls.length,2);assert.equal(h.pendingFrames(),1);assert.equal(h.document.documentElement.style.scrollBehavior,'auto');
+ const count=h.scrolls.length;h.resize({stage:850});h.frame(2000);
+ assert.equal(h.scrolls.length,count);assert.equal(h.pendingFrames(),0);assert.equal(h.document.documentElement.style.scrollBehavior,'smooth');
+});
+test('context loss during Explore cancels the trip before another scroll update',()=>{
+ const h=descentHarness();h.click();h.frame(0);h.frame(1000);const count=h.scrolls.length;h.loseScene();h.frame(2000);
+ assert.equal(h.scrolls.length,count);assert.equal(h.pendingFrames(),0);assert.equal(h.cancellationListeners(),0);
+ assert.equal(h.document.documentElement.style.scrollBehavior,'smooth');assert.equal(h.historyChanges.length,0);
+});
+for(const options of [{ready:false},{fallback:true},{reduced:true}])test(`Explore reaches content immediately when descent is unavailable ${JSON.stringify(options)}`,()=>{
+ const h=descentHarness(options);const event=h.click();assert.equal(event.defaultPrevented,true);assert.equal(h.pendingFrames(),0);
+ assert.equal(h.window.scrollY,2200);assert.equal(h.document.activeElement,h.destination);assert.equal(h.historyChanges.length,1);
+ assert.equal(h.document.documentElement.style.scrollBehavior,'smooth');assert.equal(h.cancellationListeners(),0);
+});
+test('modified Explore activation preserves ordinary browser navigation',()=>{
+ for(const extra of [{ctrlKey:true},{metaKey:true},{button:1},{defaultPrevented:true}]){
+  const h=descentHarness();h.click(extra);assert.equal(h.pendingFrames(),0);assert.equal(h.scrolls.length,0);assert.equal(h.historyChanges.length,0);
+ }
 });

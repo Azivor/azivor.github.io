@@ -135,8 +135,8 @@ function makeShader(gl,kind,source){
  if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){const message=gl.getShaderInfoLog(shader);gl.deleteShader(shader);throw new Error(message);}
  return shader;
 }
-let gl,program,progressUniform,resolutionUniform,ready=false,queued=false;
-let generation=0,startedAt=0,baseLoadMs=Infinity,detailRequested=false,resources=[];
+let gl,program,progressUniform,resolutionUniform,ready=false,renderFrame=0;
+let generation=0,resources=[],lastDraw=null;
 const pendingImages=new Set();
 const sceneStatus=document.querySelector('.scene-status');
 const statusText=document.querySelector('.scene-status-text');
@@ -275,8 +275,7 @@ function uploadTexture(unit,image,name){
 }
 function startScene(){
  const attempt=++generation;
- ready=false;cancelImages();releaseResources();detailRequested=false;baseLoadMs=Infinity;
- startedAt=performance.now();
+ ready=false;lastDraw=null;cancelImages();releaseResources();
  canvas.style.visibility='hidden';
  document.body.classList.remove('scene-model-ready');
  document.documentElement.classList.remove('sky-fallback');
@@ -291,7 +290,7 @@ function startScene(){
  images.then(([surface,clouds])=>{
   if(attempt!==generation)return;
   uploadTexture(0,surface,'surfaceMap');uploadTexture(1,clouds,'cloudMap');
-  baseLoadMs=performance.now()-startedAt;ready=true;schedule();
+  ready=true;schedule();
  }).catch(error=>failScene(error,attempt));
  try{
   gl=canvas.getContext('webgl2',{alpha:false,antialias:false,powerPreference:'low-power'});
@@ -312,30 +311,6 @@ function startScene(){
   gl.viewport(0,0,canvas.width,canvas.height);
  }catch(error){failScene(error,attempt);}
 }
-function requestCloudDetail(p){
- const connection=navigator.connection;
- if(detailRequested||p<.18||innerWidth<1000||gl.getParameter(gl.MAX_TEXTURE_SIZE)<6144)return;
- if(connection?.saveData||['slow-2g','2g','3g'].includes(connection?.effectiveType))return;
- if(baseLoadMs>1800)return;
- detailRequested=true;
- const attempt=generation;
- // Detail is optional: the same 3D Earth is already visible and usable.
- gl.activeTexture(gl.TEXTURE0+1);
- const previous=gl.getParameter(gl.TEXTURE_BINDING_2D);
- loadImage('/earth-clouds-detail.webp','low').then(image=>{
-  if(attempt!==generation||!ready)return;
-  try{
-   uploadTexture(1,image,'cloudMap');
-   if(previous){gl.deleteTexture(previous);resources=resources.filter(([,item])=>item!==previous);}
-   schedule();
-  }catch(error){
-   if(gl.isContextLost()){failScene(error,attempt);return;}
-   // Keep the working base texture if the optional enhancement cannot upload.
-   gl.activeTexture(gl.TEXTURE0+1);gl.bindTexture(gl.TEXTURE_2D,previous);
-   console.warn('Earth detail:',error);
-  }
- }).catch(error=>{if(attempt===generation)console.warn('Earth detail:',error);});
-}
 canvas.addEventListener('webglcontextlost',event=>{
  event.preventDefault();failScene(new Error('Graphics context lost'));
 });
@@ -350,36 +325,44 @@ retryButton?.addEventListener('click',()=>{
 startScene();
 
 function render(){
- queued=false;
+ if(renderFrame){cancelAnimationFrame(renderFrame);renderFrame=0;}
  if(!ready||!journey||!stage)return;
  const bounds=journey.getBoundingClientRect();
- const p=reduceMotion.matches?0:clamp(-bounds.top/Math.max(1,bounds.height-innerHeight));
- stage.style.setProperty('--journey-progress',p.toFixed(4));
+ const scene=stage.getBoundingClientRect();
+ const p=reduceMotion.matches?0:clamp(-bounds.top/Math.max(1,bounds.height-scene.height));
  updateBrowserBackdrop(p);
+ const scale=Math.min(devicePixelRatio||1,1);
+ const fit=Math.min(1,Math.sqrt(950000/(scene.width*scene.height*scale*scale)));
+ const width=Math.max(1,Math.round(scene.width*scale*fit));
+ const height=Math.max(1,Math.round(scene.height*scale*fit));
+ const resized=canvas.width!==width||canvas.height!==height;
+ if(lastDraw&&lastDraw.p===p&&!resized)return;
+ stage.style.setProperty('--journey-progress',p.toFixed(4));
  stage.classList.toggle('scene-reveal',p>=.78);
  const hero=document.querySelector('.hero-content');
  if(hero)coverHeroWithEarth(hero,p);
  const showcase=document.querySelector('.showcase');
  if(showcase)showcase.inert=p<.78&&!reduceMotion.matches;
- const scale=Math.min(devicePixelRatio||1,1);
- const fit=Math.min(1,Math.sqrt(950000/(innerWidth*innerHeight*scale*scale)));
- const width=Math.max(1,Math.round(innerWidth*scale*fit));
- const height=Math.max(1,Math.round(innerHeight*scale*fit));
- if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;gl.viewport(0,0,width,height);}
+
  try{
+  if(resized){canvas.width=width;canvas.height=height;gl.viewport(0,0,width,height);}
   gl.uniform2f(resolutionUniform,width,height);
   gl.uniform1f(progressUniform,p);
   gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-  if(gl.isContextLost()||gl.getError()!==gl.NO_ERROR)throw new Error('Earth draw failed');
+  // GPU round-trips belong to setup/allocation, not every scroll frame.
+  if(gl.isContextLost()||((!lastDraw||resized)&&gl.getError()!==gl.NO_ERROR))throw new Error('Earth draw failed');
+  lastDraw={p};
   if(!document.body.classList.contains('scene-model-ready')){
    // Reveal only a successfully painted frame, never an uninitialized canvas.
    canvas.style.visibility='visible';document.body.classList.add('scene-model-ready');
    if(sceneStatus)sceneStatus.hidden=true;
   }
-  requestCloudDetail(p);
+
  }catch(error){failScene(error);}
 }
-function schedule(){if(!queued){queued=true;requestAnimationFrame(render);}}
+function schedule(){if(!renderFrame)renderFrame=requestAnimationFrame(render);}
+// Explore updates its scroll and this frame together, avoiding a trailing canvas frame.
+addEventListener('azivor:descent-frame',render);
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',schedule);
 addEventListener('pageshow',schedule);

@@ -22,13 +22,15 @@ function element(rect={left:0,top:0,width:1200,height:800}){
   getBoundingClientRect:()=>({...rect,right:rect.left+rect.width,bottom:rect.top+rect.height}),querySelector:()=>null,querySelectorAll:()=>[]};
 }
 
-function sceneHarness({fast=false,width=1200,maximumTexture=8192,saveData=false,unavailable=false,throwUpload=false,uploadError=false,throwDraw=false,drawError=false}={}){
+function sceneHarness({fast=false,width=1200,height=800,maximumTexture=8192,saveData=false,unavailable=false,throwUpload=false,uploadError=false,throwDraw=false,drawError=false}={}){
  const images=[],frames=[],timers=new Map(),uploads=[],draws=[],warnings=[],resizes=[];
  let time=0,nextTimer=0,nextFrame=0,sceneTop=0,gpuError=0,lost=false,textureId=0,activeUnit=33984;
- const bindings=new Map();
+ const bindings=new Map(),queries={errors:0,parameters:0};let progress=0;
  const canvas=element(),stage=element(),journey=element(),hero=element({left:100,top:100,width:600,height:300});
  const action=element({left:100,top:300,width:200,height:50}),showcase=element(),status=element(),retry=element();
  retry.hidden=true;
+ let stageWidth=width,stageHeight=height;
+ stage.getBoundingClientRect=()=>({left:0,top:0,width:stageWidth,height:stageHeight,right:stageWidth,bottom:stageHeight});
  hero.querySelector=selector=>selector==='.descent-link'?action:null;
  journey.getBoundingClientRect=()=>({top:sceneTop,height:2400,left:0,width:1200,bottom:sceneTop+2400,right:1200});
  const gl={
@@ -39,13 +41,13 @@ function sceneHarness({fast=false,width=1200,maximumTexture=8192,saveData=false,
   createShader:()=>({}),shaderSource(){},compileShader(){},getShaderParameter:()=>true,getShaderInfoLog:()=>'',
   createProgram:()=>({}),attachShader(){},linkProgram(){},getProgramParameter:()=>true,getProgramInfoLog:()=>'',useProgram(){},
   createVertexArray:()=>({}),bindVertexArray(){},createBuffer:()=>({}),bindBuffer(){},bufferData(){},getAttribLocation:()=>0,enableVertexAttribArray(){},vertexAttribPointer(){},
-  getUniformLocation:(_,name)=>name,uniform1i(){},uniform1f(){},uniform2f(){},viewport(){},
+  getUniformLocation:(_,name)=>name,uniform1i(){},uniform1f(name,value){if(name==='progress')progress=value;},uniform2f(){},viewport(){},
   createTexture:()=>({id:++textureId}),activeTexture(unit){activeUnit=unit;},bindTexture(_,texture){bindings.set(activeUnit,texture);},pixelStorei(){},
   texImage2D(...args){if(throwUpload)throw new Error('upload failed');uploads.push(args.at(-1));if(uploadError)gpuError=1282;},
   generateMipmap(){},texParameteri(){},texParameterf(){},getExtension:()=>null,
-  getParameter:key=>key===3379?maximumTexture:key===32873?bindings.get(activeUnit):8,getError(){const error=gpuError;gpuError=0;return error;},
+  getParameter(key){queries.parameters++;return key===3379?maximumTexture:key===32873?bindings.get(activeUnit):8;},getError(){queries.errors++;const error=gpuError;gpuError=0;return error;},
   isContextLost:()=>lost,deleteTexture(){},deleteShader(){},deleteProgram(){},deleteBuffer(){},deleteVertexArray(){},
-  drawArrays(){if(throwDraw)throw new Error('draw failed');draws.push({uploads:uploads.length,ready:document.body.classList.contains('scene-model-ready')});if(drawError)gpuError=1282;}
+  drawArrays(){if(throwDraw)throw new Error('draw failed');draws.push({progress,uploads:uploads.length,ready:document.body.classList.contains('scene-model-ready')});if(drawError)gpuError=1282;}
  };
  canvas.getContext=()=>unavailable?null:gl;
  const nodes={'.journey':journey,'.journey-stage':stage,'#sky-scene':canvas,'.hero-content':hero,'.showcase':showcase,'meta[name="theme-color"]':element()};
@@ -54,8 +56,8 @@ function sceneHarness({fast=false,width=1200,maximumTexture=8192,saveData=false,
   querySelector(selector){if(selector==='.scene-retry')return retry;if(selector==='.scene-status')return status;if(selector==='.scene-status-text')return statusText;return nodes[selector]??null;},
   createElement(tag){assert.equal(tag,'canvas');const resized=element();resized.getContext=kind=>{assert.equal(kind,'2d');return {drawImage(...args){resizes.push(args);}};};return resized;},
   querySelectorAll:()=>[],getElementById:id=>/retry/.test(id)?retry:/status/.test(id)?status:id==='sky-scene'?canvas:null};
- const window={...eventTarget(),innerWidth:width,innerHeight:800,devicePixelRatio:1};
- const context={document,window,innerWidth:width,innerHeight:800,devicePixelRatio:1,navigator:{hardwareConcurrency:8,deviceMemory:8,connection:{saveData,effectiveType:fast?'4g':'3g',downlink:fast?20:.8}},
+ const window={...eventTarget(),innerWidth:width,innerHeight:height,devicePixelRatio:1};
+ const context={document,window,innerWidth:width,innerHeight:height,devicePixelRatio:1,navigator:{hardwareConcurrency:8,deviceMemory:8,connection:{saveData,effectiveType:fast?'4g':'3g',downlink:fast?20:.8}},
   console:{warn:(...args)=>warnings.push(args),error:(...args)=>warnings.push(args),log(){}},
   Image:class {constructor(){images.push(this);}set src(value){this.url=value;if(value){this.width=this.naturalWidth=/surface/.test(value)?3072:/detail/.test(value)?6144:2048;this.height=this.naturalHeight=this.width/2;}}get src(){return this.url;}decode(){return Promise.resolve();}},
   performance:{now:()=>time},matchMedia:query=>({...eventTarget(),matches:query.includes('min-width')||query.includes('pointer: fine')}),
@@ -69,8 +71,11 @@ function sceneHarness({fast=false,width=1200,maximumTexture=8192,saveData=false,
  const loadOpening=async()=>{for(const image of [...images].filter(image=>/earth-surface\.jpg$|earth-clouds\.jpg$/.test(image.src)))await load(image);};
  const frame=async()=>{for(const item of frames.splice(0))if(!item.cancelled)item.fn(time);await settle();};
  const advance=async(milliseconds)=>{time+=milliseconds;for(const [id,timer] of [...timers])if(timer.at<=time){timers.delete(id);timer.fn();}await settle();};
- return {document,canvas,stage,hero,action,showcase,status,statusText,retry,images,uploads,draws,warnings,load,loadOpening,settle,frame,advance,bindings,resizes,failUpload(){throwUpload=true;},
+ return {document,canvas,stage,hero,action,showcase,status,statusText,retry,images,uploads,draws,warnings,load,loadOpening,settle,frame,advance,bindings,resizes,queries,
   scroll(progress){sceneTop=-progress*1600;window.dispatch('scroll');},
+  scrollTop(top){sceneTop=top;window.dispatch('scroll');},directFrame(){window.dispatch('azivor:descent-frame');},
+  viewportHeight(value){context.innerHeight=window.innerHeight=value;window.dispatch('resize');},
+  resizeStage(newWidth,newHeight){stageWidth=newWidth;stageHeight=newHeight;window.dispatch('resize');},
   lose(){lost=true;return canvas.dispatch('webglcontextlost');},restore(){lost=false;canvas.dispatch('webglcontextrestored');}};
 }
 function assertUnavailable(h){
@@ -146,33 +151,36 @@ test('small GPUs resize oversized base textures before uploading and still rende
  assert.equal(h.resizes.length,1);assert.equal(h.resizes[0][3],2048);assert.equal(h.resizes[0][4],1024);
  assert.ok(h.uploads.every(source=>source.width<=2048&&source.height<=2048));
 });
-test('capable fast desktop requests detail only after a ready close-up and optional failure retains Earth',async()=>{
- const h=sceneHarness({fast:true});await makeReady(h);assert.equal(h.images.length,2);
- await h.advance(5000);h.scroll(.17);await h.frame();assert.equal(h.images.length,2);
- h.scroll(.2);await h.frame();assert.equal(h.images.length,3);assert.equal(h.images[2].src,'/earth-clouds-detail.webp');assert.equal(h.images[2].fetchPriority,'low');
- h.images[2].onerror?.();await h.settle();assert.equal(h.document.body.classList.contains('scene-model-ready'),true);assert.equal(h.canvas.style.visibility,'visible');
- h.scroll(.4);await h.frame();assert.equal(h.images.length,3,'detail failure must not create a request loop');
-});
-test('failed optional detail upload restores the working cloud texture binding',async()=>{
+test('cloud texture stays unchanged throughout the visible descent',async()=>{
  const h=sceneHarness({fast:true});await makeReady(h);const cloud=h.bindings.get(33985);
- h.scroll(.2);await h.frame();h.failUpload();await h.load(h.images[2]);await h.frame();
- assert.equal(h.bindings.get(33985),cloud);assert.equal(h.document.body.classList.contains('scene-model-ready'),true);assert.equal(h.canvas.style.visibility,'visible');
+ for(const progress of [.1,.2,.5,.8,1,.4,0]){h.scroll(progress);await h.frame();}
+ assert.equal(h.images.length,2);assert.equal(h.uploads.length,2);assert.equal(h.bindings.get(33985),cloud);
+ assert.equal(h.document.body.classList.contains('scene-model-ready'),true);
 });
-test('a successful optional cloud upload schedules a fresh frame while Earth stays visible',async()=>{
- const h=sceneHarness({fast:true});await makeReady(h);const cloud=h.bindings.get(33985);
- h.scroll(.2);await h.frame();const before=h.draws.length;await h.load(h.images[2]);
- assert.notEqual(h.bindings.get(33985),cloud);assert.equal(h.document.body.classList.contains('scene-model-ready'),true);
- await h.frame();assert.equal(h.draws.length,before+1);assert.equal(h.canvas.style.visibility,'visible');
+test('ordinary descent frames do not issue synchronous GPU queries',async()=>{
+ const h=sceneHarness();await makeReady(h);const initial={...h.queries};
+ for(let i=1;i<=20;i++){h.scroll(i/20);await h.frame();}
+ assert.deepEqual(h.queries,initial);assert.equal(h.draws.length,21);
 });
-test('an optional detail completion from a lost context cannot alter its replacement',async()=>{
- const h=sceneHarness({fast:true});await makeReady(h);h.scroll(.2);await h.frame();const stale=h.images[2].onload;
- h.lose();h.restore();await h.load(h.images[3]);await h.load(h.images[4]);await h.frame();
- const cloud=h.bindings.get(33985),count=h.uploads.length;stale?.();await h.settle();await h.frame();
- assert.equal(h.uploads.length,count);assert.equal(h.bindings.get(33985),cloud);assert.equal(h.document.body.classList.contains('scene-model-ready'),true);
+test('browser chrome height changes leave stage progress and drawing buffer stable',async()=>{
+ const h=sceneHarness({width:390,height:700});await makeReady(h);h.scrollTop(-850);await h.frame();
+ const initial={width:h.canvas.width,height:h.canvas.height,progress:h.draws.at(-1).progress,errors:h.queries.errors};
+ h.viewportHeight(780);await h.frame();
+ assert.equal(h.canvas.width,initial.width);assert.equal(h.canvas.height,initial.height);
+ assert.equal(h.draws.at(-1).progress,initial.progress);assert.equal(h.queries.errors,initial.errors);
 });
-for(const options of [{width:900},{maximumTexture:4096},{saveData:true}])test(`detail remains optional on constrained device ${JSON.stringify(options)}`,async()=>{
- const h=sceneHarness({fast:true,...options});await makeReady(h);h.scroll(.5);await h.frame();assert.equal(h.images.length,2);
+test('the camera and buffer use actual stage dimensions including a taller minimum stage',async()=>{
+ const h=sceneHarness({width:1000,height:500});h.resizeStage(1000,620);await makeReady(h);h.scrollTop(-890);await h.frame();
+ assert.equal(h.canvas.width,1000);assert.equal(h.canvas.height,620);assert.equal(h.draws.at(-1).progress,.5);
+ const errors=h.queries.errors;h.resizeStage(900,700);await h.frame();
+ assert.equal(h.canvas.width,900);assert.equal(h.canvas.height,700);assert.equal(h.queries.errors,errors+1,'new drawing buffer requires an allocation error check');
 });
-test('a slow base transfer keeps the small texture even on a nominally fast connection',async()=>{
- const h=sceneHarness({fast:true});await h.advance(2000);await makeReady(h);h.scroll(.5);await h.frame();assert.equal(h.images.length,2);
+test('an Explore frame immediately renders current progress and cancels an older queued scene draw',async()=>{
+ const h=sceneHarness();await makeReady(h);h.scroll(.4);const before=h.draws.length;
+ h.directFrame();assert.equal(h.draws.length,before+1);assert.equal(h.draws.at(-1).progress,.4);
+ await h.frame();assert.equal(h.draws.length,before+1,'queued scroll draw must be cancelled after synchronous drawing');
+});
+test('multiple scroll events coalesce into one draw of the latest position',async()=>{
+ const h=sceneHarness();await makeReady(h);h.scroll(.1);h.scroll(.3);h.scroll(.6);const before=h.draws.length;
+ await h.frame();assert.equal(h.draws.length,before+1);assert.equal(h.draws.at(-1).progress,.6);
 });

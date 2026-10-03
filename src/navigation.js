@@ -75,11 +75,13 @@ if (navToggle) {
 // Let the homepage action travel through the scroll-driven Earth scene.
 const descentLink = document.querySelector('.descent-link');
 if (descentLink) {
+  let cancelDescent = () => {};
   const destination = document.getElementById('first-content');
   descentLink.addEventListener('click', event => {
     if (!destination || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    cancelDescent();
+    if (!document.body.classList.contains('scene-model-ready') || document.documentElement.classList.contains('sky-fallback') || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       destination.scrollIntoView({behavior: 'instant', block: 'start'});
       destination.focus({preventScroll: true});
       history.replaceState(null, '', '#first-content');
@@ -87,7 +89,9 @@ if (descentLink) {
     }
 
     const start = window.scrollY;
-    const end = destination.getBoundingClientRect().top + start;
+    const stage = document.querySelector('.journey-stage');
+    const initialWidth = window.innerWidth;
+    const initialStageHeight = stage?.getBoundingClientRect().height || window.innerHeight;
     const duration = 5100;
     const oldBehavior = document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior = 'auto';
@@ -101,18 +105,31 @@ if (descentLink) {
       window.removeEventListener('wheel', cancel);
       window.removeEventListener('touchstart', cancel);
       window.removeEventListener('keydown', onKey);
+      window.removeEventListener('pointerdown', cancel);
+      window.removeEventListener('resize', onResize);
+      cancelDescent = () => {};
     };
     const cancel = () => { stopped = true; cleanup(); };
+    cancelDescent = cancel;
     const onKey = keyEvent => { if (cancelKeys.has(keyEvent.key)) cancel(); };
+    const onResize = () => {
+      // Mobile browser bars change innerHeight without changing the stable stage.
+      if (window.innerWidth !== initialWidth || (stage?.getBoundingClientRect().height || window.innerHeight) !== initialStageHeight) cancel();
+    };
     window.addEventListener('wheel', cancel, {passive: true, once: true});
     window.addEventListener('touchstart', cancel, {passive: true, once: true});
     window.addEventListener('keydown', onKey);
+    window.addEventListener('pointerdown', cancel, {passive: true, once: true});
+    window.addEventListener('resize', onResize);
     const step = now => {
       if (stopped) return;
+      if (!document.body.classList.contains('scene-model-ready') || document.documentElement.classList.contains('sky-fallback')) { cancel(); return; }
       started ??= now;
       const t = Math.min((now - started) / duration, 1);
       const eased = (1 - Math.cos(Math.PI * t)) / 2;
-      window.scrollTo(0, start + (end - start) * eased);
+      const end = destination.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({left: 0, top: start + (end - start) * eased, behavior: 'instant'});
+      window.dispatchEvent(new Event('azivor:descent-frame'));
       if (t < 1) frame = requestAnimationFrame(step);
       else {
         cleanup();
@@ -132,6 +149,7 @@ const topHeader = document.querySelector('.header');
 const headerNav = document.querySelector('.inner-page .header .nav');
 if (topHeader && (scrollNav || headerNav)) {
   const journey = document.querySelector('.journey');
+  const sceneStage = document.querySelector('.journey-stage');
   const lightBoundary = document.querySelector('.content-flow') || document.querySelector('.page-hero');
   const wordmark = topHeader.querySelector('.wordmark');
   let scrollFrame = 0;
@@ -141,7 +159,7 @@ if (topHeader && (scrollNav || headerNav)) {
     const menuOpen = document.body.classList.contains('menu-open');
     if (scrollNav) {
       const bounds = journey?.getBoundingClientRect();
-      const journeyProgress = bounds ? Math.max(0, Math.min(1, -bounds.top / Math.max(1, bounds.height - window.innerHeight))) : 0;
+      const journeyProgress = bounds ? Math.max(0, Math.min(1, -bounds.top / Math.max(1, bounds.height - (sceneStage?.getBoundingClientRect().height || window.innerHeight)))) : 0;
       const afterScene = bounds ? journeyProgress >= .8 : topHeader.getBoundingClientRect().bottom <= 0;
       const reducedScene = document.documentElement.classList.contains('sky-fallback') || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const show = desktop && !menuOpen && (reducedScene ? (lightBoundary?.getBoundingClientRect().top ?? Infinity) <= window.innerHeight : afterScene);
