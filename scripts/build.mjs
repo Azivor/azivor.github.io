@@ -11,8 +11,9 @@ const out=join(root,'dist');await mkdir(join(out,'ui'),{recursive:true});await m
 await writeFile(join(out,'index.html'),Home());
 for(const [route,render] of [['explore',Explore],['builds',Builds],['about',About]]){await mkdir(join(out,route),{recursive:true});await writeFile(join(out,route,'index.html'),render());}
 await mkdir(join(out,'scene-test'),{recursive:true});
-await writeFile(join(out,'scene-test/index.html'),Home().replace('Azivor — Build with what AI can do now.','Azivor — Descent study').replace('<body>', '<body class="descent-study">'));
+await writeFile(join(out,'scene-test/index.html'),Home({study:true}));
 await writeFile(join(out,'components/index.html'),Catalog());
+await copyFile(join(root,'src/assets/social-preview.jpg'),join(out,'social-preview.jpg'));
 await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png'));
 await copyFile(join(root,'src/assets/earth-surface.jpg'),join(out,'earth-surface.jpg'));
 await copyFile(join(root,'src/assets/earth-clouds.jpg'),join(out,'earth-clouds.jpg'));

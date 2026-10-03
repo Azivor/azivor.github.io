@@ -1,10 +1,10 @@
 import {Button, Logo, surfaceAttributes} from "../ui/components.mjs";
 import {footer, header, head} from "./site-shell.mjs";
 
-export default function Home(){ return `<!doctype html>
+export default function Home({study=false}={}){ return `<!doctype html>
 <html lang="en">
-${head({title:"Azivor — Build with what AI can do now.",description:"Discover what modern AI makes possible, understand what it means for you, and turn it into work you can explain and own.",style:"home.css"})}
-<body>
+${head({title:study?"Earth descent study — Azivor":"Azivor — Build with what AI can do now.",description:study?"Developer visual reference for Azivor’s scroll-driven Earth scene, with viewing instructions and a link to its build case study.":"Discover what modern AI makes possible, understand what it means for you, and turn it into work you can explain and own.",path:study?"/scene-test/":"/",noindex:study})}
+<body${study?' class="descent-study"':''}>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="page" id="top">
 ${header("/")}
@@ -15,6 +15,7 @@ ${header("/")}
 <div class="shooting-stars" aria-hidden="true"><span class="shooting-star"></span></div>
 <div class="scene-vignette" aria-hidden="true"></div>
 <div class="hero-content">
+${study?'<p class="study-label">Developer visual reference · Earth descent study</p>':''}
 <h1 id="hero-title">Build with what<br>AI can do now.</h1>
 <p class="intro">Azivor helps students discover what modern AI makes possible—and turn it into something they can make, understand, and own.</p>
 <div class="hero-actions">${Button({label:"Explore",href:"#first-content",variant:"primary",className:"descent-link",icon:"down"})}</div>
@@ -29,6 +30,7 @@ ${header("/")}
 <div class="journey-target" id="possibilities" aria-hidden="true"></div>
 </section>
 <div class="content-flow">
+${study?'<section class="content-section" aria-labelledby="study-title"><p class="eyebrow">Scene study</p><h2 id="study-title">Inspect the descent.</h2><p>This reference uses the homepage scene and content to inspect its scroll transitions in context. Scroll from orbit through the atmosphere to the landing reveal. It is not a separate learning activity. With reduced motion or unavailable WebGL, the static fallback replaces the animated scene; graphics performance has not been established across devices.</p><a class="text-link" href="/builds/#earth-descent">Return to the Earth descent case study</a> · <a class="text-link" href="/">View the public homepage</a></section>':''}
 <section class="content-section lanes-section" id="first-content" tabindex="-1" aria-labelledby="lanes-title"><div class="section-intro"><p class="eyebrow">What we explore</p><h2 id="lanes-title">Three ways in.</h2><p>Discover what is possible, understand what it means for your own work, then choose something to try.</p></div><div class="category-card-gallery home-category-gallery">
 <a class="category-card category-card--feature" href="/explore/#build"><span class="category-card-copy"><h3>Build</h3><p>See an idea become a site, tool, or visual.</p></span><img class="category-card-mark" src="/azivor-logo.png" alt="" aria-hidden="true" width="512" height="408" loading="lazy"></a>
 <a class="category-card category-card--editorial" href="/explore/#workflows"><span class="category-card-copy"><h3>Workflows</h3><p>See how scattered steps become one useful way of working.</p></span></a>

@@ -1,4 +1,4 @@
-# Azivor component library
+# Azivor website
 
 A dependency-free static site built from reusable HTML-rendering components. Home, Explore, Builds, About, and the internal `/components/` catalog share the same implementation. Node 20+ and Python 3 are the only local requirements.
 
@@ -29,7 +29,7 @@ No install is needed. Rebuild after editing source; the preview is not a hot-rel
 
 ## Add a page
 
-Create a module in `src/pages/` that returns an HTML document. Reuse `site-shell.mjs` for the public header, footer, and shared styles. Register the page output in `scripts/build.mjs`. Build and run tests before publishing. Pushing to `main` deploys the site to GitHub Pages. Use the `/components/` reference for UI examples.
+Create a module in `src/pages/` that returns an HTML document. Reuse `site-shell.mjs` for the public header, footer, and shared styles. Register the page output in `scripts/build.mjs`. Build and run tests before publishing. Pushing to `main` deploys the site to GitHub Pages. Use the `/components/` developer reference for UI examples; it is excluded from indexing and is not a learner activity. The `/scene-test/` visual reference reuses Home to inspect scene transitions, carries its own canonical URL and `noindex, follow`, and links back to the build case study. Public Home, Explore, Builds, and About have self-canonical URLs and route-specific social metadata with a shared Earth preview. `noindex` is an indexing request, not access control.
 
 ```js
 import {Section, Card, Button} from '../ui/components.mjs';
