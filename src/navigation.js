@@ -8,33 +8,67 @@ for (const link of links) {
 }
 
 const navToggle = document.querySelector?.('.nav-toggle');
+let refreshScrollNav = () => {};
 if (navToggle) {
   const menu = document.getElementById(navToggle.getAttribute('aria-controls'));
-  const closeMenu = () => {
+  const backgroundInert = new Map();
+  const menuLinks = () => Array.from(menu?.querySelectorAll('a[href]') || [])
+    .filter(link => !link.hidden && !link.inert && link.getAttribute('tabindex') !== '-1');
+  const closeMenu = ({desktop = false} = {}) => {
+    if (navToggle.getAttribute('aria-expanded') !== 'true') return;
+    const focusWasInside = document.activeElement === navToggle || menu?.contains(document.activeElement);
     navToggle.setAttribute('aria-expanded', 'false');
     navToggle.setAttribute('aria-label', 'Open navigation menu');
     menu?.classList.remove('nav-open');
     document.body.classList.remove('menu-open');
+    for (const [element, inert] of backgroundInert) element.inert = inert;
+    backgroundInert.clear();
+    if (desktop) {
+      // Reconcile the Home scene before choosing a visible desktop focus target.
+      refreshScrollNav();
+      if (focusWasInside) {
+        const floating = document.querySelector('.floating-nav.is-visible');
+        const destination = floating?.querySelector('a[aria-current="page"]')
+          || menu?.querySelector('a[aria-current="page"]') || menuLinks()[0];
+        destination?.focus({preventScroll: true});
+      }
+    } else navToggle.focus({preventScroll: true});
   };
   navToggle.addEventListener('click', () => {
-    const open = navToggle.getAttribute('aria-expanded') !== 'true';
-    navToggle.setAttribute('aria-expanded', String(open));
-    navToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
-    menu?.classList.toggle('nav-open', open);
-    document.body.classList.toggle('menu-open', open);
-    if (open) menu?.querySelector('a')?.focus();
+    if (navToggle.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+      return;
+    }
+    if (!menu || window.innerWidth > 700) return;
+    for (const element of document.querySelectorAll('main, footer, .header .wordmark, .floating-nav, .skip-link')) {
+      backgroundInert.set(element, element.inert);
+      element.inert = true;
+    }
+    navToggle.setAttribute('aria-expanded', 'true');
+    navToggle.setAttribute('aria-label', 'Close navigation menu');
+    menu.classList.add('nav-open');
+    document.body.classList.add('menu-open');
+    (menuLinks()[0] || navToggle).focus({preventScroll: true});
   });
   menu?.addEventListener('click', event => {
     if (event.target.closest('a')) closeMenu();
   });
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+    if (navToggle.getAttribute('aria-expanded') !== 'true') return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
       closeMenu();
-      navToggle.focus();
+    } else if (event.key === 'Tab') {
+      const focusable = [navToggle, ...menuLinks()];
+      const index = focusable.indexOf(document.activeElement);
+      const next = index < 0 ? (event.shiftKey ? focusable.length - 1 : 0)
+        : (index + (event.shiftKey ? -1 : 1) + focusable.length) % focusable.length;
+      event.preventDefault();
+      focusable[next].focus({preventScroll: true});
     }
   });
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 700) closeMenu();
+    if (window.innerWidth > 700) closeMenu({desktop: true});
   });
 }
 
@@ -104,12 +138,13 @@ if (topHeader && (scrollNav || headerNav)) {
   const updateScrollNav = () => {
     scrollFrame = 0;
     const desktop = window.innerWidth > 700;
+    const menuOpen = document.body.classList.contains('menu-open');
     if (scrollNav) {
       const bounds = journey?.getBoundingClientRect();
       const journeyProgress = bounds ? Math.max(0, Math.min(1, -bounds.top / Math.max(1, bounds.height - window.innerHeight))) : 0;
       const afterScene = bounds ? journeyProgress >= .8 : topHeader.getBoundingClientRect().bottom <= 0;
       const reducedScene = document.documentElement.classList.contains('sky-fallback') || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const show = desktop && !document.body.classList.contains('menu-open') && (reducedScene ? (lightBoundary?.getBoundingClientRect().top ?? Infinity) <= window.innerHeight : afterScene);
+      const show = desktop && !menuOpen && (reducedScene ? (lightBoundary?.getBoundingClientRect().top ?? Infinity) <= window.innerHeight : afterScene);
       topHeader.inert = show;
       if (!show && scrollNav.contains(document.activeElement)) {
         topHeader.querySelector('.nav a[aria-current="page"]')?.focus({preventScroll:true});
@@ -123,9 +158,10 @@ if (topHeader && (scrollNav || headerNav)) {
       const glass = desktop && window.scrollY > 8;
       headerNav.classList.toggle('is-glass', glass);
       headerNav.classList.toggle('is-over-light', glass && (lightBoundary?.getBoundingClientRect().bottom ?? Infinity) <= 175);
-      if (wordmark) wordmark.inert = desktop && topHeader.getBoundingClientRect().bottom <= 0;
+      if (wordmark && !menuOpen) wordmark.inert = desktop && topHeader.getBoundingClientRect().bottom <= 0;
     }
   };
+  refreshScrollNav = updateScrollNav;
   const scheduleScrollNav = () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollNav); };
   window.addEventListener('scroll', scheduleScrollNav, {passive:true});
   window.addEventListener('resize', scheduleScrollNav);
