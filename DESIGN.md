@@ -45,3 +45,9 @@ Below the homepage journey and on Explore, Builds, and About, use a split editor
 Give content a format that matches its role: actual project screenshot plus linked title for builds; ordered rows for the Human Loop and revision exercise; one inset prompt; a comparison recipe with result/correction/effort criteria; visible notes for guidance and limitations. Page contents are native fragment links with at least 44px targets, including every major chapter. They reflow without horizontal scrolling. All desktop anchor destinations clear the centered glass navigation. Shared examples live in the component library; no fabricated projects or decorative stacked glass.
 
 The informational design references were Linear Method (grouped navigation and article rhythm), Anthropic Engineering (separated summary and reading detail), and GOV.UK layout/paragraph guidance (readable measure and distinct prose roles). These are design references, not measured evidence of learning improvement.
+
+### Boxed information surfaces
+
+The information pages use a quiet cloud-white ground (#f4f8fc) with related white, pale cyan (#e2f0f8), and cool silver (#e9edf6) boxes to distinguish content roles. Preserve textual headings and ordered source sequences so color is never the only signpost. The Human Loop has a wide opening stage and two supporting stage boxes on desktop; exercise steps use equal boxes in reading order. Build overview pairs the summary with its real scene capture, and case-study details/attribution/limits use clearly bounded surfaces. Prose stays in readable panels. Below 900px, narrow process boxes stack; below 700px the main chapter layout stacks.
+
+Interior heroes blend through an opaque 220px blue-to-cloud transition (180px on phones), beginning below the white supporting text. Do not compress the fade into a translucent 64px band. The ground at the seam matches the page exactly. Homepage Earth introduction and animation are unchanged.
