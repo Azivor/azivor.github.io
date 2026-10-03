@@ -133,4 +133,4 @@
 /* A scope note stays inside its prose card without a second matching box. */
 .about-copy .prose>.scope-note{border:0;border-top:1px solid #b7c8dc;border-radius:0;background:none;padding:22px 0 0;margin-top:24px}
 
-.footer-gradient-demo{height:260px;padding:32px;border-radius:20px;background:var(--footer-background);color:var(--footer-ink);display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-block:24px;font-size:.8125rem}.footer-gradient-demo strong{font-size:20px}
+.footer-gradient-demo{height:260px;padding:32px;border-radius:20px;background:var(--footer-background);color:var(--footer-ink);display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-block:24px;font-size:.8125rem}.footer-gradient-demo strong{font-size:20px;color:var(--footer-brand-ink)}

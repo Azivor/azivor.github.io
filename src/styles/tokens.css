@@ -42,4 +42,5 @@
 /* Informational surface roles: white reading, cyan process, silver support. */
 :root{--information-ground:#f4f8fc;--information-white:#fff;--information-blue:#e2f0f8;--information-silver:#e9edf6;--information-border:#c5d7e5;--information-radius:20px}
 
-:root{--footer-background:#1a4776 url('/footer-fade.svg') center/100% 100% no-repeat;--footer-ink:#f3f9ff}
+:root{--footer-fade-height:140px;--footer-background:#bbc2d2 url('/footer-fade.svg') center top/100% var(--footer-fade-height) no-repeat;--footer-ink:#2c425d;--footer-brand-ink:#234c70}
+@media(max-width:560px){:root{--footer-fade-height:80px}}
