@@ -25,6 +25,7 @@ await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.we
 for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
 for(const name of ['home','content','catalog','category-cards'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
+await copyFile(join(root,'src/exercise.js'),join(out,'exercise.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
 for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});

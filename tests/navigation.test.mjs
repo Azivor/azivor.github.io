@@ -8,17 +8,95 @@ test('navigation marks only the current page',()=>{
  assert.equal(links[2].attributes['aria-current'],'page');
 });
 
-test('full-screen mobile menu opens, closes on navigation, and supports Escape',()=>{
- const callbacks={};const documentEvents={};let menuOpen=false;let focused=false;let bodyLocked=false;let firstLinkFocused=false;
- const toggle={attributes:{'aria-controls':'site-navigation','aria-expanded':'false'},getAttribute(k){return this.attributes[k];},setAttribute(k,v){this.attributes[k]=v;},addEventListener(k,fn){callbacks['toggle-'+k]=fn;},contains(){return false;},focus(){focused=true;}};
- const menu={classList:{toggle(_name,value){menuOpen=value;},remove(){menuOpen=false;}},addEventListener(k,fn){callbacks['menu-'+k]=fn;},contains(){return false;},querySelector:()=>({focus(){firstLinkFocused=true;}})};
- const links=['/','/explore/','/builds/','/about/'].map(href=>({href,classList:{toggle(){}},getAttribute(){return href;},setAttribute(){},removeAttribute(){}}));
- const document={querySelectorAll:()=>links,querySelector:selector=>selector==='.nav-toggle'?toggle:null,getElementById:id=>id==='site-navigation'?menu:{getBoundingClientRect:()=>({top:1000})},addEventListener:(k,fn)=>documentEvents[k]=fn,body:{classList:{toggle(_name,value){bodyLocked=value;},remove(){bodyLocked=false;}}}};
- const window={innerHeight:800,innerWidth:390,addEventListener(){}};
- vm.runInNewContext(readFileSync('src/navigation.js','utf8'),{document,window,location:{pathname:'/'} });
- callbacks['toggle-click']();assert.equal(menuOpen,true);assert.equal(bodyLocked,true);assert.equal(firstLinkFocused,true);assert.equal(toggle.getAttribute('aria-expanded'),'true');assert.equal(toggle.getAttribute('aria-label'),'Close navigation menu');
- callbacks['menu-click']({target:{closest:()=>true}});assert.equal(menuOpen,false);assert.equal(bodyLocked,false);
- callbacks['toggle-click']();documentEvents.keydown({key:'Escape'});assert.equal(menuOpen,false);assert.equal(focused,true);assert.equal(toggle.getAttribute('aria-label'),'Open navigation menu');
+function mobileMenuHarness({home = false} = {}) {
+ const documentEvents = {}; const windowEvents = {}; const frames = [];
+ const element = (attributes = {}) => {
+  const classes = new Set(); const events = {};
+  return {attributes, inert:false, hidden:false, events,
+   classList:{add:name=>classes.add(name),remove:name=>classes.delete(name),contains:name=>classes.has(name),toggle(name,on){if(on)classes.add(name);else classes.delete(name);}},
+   getAttribute:name=>attributes[name]??null,setAttribute:(name,value)=>attributes[name]=value,removeAttribute:name=>delete attributes[name],
+   addEventListener(name,fn){(events[name]??=[]).push(fn);},
+   focus(){document.activeElement=this;},contains(){return false;},querySelector(){return null;}};
+ };
+ const toggle=element({'aria-controls':'site-navigation','aria-expanded':'false'});
+ const links=['/','/explore/','/builds/','/about/'].map(href=>element({href}));
+ const floatingLinks=['/','/explore/','/builds/','/about/'].map(href=>element({href}));
+ floatingLinks[0].setAttribute('aria-current','page');
+ const menu=element();menu.querySelectorAll=()=>links;
+ menu.querySelector=selector=>selector==='a[aria-current="page"]'?links.find(link=>link.attributes['aria-current']):selector==='a'?links[0]:null;
+ menu.contains=node=>links.includes(node);
+ const main=element();const footer=element();footer.inert=true;const wordmark=element();const skip=element();
+ const floating=element();floating.inert=true;floating.contains=node=>floatingLinks.includes(node);
+ floating.querySelector=selector=>selector==='a[aria-current="page"]'?floatingLinks[0]:null;
+ let sceneTop=0;
+ const header=element();header.querySelector=selector=>selector==='.wordmark'?wordmark:selector==='.nav a[aria-current="page"]'?links.find(link=>link.attributes['aria-current']):null;
+ header.getBoundingClientRect=()=>({bottom:-20});
+ const journey={getBoundingClientRect:()=>({top:sceneTop,height:2400})};
+ const content={getBoundingClientRect:()=>({top:100,bottom:300})};
+ const background=[main,footer,wordmark,skip,...(home?[floating]:[])];
+ const document={activeElement:toggle,body:element(),documentElement:element(),
+  querySelectorAll:selector=>selector==='.nav a'?links:background,
+  querySelector:selector=>({'.nav-toggle':toggle,'.header':header,'.inner-page .header .nav':home?null:menu,'.floating-nav':home?floating:null,'.floating-nav.is-visible':home&&floating.classList.contains('is-visible')?floating:null,'.journey':home?journey:null,'.content-flow':home?content:null,'.page-hero':home?null:content}[selector]??null),
+  getElementById:id=>id==='site-navigation'?menu:null,
+  addEventListener(name,fn){(documentEvents[name]??=[]).push(fn);}};
+ const window={innerWidth:390,innerHeight:800,scrollY:0,matchMedia:()=>({matches:false}),addEventListener(name,fn){(windowEvents[name]??=[]).push(fn);}};
+ const dispatch=(events,name,event={})=>{for(const fn of events[name]??[])fn(event);};
+ const flush=()=>{while(frames.length)frames.shift()();};
+ vm.runInNewContext(readFileSync('src/navigation.js','utf8'),{document,window,location:{pathname:'/'},requestAnimationFrame:fn=>{frames.push(fn);return frames.length;}});
+ return {document,window,toggle,menu,links,floating,floatingLinks,header,background,main,footer,wordmark,skip,
+  clickToggle(){dispatch(toggle.events,'click');flush();},
+  clickLink(){dispatch(menu.events,'click',{target:{closest:()=>links[0]}});flush();},
+  key(key,shiftKey=false){let prevented=false;dispatch(documentEvents,'keydown',{key,shiftKey,preventDefault(){prevented=true;}});flush();return prevented;},
+  resize(width){window.innerWidth=width;dispatch(windowEvents,'resize');flush();},
+  scroll(top=sceneTop){sceneTop=top;dispatch(windowEvents,'scroll');flush();}};
+}
+
+test('mobile menu isolates the background and cycles Tab through links and its toggle',()=>{
+ const h=mobileMenuHarness();h.clickToggle();
+ assert.equal(h.menu.classList.contains('nav-open'),true);assert.equal(h.document.body.classList.contains('menu-open'),true);
+ assert.equal(h.toggle.getAttribute('aria-expanded'),'true');assert.equal(h.toggle.getAttribute('aria-label'),'Close navigation menu');
+ assert.equal(h.document.activeElement,h.links[0]);assert.ok(h.background.every(element=>element.inert));
+ for(const link of h.links.slice(1)){assert.equal(h.key('Tab'),true);assert.equal(h.document.activeElement,link);}
+ h.key('Tab');assert.equal(h.document.activeElement,h.toggle);
+ h.key('Tab');assert.equal(h.document.activeElement,h.links[0]);
+ h.key('Tab',true);assert.equal(h.document.activeElement,h.toggle);
+ h.key('Tab',true);assert.equal(h.document.activeElement,h.links.at(-1));
+ h.main.focus();h.key('Tab');assert.equal(h.document.activeElement,h.toggle);
+ h.scroll();assert.equal(h.wordmark.inert,true,'scroll updates must keep the background isolated');
+ assert.equal(h.key('Escape'),true);assert.equal(h.document.activeElement,h.toggle);
+ assert.equal(h.menu.classList.contains('nav-open'),false);assert.equal(h.document.body.classList.contains('menu-open'),false);
+ assert.equal(h.toggle.getAttribute('aria-label'),'Open navigation menu');
+ assert.equal(h.main.inert,false);assert.equal(h.footer.inert,true);assert.equal(h.wordmark.inert,false);assert.equal(h.skip.inert,false);
+ assert.equal(h.key('Tab'),false,'a closed menu must not capture Tab');
+});
+
+test('mobile menu restores previous inert states on link and toggle closure',()=>{
+ const h=mobileMenuHarness({home:true});
+ for(const close of [()=>h.clickLink(),()=>h.clickToggle()]){
+  h.clickToggle();assert.ok(h.background.every(element=>element.inert));
+  close();assert.equal(h.toggle.getAttribute('aria-expanded'),'false');assert.equal(h.document.activeElement,h.toggle);
+  assert.equal(h.main.inert,false);assert.equal(h.footer.inert,true);assert.equal(h.wordmark.inert,false);assert.equal(h.skip.inert,false);
+  assert.equal(h.floating.inert,true,'the hidden Home floating navigation must stay inert');
+ }
+});
+
+test('desktop resize closes the menu and focuses the visible Home navigation',()=>{
+ const h=mobileMenuHarness({home:true});h.scroll(-1280);h.clickToggle();
+ h.resize(1200);
+ assert.equal(h.toggle.getAttribute('aria-expanded'),'false');assert.equal(h.document.body.classList.contains('menu-open'),false);
+ assert.equal(h.main.inert,false);assert.equal(h.footer.inert,true);assert.equal(h.skip.inert,false);
+ assert.equal(h.floating.classList.contains('is-visible'),true);assert.equal(h.floating.inert,false);assert.equal(h.header.inert,true);
+ assert.equal(h.document.activeElement,h.floatingLinks[0]);
+ h.resize(390);assert.equal(h.floating.inert,true);assert.equal(h.header.inert,false);
+ h.clickToggle();h.key('Escape');assert.equal(h.floating.inert,true);assert.equal(h.document.activeElement,h.toggle);
+});
+
+test('desktop resize focuses the header links when floating navigation is unavailable',()=>{
+ for(const home of [false,true]){
+  const h=mobileMenuHarness({home});h.clickToggle();h.resize(1200);
+  assert.equal(h.toggle.getAttribute('aria-expanded'),'false');assert.equal(h.document.activeElement,h.links[0]);
+  assert.equal(h.main.inert,false);assert.equal(h.footer.inert,true);
+ }
 });
 
 test('Home glass navigation waits for the Earth reveal and never appears on mobile',()=>{

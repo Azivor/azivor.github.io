@@ -5,7 +5,7 @@
 .category-card-copy{position:relative;z-index:1;display:block;max-width:36rem}
 .category-card h3{max-width:14ch;font:500 clamp(2rem,3.3vw,3.5rem)/1.06 var(--font-body);letter-spacing:-.035em;color:inherit}
 .category-card p{max-width:31ch;margin-top:18px;font-size:clamp(1rem,1.4vw,1.13rem);line-height:1.52;color:inherit}
-.category-card--feature{grid-column:span 7;min-height:365px;border-color:#799bef;background:radial-gradient(circle at 80% 90%,#d9e5ff55,transparent 43%),linear-gradient(105deg,#456bb8 0%,#4d73c2 58%,#6c90ee 100%);color:white}
+.category-card--feature{grid-column:span 7;min-height:365px;border-color:#799bef;background:radial-gradient(circle at 80% 90%,#d9e5ff14,transparent 43%),linear-gradient(105deg,#385d9e 0%,#3e64ab 58%,#4a70b8 100%);color:white}
 .category-card-mark{position:absolute;right:5%;bottom:9%;width:min(40%,240px);height:auto;opacity:.16;transform:rotate(-9deg);pointer-events:none}
 .category-card--editorial{grid-column:span 5;min-height:365px;background:linear-gradient(145deg,#f8faff 0%,#edf0f5 58%,#e5e9f2 100%);border-color:#d9dee9;box-shadow:inset 0 2px 3px #ffffffd9,0 12px 28px #244e7610}
 .category-card--editorial .category-card-copy{display:flex;flex:1;flex-direction:column}

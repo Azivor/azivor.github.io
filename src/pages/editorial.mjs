@@ -9,5 +9,9 @@ export function BuildFeature({description='A real scene, with its shader, imager
 }
 
 export function Steps(items, label) {
-  return `<ol class="process-list" role="list" aria-label="${escapeHTML(label)}">${items.map(([title,body],i)=>`<li><span class="step-number" aria-hidden="true">0${i+1}</span><div><h3>${title}</h3>${body}</div></li>`).join('')}</ol>`;
+  return `<ol class="process-list" role="list" aria-label="${escapeHTML(label)}">${items.map(([title,body],i)=>`<li><span class="step-number" aria-hidden="true">${i+1}</span><div><h3>${title}</h3>${body}</div></li>`).join('')}</ol>`;
+}
+
+export function Prompt({id, text}) {
+  return `<div class="exercise-prompt"><div class="prompt-tools"><span>Prompt to adapt</span><button class="copy-prompt" type="button" data-copy-prompt="${escapeHTML(id)}" hidden>Copy prompt</button></div><blockquote id="${escapeHTML(id)}"><p>${escapeHTML(text)}</p></blockquote><p class="copy-status" role="status" aria-live="polite"></p></div>`;
 }
