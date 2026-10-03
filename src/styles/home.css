@@ -24,7 +24,11 @@ html,body{background:#081432}
 .about{text-align:center;padding:150px 24px 100px;background:linear-gradient(180deg,#d9eef8 0%,#f3f9fc 48%,#fff 100%)}.about h2{font:500 clamp(2.7rem,5.5vw,4.2rem)/1.08 var(--font-body);letter-spacing:-2px;margin:0;color:#236b99}.about h2 span{color:#47758f;font-weight:500}.about>p{font-size:16px;line-height:1.8;color:#426e89;margin-top:25px}.about>.button{margin-top:30px;background-color:#eaf6fc;border-color:#d9edf8;color:#236b99}
 footer{min-height:300px;margin:0;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;padding:115px max(24px,calc((100vw - 1200px)/2)) 35px;background:var(--footer-background);color:var(--footer-ink);font-size:.8125rem}.wordmark.footer-mark{font-size:20px;color:var(--footer-brand-ink)}.footer-mark .brand-mark{width:auto;height:28px;filter:brightness(0) saturate(100%) invert(27%) sepia(6%) saturate(587%) hue-rotate(169deg) brightness(89%) contrast(92%)}
 @media(max-width:700px){
- .header{padding:calc(18px + env(safe-area-inset-top, 0px)) 22px 18px;justify-content:space-between;gap:20px;flex-wrap:nowrap}
+ html{scroll-padding-top:calc(100px + env(safe-area-inset-top, 0px))}
+ .header{position:fixed;z-index:9;width:100%;padding:calc(18px + env(safe-area-inset-top, 0px)) 22px 18px;justify-content:space-between;gap:20px;flex-wrap:nowrap}
+ /* Blur only the backing layer, so the full-screen menu keeps the viewport as its containing block. */
+ .header::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:rgba(8,20,50,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);opacity:0}
+ .header.is-mobile-scrolled::before{opacity:1}
  .header .wordmark,.nav-toggle{position:relative;z-index:2}
  .nav-toggle{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;padding:0;color:#fff;background:none;border:0;cursor:pointer}
  .nav-toggle:focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:4px}
@@ -99,3 +103,5 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
  html:not(.sky-fallback) .scene-status{top:calc(100svh - 104px);bottom:auto}
  html:not(.sky-fallback) .scroll-cue{top:calc(100svh - 54px);bottom:auto}
 }
+
+@media(max-width:700px){.editorial-main [id],.content-flow section[id]{scroll-margin-top:16px}}
