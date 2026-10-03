@@ -83,8 +83,7 @@
 @media(max-width:700px){.build-preview-frame{border-radius:12px}}
 
 /* Related surfaces make content roles visible without changing Azivor's identity. */
-:root{--information-ground:#f4f8fc;--information-white:#fff;--information-blue:#e2f0f8;--information-silver:#e9edf6;--information-border:#c5d7e5;--information-radius:20px}
-.editorial-main{background:var(--information-ground)}
+.editorial-main{background:linear-gradient(180deg,var(--information-ground) 0%,var(--information-ground) calc(100% - 240px),#fff 100%)}
 .page-hero{--hero-fade:220px;padding-bottom:calc(var(--hero-fade) + 24px);background:linear-gradient(180deg,#081432 0%,#143d71 38%,#234f78 calc(100% - var(--hero-fade)),#557c9e calc(100% - var(--hero-fade)*.72),#98b5cc calc(100% - var(--hero-fade)*.4),#d6e4ef calc(100% - var(--hero-fade)*.14),var(--information-ground) 100%)}
 .page-contents{padding:22px 24px;border:1px solid var(--information-border);border-radius:var(--information-radius);background:#ffffffb3}
 .page-contents ol{gap:12px}.page-contents a{padding:12px 14px;border:1px solid transparent;border-radius:11px;background:#eaf2f8;min-height:52px}.page-contents a:hover,.page-contents a:focus-visible{border-color:#84aec9;background:#deedf7}.contents-label{margin-bottom:14px}
@@ -128,3 +127,6 @@
 @media(max-width:900px){.process-list{grid-template-columns:1fr}.process-list>li{grid-column:auto!important}.section-body.prose,.reading-module,.reading-module+.reading-module{padding:26px}}
 @media(max-width:700px){.page-hero{--hero-fade:180px;padding-bottom:calc(var(--hero-fade) + 24px)}.page-contents{padding:20px}.page-contents ol{gap:10px}.page-contents a{padding:10px;min-height:48px}.editorial-split{gap:28px}.process-list{gap:14px}.process-list>li,.process-list>li:first-child,.process-list>li:last-child{padding:24px}.section-body.prose{padding:26px}.build-overview{grid-template-columns:1fr;gap:20px}.build-overview .build-story-head h2{font-size:2.3rem;max-width:18ch}.build-overview .build-preview-frame{min-height:0;aspect-ratio:16/9}.build-overview .build-preview-frame img{height:100%}.decision-pair .reading-module,.decision-pair .reading-module+.reading-module{padding:24px}.comparison-criteria>div{padding:14px}.exercise-link{padding:24px}.content-flow .method-section .prose{padding:26px}}
 @media(max-width:360px){.page-contents{padding:18px}.process-list>li,.process-list>li:first-child,.process-list>li:last-child,.section-body.prose,.reading-module,.reading-module+.reading-module{padding:22px}.comparison-criteria>div{grid-template-columns:1fr;gap:6px}.build-overview .build-story-head{padding:24px}.build-overview .build-story-head h2{font-size:2rem}}
+
+/* A scope note stays inside its prose card without a second matching box. */
+.about-copy .prose>.scope-note{border:0;border-top:1px solid #b7c8dc;border-radius:0;background:none;padding:22px 0 0;margin-top:24px}

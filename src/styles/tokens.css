@@ -38,3 +38,6 @@
   --ink: var(--color-ink); --muted: var(--color-muted);
   --line: var(--color-border); --serif: var(--font-hero); --sans: var(--font-body);
 }
+
+/* Informational surface roles: white reading, cyan process, silver support. */
+:root{--information-ground:#f4f8fc;--information-white:#fff;--information-blue:#e2f0f8;--information-silver:#e9edf6;--information-border:#c5d7e5;--information-radius:20px}
