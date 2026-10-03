@@ -48,7 +48,7 @@ function mobileMenuHarness({home = false} = {}) {
   clickLink(){dispatch(menu.events,'click',{target:{closest:()=>links[0]}});flush();},
   key(key,shiftKey=false){let prevented=false;dispatch(documentEvents,'keydown',{key,shiftKey,preventDefault(){prevented=true;}});flush();return prevented;},
   resize(width){window.innerWidth=width;dispatch(windowEvents,'resize');flush();},
-  scroll(top=sceneTop){sceneTop=top;dispatch(windowEvents,'scroll');flush();}};
+  scroll(top=sceneTop){sceneTop=top;window.scrollY=Math.max(0,-top);dispatch(windowEvents,'scroll');flush();}};
 }
 
 test('mobile menu isolates the background and cycles Tab through links and its toggle',()=>{
@@ -134,7 +134,7 @@ test('inner pages add glass to the original links after scrolling',()=>{
  window.innerWidth=390;events.resize();assert.equal(classes.has('is-glass'),false);assert.equal(wordmarkInert,false);
 });
 
-function descentHarness({ready=true,fallback=false,reduced=false}={}){
+function descentHarness({ready=true,fallback=false,reduced=false,width=1200,headerHeight=60}={}){
  const listeners=new Map(),frames=new Map(),scrolls=[],sceneFrames=[],historyChanges=[];
  let nextFrame=0,destinationY=2200,stageHeight=800;
  const eventTarget=()=>({
@@ -147,8 +147,8 @@ function descentHarness({ready=true,fallback=false,reduced=false}={}){
  const stage={getBoundingClientRect:()=>({height:stageHeight})};
  const destination={getBoundingClientRect:()=>({top:destinationY-window.scrollY}),focus(){document.activeElement=this;},scrollIntoView(){window.scrollY=destinationY;}};
  const document={activeElement:null,body:{classList:{contains:name=>name==='scene-model-ready'&&ready}},documentElement:{style:{scrollBehavior:'smooth'},classList:{contains:name=>name==='sky-fallback'&&fallback,toggle(){}}},
-  querySelectorAll:()=>[],querySelector:selector=>selector==='.descent-link'?link:selector==='.journey-stage'?stage:null,getElementById:id=>id==='first-content'?destination:null,addEventListener(){}};
- const window={...eventTarget(),innerWidth:1200,innerHeight:800,scrollY:0,matchMedia:()=>({matches:reduced}),
+  querySelectorAll:()=>[],querySelector:selector=>selector==='.descent-link'?link:selector==='.journey-stage'?stage:selector==='.header'?{getBoundingClientRect:()=>({height:headerHeight})}:null,getElementById:id=>id==='first-content'?destination:null,addEventListener(){}};
+ const window={...eventTarget(),innerWidth:width,innerHeight:800,scrollY:0,matchMedia:()=>({matches:reduced}),
   scrollTo(options){assert.equal(typeof options,'object');assert.equal(options.behavior,'instant');scrolls.push({...options});this.scrollY=options.top;}};
  window.addEventListener('azivor:descent-frame',()=>sceneFrames.push(window.scrollY));
  const requestAnimationFrame=fn=>{const id=++nextFrame;frames.set(id,fn);return id;};
@@ -196,5 +196,27 @@ for(const options of [{ready:false},{fallback:true},{reduced:true}])test(`Explor
 test('modified Explore activation preserves ordinary browser navigation',()=>{
  for(const extra of [{ctrlKey:true},{metaKey:true},{button:1},{defaultPrevented:true}]){
   const h=descentHarness();h.click(extra);assert.equal(h.pendingFrames(),0);assert.equal(h.scrolls.length,0);assert.equal(h.historyChanges.length,0);
+ }
+});
+
+
+test('mobile header remains usable deep in Home and inner pages, including menu closure',()=>{
+ for(const home of [true,false]){
+  const h=mobileMenuHarness({home});h.scroll(-3000);
+  assert.equal(h.header.inert,false);assert.equal(h.wordmark.inert,false);
+  assert.equal(h.header.classList.contains('is-mobile-scrolled'),true);
+  h.clickToggle();assert.equal(h.toggle.getAttribute('aria-expanded'),'true');
+  h.scroll(-3100);assert.equal(h.header.inert,false);assert.equal(h.wordmark.inert,true);
+  h.key('Escape');assert.equal(h.document.activeElement,h.toggle);assert.equal(h.wordmark.inert,false);
+  h.scroll(0);assert.equal(h.header.classList.contains('is-mobile-scrolled'),false);
+  h.resize(1200);assert.equal(h.header.classList.contains('is-mobile-scrolled'),false);
+ }
+});
+
+test('mobile Explore arrives below the fixed header including safe-area height',()=>{
+ for(const headerHeight of [60,107]){
+  const h=descentHarness({width:390,headerHeight});h.click();h.frame(0);h.frame(5100);
+  assert.equal(h.destination.getBoundingClientRect().top,headerHeight+16);
+  assert.equal(h.document.activeElement,h.destination);assert.equal(h.historyChanges.length,1);
  }
 });

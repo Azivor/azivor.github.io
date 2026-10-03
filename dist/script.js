@@ -127,7 +127,8 @@ if (descentLink) {
       started ??= now;
       const t = Math.min((now - started) / duration, 1);
       const eased = (1 - Math.cos(Math.PI * t)) / 2;
-      const end = destination.getBoundingClientRect().top + window.scrollY;
+      const headerClearance = window.innerWidth <= 700 ? (document.querySelector('.header')?.getBoundingClientRect().height || 60) + 16 : 0;
+      const end = Math.max(0, destination.getBoundingClientRect().top + window.scrollY - headerClearance);
       window.scrollTo({left: 0, top: start + (end - start) * eased, behavior: 'instant'});
       window.dispatchEvent(new Event('azivor:descent-frame'));
       if (t < 1) frame = requestAnimationFrame(step);
@@ -157,6 +158,9 @@ if (topHeader && (scrollNav || headerNav)) {
     scrollFrame = 0;
     const desktop = window.innerWidth > 700;
     const menuOpen = document.body.classList.contains('menu-open');
+    topHeader.classList?.toggle('is-mobile-scrolled', !desktop && window.scrollY > 8);
+    const mobileLightEdge = lightBoundary?.getBoundingClientRect()[journey ? 'top' : 'bottom'] ?? Infinity;
+    topHeader.classList?.toggle('is-mobile-over-light', !desktop && window.scrollY > 8 && mobileLightEdge <= (topHeader.getBoundingClientRect().height || 60));
     if (scrollNav) {
       const bounds = journey?.getBoundingClientRect();
       const journeyProgress = bounds ? Math.max(0, Math.min(1, -bounds.top / Math.max(1, bounds.height - (sceneStage?.getBoundingClientRect().height || window.innerHeight)))) : 0;
