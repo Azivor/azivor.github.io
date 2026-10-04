@@ -16,7 +16,7 @@ await mkdir(join(out,'scene-test'),{recursive:true});
 await writeFile(join(out,'scene-test/index.html'),Home({study:true}));
 await writeFile(join(out,'components/index.html'),Catalog());
 await copyFile(join(root,'src/assets/earth-descent-preview.jpg'),join(out,'earth-descent-preview.jpg'));
-for(const name of ['creative-workshop','creative-desktop','creative-now'])await copyFile(join(root,'src/assets/'+name+'.jpg'),join(out,name+'.jpg'));
+for(const name of ['creation-craft','creation-industry','creation-computer','creation-ai'])await copyFile(join(root,'src/assets/'+name+'.jpg'),join(out,name+'.jpg'));
 await copyFile(join(root,'src/assets/information-fade.svg'),join(out,'information-fade.svg'));
 for(const name of ['hero-blue-fade','editorial-footer-fade'])await copyFile(join(root,'src/assets/'+name+'.svg'),join(out,name+'.svg'));
 await copyFile(join(root,'src/assets/footer-fade.svg'),join(out,'footer-fade.svg'));
