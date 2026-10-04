@@ -15,6 +15,7 @@
   function revealText(element) {
     if (!element || revealed.has(element) || reducedMotion.matches) return;
     revealed.add(element);
+    element.classList.remove('is-text-pending');
     element.classList.add('is-text-revealing');
     element.addEventListener('animationend', () => element.classList.remove('is-text-revealing'), {once:true});
   }
@@ -24,7 +25,13 @@
   function configureText() {
     textObserver?.disconnect();
     document.querySelectorAll('.is-text-revealing').forEach(element => element.classList.remove('is-text-revealing'));
-    if (reducedMotion.matches) return;
+    if (reducedMotion.matches) {
+      document.querySelectorAll('.is-text-pending').forEach(element => element.classList.remove('is-text-pending'));
+      return;
+    }
+    statements.forEach(element => {
+      if (!revealed.has(element) && element.getBoundingClientRect().top >= window.innerHeight * .88) element.classList.add('is-text-pending');
+    });
     textObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;

@@ -117,7 +117,7 @@ html,body{background:#081432}
 .hero h1,.hero-content h1{font:500 clamp(3rem,7.6vw,5.75rem)/1.08 var(--font-hero);letter-spacing:-.025em;margin:0;text-wrap:balance;text-shadow:0 2px 30px #06153a77}
 .intro{color:#f4f7ff;font-size:18px;line-height:1.45;margin-top:28px;letter-spacing:-.2px;text-shadow:0 1px 14px #06153a88}
 .hero-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:31px}.hero-actions .secondary{color:white;border-color:#ffffff5c}
-@keyframes text-arrive{from{opacity:0;transform:translateY(22px);filter:blur(5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes text-arrive{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 .hero-content h1{animation:text-arrive .85s cubic-bezier(.22,1,.36,1) both}
 .hero-content .intro{animation:text-arrive .8s .16s cubic-bezier(.22,1,.36,1) both}
 .hero-content .hero-actions{animation:text-arrive .8s .3s cubic-bezier(.22,1,.36,1) both}
@@ -780,10 +780,14 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 
 /* Crisp editorial statements rise into place once, without a clipping layer. */
 @media(prefers-reduced-motion:no-preference){
- .is-text-revealing{--text-rise:18px;animation:creation-text-rise .85s cubic-bezier(.22,1,.36,1) both}
- h2.is-text-revealing,h3.is-text-revealing,.creation-survey-number strong.is-text-revealing{--text-rise:32px}
+ .is-text-pending,.is-text-revealing{--text-rise:16px}
+ .is-text-pending{opacity:0;transform:translate3d(0,var(--text-rise),0)}
+ .is-text-revealing{animation:creation-text-rise .62s cubic-bezier(.16,1,.3,1) both}
+ h2.is-text-pending,h3.is-text-pending,h2.is-text-revealing,h3.is-text-revealing,.creation-survey-number strong.is-text-revealing{--text-rise:28px;animation-duration:.72s}
+ p.is-text-revealing{animation-delay:.09s}
  .creation-timeline-heading--scene{opacity:0}
  .scene-reveal .creation-timeline-heading--scene,.sky-fallback .creation-timeline-heading--scene{opacity:1}
 }
+@media(max-width:700px) and (prefers-reduced-motion:no-preference){.is-text-pending,.is-text-revealing{--text-rise:12px}h2.is-text-pending,h3.is-text-pending,h2.is-text-revealing,h3.is-text-revealing,.creation-survey-number strong.is-text-revealing{--text-rise:22px}}
 @keyframes creation-text-rise{from{opacity:0;transform:translate3d(0,var(--text-rise),0)}to{opacity:1;transform:translate3d(0,0,0)}}
-@media(prefers-reduced-motion:reduce){.is-text-revealing{animation:none}}
+@media(prefers-reduced-motion:reduce){.is-text-pending,.is-text-revealing{animation:none;opacity:1;transform:none}}

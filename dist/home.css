@@ -10,7 +10,7 @@ html,body{background:#081432}
 .hero h1,.hero-content h1{font:500 clamp(3rem,7.6vw,5.75rem)/1.08 var(--font-hero);letter-spacing:-.025em;margin:0;text-wrap:balance;text-shadow:0 2px 30px #06153a77}
 .intro{color:#f4f7ff;font-size:18px;line-height:1.45;margin-top:28px;letter-spacing:-.2px;text-shadow:0 1px 14px #06153a88}
 .hero-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:31px}.hero-actions .secondary{color:white;border-color:#ffffff5c}
-@keyframes text-arrive{from{opacity:0;transform:translateY(22px);filter:blur(5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes text-arrive{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 .hero-content h1{animation:text-arrive .85s cubic-bezier(.22,1,.36,1) both}
 .hero-content .intro{animation:text-arrive .8s .16s cubic-bezier(.22,1,.36,1) both}
 .hero-content .hero-actions{animation:text-arrive .8s .3s cubic-bezier(.22,1,.36,1) both}
