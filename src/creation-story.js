@@ -12,18 +12,31 @@
   const stage = document.querySelector('.journey-stage');
   const revealed = new WeakSet();
   let textObserver;
+  let resetObserver;
+  const animationBound = new WeakSet();
+  function resetText(element) {
+    if (!element || reducedMotion.matches) return;
+    revealed.delete(element);
+    element.classList.remove('is-text-revealing');
+    element.classList.add('is-text-pending');
+  }
   function revealText(element) {
     if (!element || revealed.has(element) || reducedMotion.matches) return;
     revealed.add(element);
     element.classList.remove('is-text-pending');
     element.classList.add('is-text-revealing');
-    element.addEventListener('animationend', () => element.classList.remove('is-text-revealing'), {once:true});
+    if (!animationBound.has(element)) {
+      animationBound.add(element);
+      element.addEventListener('animationend', () => element.classList.remove('is-text-revealing'));
+    }
   }
   function revealLandingTitle() {
     if (stage?.classList.contains('scene-reveal') || document.documentElement.classList.contains('sky-fallback')) revealText(landingTitle);
+    else resetText(landingTitle);
   }
   function configureText() {
     textObserver?.disconnect();
+    resetObserver?.disconnect();
     document.querySelectorAll('.is-text-revealing').forEach(element => element.classList.remove('is-text-revealing'));
     if (reducedMotion.matches) {
       document.querySelectorAll('.is-text-pending').forEach(element => element.classList.remove('is-text-pending'));
@@ -36,10 +49,18 @@
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         revealText(entry.target);
-        textObserver.unobserve(entry.target);
+
       });
     }, {rootMargin:'0px 0px -12% 0px', threshold:.2});
-    statements.forEach(element => { if (!revealed.has(element)) textObserver.observe(element); });
+    statements.forEach(element => textObserver.observe(element));
+    // Rearm only after scrolling upward far enough to put the whole statement
+    // below the viewport. A buffer prevents edge jitter or an upward replay.
+    resetObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top >= window.innerHeight) resetText(entry.target);
+      });
+    }, {rootMargin:'0px 0px 15% 0px', threshold:0});
+    statements.forEach(element => resetObserver.observe(element));
     revealLandingTitle();
   }
   if (stage && landingTitle) new MutationObserver(revealLandingTitle).observe(stage, {attributes:true, attributeFilter:['class']});

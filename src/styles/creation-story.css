@@ -136,7 +136,7 @@
 
 @media(prefers-reduced-motion:no-preference){.scene-model-ready .content-flow{position:relative;z-index:2;margin-top:-96px}}
 
-/* Crisp editorial statements rise into place once, without a clipping layer. */
+/* Crisp editorial statements rise into place on downward re-entry, without a clipping layer. */
 @media(prefers-reduced-motion:no-preference){
  .is-text-pending,.is-text-revealing{--text-rise:16px}
  .is-text-pending{opacity:0;transform:translate3d(0,var(--text-rise),0)}
