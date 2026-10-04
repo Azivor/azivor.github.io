@@ -27,11 +27,11 @@ footer{min-height:300px;margin:0;display:flex;justify-content:space-between;alig
  html{scroll-padding-top:calc(76px + env(safe-area-inset-top, 0px))}
  .header{position:fixed;z-index:9;width:100%;padding:calc(8px + env(safe-area-inset-top, 0px)) 22px 8px;justify-content:space-between;gap:20px;flex-wrap:nowrap;transition:color .32s ease}
  /* Blur only the backing layer, so the full-screen menu keeps the viewport as its containing block. */
- .header::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-color:rgba(8,20,50,.64);backdrop-filter:blur(22px) saturate(125%);-webkit-backdrop-filter:blur(22px) saturate(125%);opacity:0;transition:background-color .32s ease,opacity .32s ease}
+ .header::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-color:rgba(238,246,252,.08);backdrop-filter:blur(22px) saturate(115%);-webkit-backdrop-filter:blur(22px) saturate(115%);opacity:0;transition:background-color .32s ease,opacity .32s ease}
  .header.is-mobile-scrolled::before{opacity:1}
  .header .wordmark{font-size:20px}.header .brand-mark{height:27px;transition:filter .32s ease}
  .header.is-mobile-over-light{color:#143b59}
- .header.is-mobile-over-light::before{background-color:rgba(232,243,250,.66)}
+
  .header.is-mobile-over-light .wordmark .brand-mark{filter:brightness(0) saturate(100%) invert(20%) sepia(30%) saturate(996%) hue-rotate(165deg) brightness(90%) contrast(94%)}
  body.menu-open .header{color:#fff}
  body.menu-open .header .wordmark .brand-mark{filter:none}
@@ -112,3 +112,12 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 }
 
 @media(max-width:700px){.editorial-main [id],.content-flow section[id]{scroll-margin-top:16px}}
+
+/* The foreground responds to the actual frosted pixels, without a section-color switch. */
+@supports (mix-blend-mode:difference){
+ @media(max-width:700px){
+  .header .wordmark,.header .nav-toggle{color:#fff;mix-blend-mode:difference}
+  .header .wordmark .brand-mark,.header.is-mobile-over-light .wordmark .brand-mark{filter:none}
+  body.menu-open .header .wordmark,body.menu-open .header .nav-toggle{mix-blend-mode:normal}
+ }
+}

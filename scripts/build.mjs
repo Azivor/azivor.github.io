@@ -1,6 +1,7 @@
 import {mkdir,writeFile,copyFile,readFile,rm} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {join} from 'node:path';
+import {createHash} from 'node:crypto';
 import Home from '../src/pages/home.mjs';
 import Catalog from '../src/pages/components.mjs';
 import Explore from '../src/pages/explore.mjs';
@@ -29,4 +30,18 @@ await copyFile(join(root,'src/exercise.js'),join(out,'exercise.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
 for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});
+// Content versions let returning visitors keep caching without retaining old styles.
+const stylesheetVersions=new Map();
+for(const page of ['index.html','explore/index.html','builds/index.html','about/index.html','scene-test/index.html','components/index.html']){
+  const path=join(out,page);
+  let html=await readFile(path,'utf8');
+  for(const [,href] of html.matchAll(/<link rel="stylesheet" href="(\/[^"?]+\.css)"/g)){
+    if(!stylesheetVersions.has(href)){
+      const bytes=await readFile(join(out,href));
+      stylesheetVersions.set(href,createHash('sha256').update(bytes).digest('hex').slice(0,12));
+    }
+    html=html.replaceAll(`href="${href}"`,`href="${href}?v=${stylesheetVersions.get(href)}"`);
+  }
+  await writeFile(path,html);
+}
 console.log('Built Home, Explore, Builds, About, and /components/.');
