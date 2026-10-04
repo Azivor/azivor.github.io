@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="320" viewBox="0 0 1600 320" preserveAspectRatio="none">
+  <!-- Nearly even OKLab progression; gentle easing only in the outer 12%. -->
+  <defs>
+    <linearGradient id="cloud" x2="0" y2="1">
+<stop offset="0.0000%" stop-color="#f4f8fc"/>
+<stop offset="1.0417%" stop-color="#f4f8fc"/>
+<stop offset="2.0833%" stop-color="#f4f8fc"/>
+<stop offset="3.1250%" stop-color="#f4f8fc"/>
+<stop offset="4.1667%" stop-color="#f4f8fc"/>
+<stop offset="5.2083%" stop-color="#f4f8fc"/>
+<stop offset="6.2500%" stop-color="#f4f8fc"/>
+<stop offset="7.2917%" stop-color="#f4f8fc"/>
+<stop offset="8.3333%" stop-color="#f4f8fc"/>
+<stop offset="9.3750%" stop-color="#f4f8fc"/>
+<stop offset="10.4167%" stop-color="#f3f8fc"/>
+<stop offset="11.4583%" stop-color="#f3f7fc"/>
+<stop offset="12.5000%" stop-color="#f3f7fb"/>
+<stop offset="13.5417%" stop-color="#f3f7fb"/>
+<stop offset="14.5833%" stop-color="#f2f7fb"/>
+<stop offset="15.6250%" stop-color="#f2f7fb"/>
+<stop offset="16.6667%" stop-color="#f2f6fb"/>
+<stop offset="17.7083%" stop-color="#f1f6fa"/>
+<stop offset="18.7500%" stop-color="#f1f6fa"/>
+<stop offset="19.7917%" stop-color="#f1f5fa"/>
+<stop offset="20.8333%" stop-color="#f0f5fa"/>
+<stop offset="21.8750%" stop-color="#f0f5f9"/>
+<stop offset="22.9167%" stop-color="#eff4f9"/>
+<stop offset="23.9583%" stop-color="#eef4f8"/>
+<stop offset="25.0000%" stop-color="#eef3f8"/>
+<stop offset="26.0417%" stop-color="#edf3f8"/>
+<stop offset="27.0833%" stop-color="#ecf2f7"/>
+<stop offset="28.1250%" stop-color="#ecf2f7"/>
+<stop offset="29.1667%" stop-color="#ebf1f6"/>
+<stop offset="30.2083%" stop-color="#eaf0f6"/>
+<stop offset="31.2500%" stop-color="#e9f0f5"/>
+<stop offset="32.2917%" stop-color="#e8eff5"/>
+<stop offset="33.3333%" stop-color="#e7eef4"/>
+<stop offset="34.3750%" stop-color="#e6eef3"/>
+<stop offset="35.4167%" stop-color="#e5edf3"/>
+<stop offset="36.4583%" stop-color="#e4ecf2"/>
+<stop offset="37.5000%" stop-color="#e3ebf1"/>
+<stop offset="38.5417%" stop-color="#e2ebf1"/>
+<stop offset="39.5833%" stop-color="#e1eaf0"/>
+<stop offset="40.6250%" stop-color="#e0e9ef"/>
+<stop offset="41.6667%" stop-color="#dfe8ef"/>
+<stop offset="42.7083%" stop-color="#dee7ee"/>
+<stop offset="43.7500%" stop-color="#dde7ed"/>
+<stop offset="44.7917%" stop-color="#dce6ed"/>
+<stop offset="45.8333%" stop-color="#dae5ec"/>
+<stop offset="46.8750%" stop-color="#d9e4eb"/>
+<stop offset="47.9167%" stop-color="#d8e3ea"/>
+<stop offset="48.9583%" stop-color="#d7e2ea"/>
+<stop offset="50.0000%" stop-color="#d6e1e9"/>
+<stop offset="51.0417%" stop-color="#d5e0e8"/>
+<stop offset="52.0833%" stop-color="#d3e0e7"/>
+<stop offset="53.1250%" stop-color="#d2dfe7"/>
+<stop offset="54.1667%" stop-color="#d1dee6"/>
+<stop offset="55.2083%" stop-color="#d0dde5"/>
+<stop offset="56.2500%" stop-color="#cfdce4"/>
+<stop offset="57.2917%" stop-color="#cedbe4"/>
+<stop offset="58.3333%" stop-color="#cddae3"/>
+<stop offset="59.3750%" stop-color="#cbdae2"/>
+<stop offset="60.4167%" stop-color="#cad9e2"/>
+<stop offset="61.4583%" stop-color="#c9d8e1"/>
+<stop offset="62.5000%" stop-color="#c8d7e0"/>
+<stop offset="63.5417%" stop-color="#c7d6e0"/>
+<stop offset="64.5833%" stop-color="#c6d6df"/>
+<stop offset="65.6250%" stop-color="#c5d5de"/>
+<stop offset="66.6667%" stop-color="#c4d4de"/>
+<stop offset="67.7083%" stop-color="#c4d4dd"/>
+<stop offset="68.7500%" stop-color="#c3d3dd"/>
+<stop offset="69.7917%" stop-color="#c2d2dc"/>
+<stop offset="70.8333%" stop-color="#c1d2dc"/>
+<stop offset="71.8750%" stop-color="#c0d1db"/>
+<stop offset="72.9167%" stop-color="#bfd1db"/>
+<stop offset="73.9583%" stop-color="#bfd0da"/>
+<stop offset="75.0000%" stop-color="#bed0da"/>
+<stop offset="76.0417%" stop-color="#bdcfd9"/>
+<stop offset="77.0833%" stop-color="#bdcfd9"/>
+<stop offset="78.1250%" stop-color="#bcced9"/>
+<stop offset="79.1667%" stop-color="#bcced8"/>
+<stop offset="80.2083%" stop-color="#bbcdd8"/>
+<stop offset="81.2500%" stop-color="#bbcdd8"/>
+<stop offset="82.2917%" stop-color="#bacdd8"/>
+<stop offset="83.3333%" stop-color="#bacdd7"/>
+<stop offset="84.3750%" stop-color="#baccd7"/>
+<stop offset="85.4167%" stop-color="#b9ccd7"/>
+<stop offset="86.4583%" stop-color="#b9ccd7"/>
+<stop offset="87.5000%" stop-color="#b9ccd7"/>
+<stop offset="88.5417%" stop-color="#b9ccd6"/>
+<stop offset="89.5833%" stop-color="#b9cbd6"/>
+<stop offset="90.6250%" stop-color="#b8cbd6"/>
+<stop offset="91.6667%" stop-color="#b8cbd6"/>
+<stop offset="92.7083%" stop-color="#b8cbd6"/>
+<stop offset="93.7500%" stop-color="#b8cbd6"/>
+<stop offset="94.7917%" stop-color="#b8cbd6"/>
+<stop offset="95.8333%" stop-color="#b8cbd6"/>
+<stop offset="96.8750%" stop-color="#b8cbd6"/>
+<stop offset="97.9167%" stop-color="#b8cbd6"/>
+<stop offset="98.9583%" stop-color="#b8cbd6"/>
+<stop offset="100.0000%" stop-color="#b8cbd6"/>
+</linearGradient>
+    <radialGradient id="cloud-wash" cx="68%" cy="20%" r="85%">
+      <stop stop-color="white" stop-opacity=".18"/>
+      <stop offset="55%" stop-color="white" stop-opacity=".06"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="grain-envelope" x2="0" y2="1">
+      <stop stop-color="black"/><stop offset="12%" stop-color="white"/>
+      <stop offset="88%" stop-color="white"/><stop offset="100%" stop-color="black"/>
+    </linearGradient>
+    <mask id="grain-mask"><rect width="1600" height="320" fill="url(#grain-envelope)"/></mask>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="1" seed="17" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="320" fill="url(#cloud)"/>
+  <rect width="1600" height="320" fill="url(#cloud-wash)" mask="url(#grain-mask)"/>
+  <g mask="url(#grain-mask)" opacity=".012"><rect width="1600" height="320" filter="url(#grain)"/></g>
+</svg>

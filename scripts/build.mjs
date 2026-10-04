@@ -17,6 +17,7 @@ await writeFile(join(out,'scene-test/index.html'),Home({study:true}));
 await writeFile(join(out,'components/index.html'),Catalog());
 await copyFile(join(root,'src/assets/earth-descent-preview.jpg'),join(out,'earth-descent-preview.jpg'));
 await copyFile(join(root,'src/assets/information-fade.svg'),join(out,'information-fade.svg'));
+for(const name of ['hero-blue-fade','editorial-footer-fade'])await copyFile(join(root,'src/assets/'+name+'.svg'),join(out,name+'.svg'));
 await copyFile(join(root,'src/assets/footer-fade.svg'),join(out,'footer-fade.svg'));
 await copyFile(join(root,'src/assets/social-preview.jpg'),join(out,'social-preview.jpg'));
 await copyFile(join(root,'src/assets/azivor-logo.png'),join(out,'azivor-logo.png'));

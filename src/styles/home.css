@@ -130,8 +130,9 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 }
 
 /* The role is the focal point; every word occupies the same reserved grid cell. */
-.hero-prefix{display:grid}
-.hero-prefix>span{grid-area:1/1;transition:opacity .35s ease}
+.hero-prefix{display:flex;justify-content:center;align-items:baseline;gap:.22em;white-space:nowrap}
+.hero-article{display:grid}
+.hero-article>span{grid-area:1/1;text-align:center;transition:opacity .35s ease}
 .hero-prefix-an{opacity:0}
 .hero-content.uses-an .hero-prefix-a{opacity:0}
 .hero-content.uses-an .hero-prefix-an{opacity:1}
@@ -142,6 +143,7 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .hero-content .intro{max-width:34ch;margin:28px auto 0;font-size:16px;line-height:1.65;text-wrap:balance}
 .hero-actions{align-items:center}
 .hero-actions .descent-link{font-size:16px}
+.descent-label-short{display:none}
 .home-hub .hub-heading h2{font-size:clamp(2.8rem,4.6vw,4rem)}
 .home-hub .hub-heading p{max-width:29ch}
 .hub-evidence{padding-top:12px}
@@ -158,6 +160,8 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .creator-methods .hub-paths p{font-size:.95rem}
 @media(max-width:1000px){.creator-next{gap:36px}.creator-methods .hub-paths{gap:24px}}
 @media(max-width:700px){
+ .descent-label-full{display:none}
+ .descent-label-short{display:inline}
  .hero-content .intro{max-width:34ch;margin-top:24px}
  .hero-actions{gap:10px;margin-top:26px}
  .hero-actions .descent-link{padding-inline:16px}
@@ -172,4 +176,4 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 @media(prefers-reduced-motion:reduce){.hero-role{transition:none;transform:none}.hero-role:not(.is-current){visibility:hidden}}
 
 
-@media(max-width:360px){.hero-actions{flex-wrap:nowrap}.hero-actions .descent-link{padding-inline:10px}.hero-actions .descent-link .button-icon{display:none}}
+@media(max-width:360px){.hero-actions{flex-wrap:nowrap}.hero-actions .descent-link{padding-inline:10px}}

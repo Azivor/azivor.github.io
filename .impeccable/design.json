@@ -236,7 +236,31 @@
       "src/pages/site-shell.mjs",
       "src/discovery.js"
     ],
-    "tonalRampPurpose": "Synthesized OKLCH preview ramps; canonical source colors and runtime CSS remain unchanged."
+    "tonalRampPurpose": "Synthesized OKLCH preview ramps; canonical source colors and runtime CSS remain unchanged.",
+    "gradientSeams": {
+      "heroBlue": {
+        "source": "src/assets/hero-blue-fade.svg",
+        "start": "#081432",
+        "end": "#234f78"
+      },
+      "heroCloud": {
+        "source": "src/assets/information-fade.svg",
+        "start": "#234f78",
+        "end": "#f4f8fc",
+        "desktopHeight": "180px",
+        "phoneHeight": "150px"
+      },
+      "editorialFooter": {
+        "source": "src/assets/editorial-footer-fade.svg",
+        "start": "#f4f8fc",
+        "end": "#b8cbd6"
+      },
+      "homeFooter": {
+        "source": "src/assets/footer-fade.svg",
+        "start": "#ffffff",
+        "end": "#b8cbd6"
+      }
+    }
   },
   "components": [
     {
