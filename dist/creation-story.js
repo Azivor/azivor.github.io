@@ -93,7 +93,7 @@
     const first = topOf(chapters[1]);
     const second = topOf(chapters[2]);
     const finale = topOf(payoff);
-    const end = payoff.getBoundingClientRect().bottom - bounds.top;
+    const end = (timeline.querySelector('.creation-showcase') || payoff).getBoundingClientRect().bottom - bounds.top;
     const tail = bounds.height - end;
     const stops = [
       ['#244c80',0], ['#244c80',96], ['#102b40',Math.min(460,first*.4)],
