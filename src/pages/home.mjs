@@ -23,7 +23,6 @@ ${study?'<p class="study-label">Developer visual reference · Earth descent stud
 <div class="hero-actions">${Button({label:"Explore what you can create",href:"#first-content",variant:"primary",className:"descent-link",icon:"down"}).replace("Explore what you can create", '<span class="descent-label-full">Explore what you can create</span><span class="descent-label-short">Explore</span>')}</div>
 </div>
 <div class="scene-status"><p class="scene-status-text" role="status" aria-live="polite">Preparing Earth…</p><button class="scene-retry" type="button" hidden>Retry Earth</button></div>
-<div class="scroll-cue" aria-hidden="true"><span>Scroll to descend</span><span class="cue-line"></span></div>
 <div class="landing-wash" aria-hidden="true"></div>
 ${TimelineHeading()}
 </div>

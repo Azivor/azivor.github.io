@@ -78,6 +78,16 @@
     const payoff = timeline.querySelector('.creation-ai-payoff');
     if (!atmosphere || !payoff || chapters.length !== 3) return;
     const bounds = timeline.getBoundingClientRect();
+    const visualStage = timeline.querySelector('.creation-visual-stage');
+    const stack = timeline.querySelector('.creation-visual-stack');
+    if (visualStage && stack) {
+      if (desktop.matches && !reducedMotion.matches) {
+        const copy = chapters[2].querySelector('.creation-chapter-copy');
+        // End the sticky track with the photograph centered on the final copy.
+        const stopBottom = copy.getBoundingClientRect().top - visualStage.getBoundingClientRect().top + (copy.offsetHeight + stack.offsetHeight) / 2;
+        visualStage.style.height = `${Math.round(stopBottom)}px`;
+      } else visualStage.style.height = '';
+    }
     const topOf = element => element.getBoundingClientRect().top - bounds.top;
     const transition = Math.min(window.innerHeight * .16, 180);
     const first = topOf(chapters[1]);
@@ -86,7 +96,7 @@
     const end = payoff.getBoundingClientRect().bottom - bounds.top;
     const tail = bounds.height - end;
     const stops = [
-      ['#244c80',0], ['#102b40',Math.min(300,first*.4)],
+      ['#244c80',0], ['#244c80',96], ['#102b40',Math.min(460,first*.4)],
       ['#102b40',first-transition], ['#2a526c',first+transition],
       ['#2a526c',second-transition], ['#78372e',second+transition],
       ['#78372e',finale-transition], ['#2b1e24',finale+transition],
@@ -94,7 +104,7 @@
       ['#354650',end+tail*.3], ['#6b797b',end+tail*.55],
       ['#ccd1d4',end+tail*.8], ['#ffffff',bounds.height]
     ];
-    atmosphere.style.backgroundImage = `linear-gradient(180deg,${stops.map(([color,position]) => `${color} ${Math.max(0,Math.round(position))}px`).join(',')})`;
+    atmosphere.style.backgroundImage = `linear-gradient(180deg,${stops.map(([color,position]) => `${color} ${Math.max(0,Math.round(position+96))}px`).join(',')})`;
     window.dispatchEvent(new Event('azivor:surface-change'));
   }
   function configure() {
