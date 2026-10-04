@@ -31,13 +31,12 @@
         revealText(entry.target);
         textObserver.unobserve(entry.target);
       });
-    }, {rootMargin:'0px 0px -8% 0px', threshold:.15});
+    }, {rootMargin:'0px 0px -12% 0px', threshold:.2});
     statements.forEach(element => { if (!revealed.has(element)) textObserver.observe(element); });
     revealLandingTitle();
   }
   if (stage && landingTitle) new MutationObserver(revealLandingTitle).observe(stage, {attributes:true, attributeFilter:['class']});
   reducedMotion.addEventListener('change', configureText);
-  configureText();
   let observer;
   const ratios = new Map();
   function activate(index) {
@@ -70,4 +69,5 @@
     resizeFrame = requestAnimationFrame(configure);
   },{passive:true});
   configure();
+  configureText();
 })();
