@@ -7,10 +7,11 @@ import Catalog from '../src/pages/components.mjs';
 import Explore from '../src/pages/explore.mjs';
 import Builds from '../src/pages/builds.mjs';
 import About from '../src/pages/about.mjs';
+import EarthDescent from '../src/pages/earth-descent.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const out=join(root,'dist');await mkdir(join(out,'ui'),{recursive:true});await mkdir(join(out,'components'),{recursive:true});
 await writeFile(join(out,'index.html'),Home());
-for(const [route,render] of [['explore',Explore],['builds',Builds],['about',About]]){await mkdir(join(out,route),{recursive:true});await writeFile(join(out,route,'index.html'),render());}
+for(const [route,render] of [['explore',Explore],['builds',Builds],['about',About],['builds/earth-descent',EarthDescent]]){await mkdir(join(out,route),{recursive:true});await writeFile(join(out,route,'index.html'),render());}
 await mkdir(join(out,'scene-test'),{recursive:true});
 await writeFile(join(out,'scene-test/index.html'),Home({study:true}));
 await writeFile(join(out,'components/index.html'),Catalog());
@@ -24,15 +25,16 @@ await copyFile(join(root,'src/assets/earth-clouds.jpg'),join(out,'earth-clouds.j
 await copyFile(join(root,'src/assets/earth-clouds-detail.webp'),join(out,'earth-clouds-detail.webp'));
 await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
 for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
-for(const name of ['home','content','catalog','category-cards'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
+for(const name of ['home','content','catalog','category-cards','discovery'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
 await copyFile(join(root,'src/exercise.js'),join(out,'exercise.js'));
+await copyFile(join(root,'src/discovery.js'),join(out,'discovery.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
 for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});
 // Content versions let returning visitors keep caching without retaining old styles or navigation logic.
 const assetVersions=new Map();
-for(const page of ['index.html','explore/index.html','builds/index.html','about/index.html','scene-test/index.html','components/index.html']){
+for(const page of ['index.html','explore/index.html','builds/index.html','builds/earth-descent/index.html','about/index.html','scene-test/index.html','components/index.html']){
   const path=join(out,page);
   let html=await readFile(path,'utf8');
   for(const [,href] of html.matchAll(/(?:href|src)="(\/[^"?]+\.(?:css|js))"/g)){

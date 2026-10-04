@@ -15,4 +15,4 @@ The actual WebGL Earth descent, its browser capture, and its recorded revision. 
 ## Product Principles
 Lead with inspectable work. Let visitors choose depth. Keep student judgment visible. Do not fabricate projects, adoption, or outcomes.
 ## Open Decisions
-Gallery-led browsing and direct implementation are working assumptions for this session; optional preference questions have not received answers. They are not standing workflow preferences.
+The user chose an editorial magazine with varied layouts and stronger storytelling, and direct implementation of the working pages.
