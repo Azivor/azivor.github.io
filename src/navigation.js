@@ -156,6 +156,61 @@ const surfaceLuminance = rgb => {
   const channels=rgb.map(value=>{const c=value/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;});
   return channels[0]*.2126+channels[1]*.7152+channels[2]*.0722;
 };
+// Safari uses the document backdrop behind browser controls. Keep that
+// backdrop aligned with painted page surfaces, including the full timeline.
+const gradientColorAt = (gradient, height, position) => {
+ const stops=Array.from(gradient.matchAll(/rgb\((\d+),\s*(\d+),\s*(\d+)\)\s+(calc\(100% - (\d+)px\)|(\d+(?:\.\d+)?)(px|%))/g),match=>({rgb:match.slice(1,4).map(Number),position:match[5]?height-Number(match[5]):Number(match[6])*(match[7]==='%'?height/100:1)}));
+ if (!stops.length) return null;
+ for(let i=1;i<stops.length;i++) if(position<=stops[i].position){
+  const a=stops[i-1],b=stops[i],t=Math.max(0,Math.min(1,(position-a.position)/Math.max(1,b.position-a.position)));
+  return a.rgb.map((c,index)=>Math.round(c+(b.rgb[index]-c)*t));
+ }
+ return stops[stops.length-1].rgb;
+};
+const browserBackdropAt = y => {
+ const atmosphere=document.querySelector('.creation-atmosphere');
+ if(atmosphere){
+  const rect=atmosphere.getBoundingClientRect();
+  if(y>=rect.top && y<=rect.bottom){
+   const rgb=gradientColorAt(getComputedStyle(atmosphere).backgroundImage||'',rect.height,y-rect.top);
+   if(rgb) return rgb;
+  }
+ }
+ for(const surface of document.elementsFromPoint?.(window.innerWidth/2,y)||[]){
+  if(surface.closest('.header, .floating-nav')) continue;
+  const style=getComputedStyle(surface);
+  if(surface.matches('.page-hero')){
+   const fade=parseFloat(style.getPropertyValue('--hero-fade'))||180;
+   const progress=Math.max(0,Math.min(1,1-(surface.getBoundingClientRect().bottom-y)/fade));
+   if(heroFadePixels){const offset=Math.round(progress*255)*4;return Array.from(heroFadePixels.slice(offset,offset+3));}
+   return progress>.55?[244,248,252]:[8,20,50];
+  }
+  if(surface.matches('.journey, .journey-stage, .sky-scene')){
+   const journey=document.querySelector('.journey'),stage=document.querySelector('.journey-stage');
+   if(!journey||!stage) return [8,20,50];
+   const rect=stage.getBoundingClientRect(),bounds=journey.getBoundingClientRect();
+   const p=Math.max(0,Math.min(1,-bounds.top/Math.max(1,bounds.height-rect.height)));
+   const opacity=document.documentElement.classList.contains('sky-fallback')||window.matchMedia('(prefers-reduced-motion: reduce)').matches?1:Math.max(0,Math.min(1,(p-.8)*5));
+   const wash=gradientColorAt(getComputedStyle(document.querySelector('.landing-wash')).backgroundImage||'',rect.height,y-rect.top)||[36,76,128];
+   return [8,20,50].map((c,index)=>Math.round(c*(1-opacity)+wash[index]*opacity));
+  }
+  const color=style.backgroundColor.match(/[\d.]+/g)?.map(Number);
+  if(color && (color[3]??1)>=.95) return color.slice(0,3);
+  if(surface.matches('.content-flow, .editorial-main, footer')) return [255,255,255];
+ }
+ return [8,20,50];
+};
+let lastBrowserBackdrop='';
+const syncBrowserBackdrop = () => {
+ if(!document.documentElement?.style || !document.body?.style || typeof getComputedStyle!=='function') return;
+ const rgb=browserBackdropAt(1);
+ const color=`rgb(${rgb.join(',')})`;
+ if(color===lastBrowserBackdrop) return;
+ lastBrowserBackdrop=color;
+ document.documentElement.style.backgroundColor=color;
+ document.body.style.backgroundColor=color;
+ document.querySelector('meta[name="theme-color"]')?.setAttribute('content',color);
+};
 const foregroundOverLight = (control, fallback) => {
   if (!control?.getBoundingClientRect || !document.elementsFromPoint || typeof getComputedStyle !== 'function') return fallback;
   if (window.matchMedia('(prefers-reduced-transparency: reduce)').matches && (window.innerWidth>700 || window.scrollY>8)) return true;
@@ -250,6 +305,7 @@ if (topHeader && (scrollNav || headerNav)) {
   let scrollFrame = 0;
   const updateScrollNav = () => {
     scrollFrame = 0;
+    syncBrowserBackdrop();
     const desktop = window.innerWidth > 700;
     const menuOpen = document.body.classList.contains('menu-open');
     topHeader.classList?.toggle('is-mobile-scrolled', !desktop && window.scrollY > 8);
@@ -288,6 +344,8 @@ if (topHeader && (scrollNav || headerNav)) {
   const scheduleScrollNav = () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollNav); };
   window.addEventListener('scroll', scheduleScrollNav, {passive:true});
   window.addEventListener('resize', scheduleScrollNav);
+  window.addEventListener('azivor:descent-frame',scheduleScrollNav);
+  window.addEventListener('azivor:surface-change',scheduleScrollNav);
   navToggle?.addEventListener('click', scheduleScrollNav);
   document.addEventListener('keydown', event => { if (event.key === 'Escape') scheduleScrollNav(); });
   updateScrollNav();

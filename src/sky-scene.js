@@ -141,21 +141,6 @@ const pendingImages=new Set();
 const sceneStatus=document.querySelector('.scene-status');
 const statusText=document.querySelector('.scene-status-text');
 const retryButton=document.querySelector('.scene-retry');
-const themeColor=document.querySelector('meta[name="theme-color"]');
-let lastBackdrop='';
-function updateBrowserBackdrop(p){
- // Safari may show the document background behind its translucent controls.
- const amount=Math.round(clamp((p-.78)/.22)*20)/20;
- const from=[8,20,50],to=[217,238,248];
- let color='#'+from.map((start,index)=>Math.round(start+(to[index]-start)*amount).toString(16).padStart(2,'0')).join('');
- if(document.querySelector('footer')?.getBoundingClientRect().top<innerHeight)color='#ffffff';
- if(color===lastBackdrop)return;
- lastBackdrop=color;
- document.documentElement.style.backgroundColor=color;
- document.body.style.backgroundColor=color;
- themeColor?.setAttribute('content',color);
-}
-
 // Clip the stationary opening copy at the same spherical limb drawn by the shader.
 // The canvas remains behind the HTML so the text and Explore link stay accessible.
 function earthCovers(screenX,screenY,p,rect){
@@ -330,7 +315,6 @@ function render(){
  const bounds=journey.getBoundingClientRect();
  const scene=stage.getBoundingClientRect();
  const p=reduceMotion.matches?0:clamp(-bounds.top/Math.max(1,bounds.height-scene.height));
- updateBrowserBackdrop(p);
  const scale=Math.min(devicePixelRatio||1,1);
  const fit=Math.min(1,Math.sqrt(950000/(scene.width*scene.height*scale*scale)));
  const width=Math.max(1,Math.round(scene.width*scale*fit));

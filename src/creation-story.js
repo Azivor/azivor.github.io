@@ -95,6 +95,7 @@
       ['#ccd1d4',end+tail*.8], ['#ffffff',bounds.height]
     ];
     atmosphere.style.backgroundImage = `linear-gradient(180deg,${stops.map(([color,position]) => `${color} ${Math.max(0,Math.round(position))}px`).join(',')})`;
+    window.dispatchEvent(new Event('azivor:surface-change'));
   }
   function configure() {
     observer?.disconnect();

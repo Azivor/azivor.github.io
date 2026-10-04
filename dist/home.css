@@ -177,3 +177,8 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 
 .hero-role{position:relative;text-align:center}.role-label{display:inline-flex;align-items:center;justify-content:center;gap:.16em;vertical-align:top}.role-symbol{display:inline-flex;align-items:center;justify-content:center;flex:0 0 .84em;width:.84em;height:.84em;color:#c9cbd0;line-height:0;transform:translateY(.03em)}.role-symbol svg{display:block;width:100%;height:100%}.hero-role:nth-child(8) .role-symbol svg{transform:rotate(-22deg)}
 @media(max-width:700px){.role-label{gap:.13em}}
+
+/* Extend the same frost above the header into Safari's upper safe area. */
+@media(max-width:700px){
+ .header::before{top:calc(-1 * max(64px,env(safe-area-inset-top,0px)));bottom:0}
+}
