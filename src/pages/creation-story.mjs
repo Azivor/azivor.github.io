@@ -2,7 +2,7 @@ import {Button} from '../ui/components.mjs';
 
 const chapters = [
   {era:'1661–1662 · Before industrialization', title:'A craft took years to master.', copy:'Making something meant learning its tools, techniques, and trade.', image:'/creation-craft.jpg', tone:'craft', color:'#39352b', alt:'The Tailor’s Workshop, painted by Quiringh van Brekelenkam in 1661–1662, shows tailors sewing by hand.'},
-  {era:'1913 · Industrialization', title:'Machines multiplied what people could make.', copy:'Mechanization and assembly lines brought speed and scale to production.', image:'/creation-industry.jpg', tone:'industry', color:'#343c40', alt:'Workers assemble automotive parts on Ford’s moving assembly line in 1913.'},
+  {era:'1913 · Industrialization', title:'Machines multiplied output.', copy:'Mechanization and assembly lines brought speed and scale to production.', image:'/creation-industry.jpg', tone:'industry', color:'#343c40', alt:'Workers assemble automotive parts on Ford’s moving assembly line in 1913.'},
   {era:'1984 · Personal computing', title:'Many tools. One computer.', copy:'Writing, designing, calculating, and building became possible on the same machine.', image:'/creation-computer.jpg', tone:'computer', color:'#573a36', alt:'An original Macintosh displaying a graphics application, photographed by Bernard Gotfryd in January 1984.'},
   {era:'2025 · AI', title:'Now your ideas can go further.', copy:'AI helps you cross disciplines, explore, and make. You choose the direction.', image:'/creation-ai.jpg', tone:'ai', color:'#233c3f', alt:'An actual ChatGPT interface on a laptop, photographed by Aerps.com in 2025.'},
 ];
