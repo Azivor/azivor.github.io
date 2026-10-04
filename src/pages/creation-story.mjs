@@ -7,8 +7,7 @@ const chapters = [
   {era:'2025 · AI', title:'Now your ideas can go further.', copy:'AI helps you cross disciplines, explore, and make. You choose the direction.', image:'/creation-ai.jpg', tone:'ai', color:'#233c3f', alt:'An actual ChatGPT interface on a laptop, photographed by Aerps.com in 2025.'},
 ];
 
-// photographyCredits is trusted, author-written attribution markup.
-export default function CreationStory({photographyCredits=''}={}) {
+export default function CreationStory() {
   return `<section class="creation-story" id="first-content" tabindex="-1" aria-labelledby="creation-timeline-title">
 <div class="creation-story-inner">
 <div class="creation-timeline">
@@ -17,7 +16,6 @@ export default function CreationStory({photographyCredits=''}={}) {
 <div class="creation-visual-stage" aria-hidden="true"><div class="creation-visual-stack">${chapters.map((chapter,index)=>`<img class="creation-stage-image creation-tone-${chapter.tone}${index===0?' is-active':''}" src="${chapter.image}" alt="" width="1536" height="1024" loading="lazy" decoding="async">`).join('')}<div class="creation-progress">${chapters.map((chapter,index)=>`<span${index===0?' class="is-active"':''}></span>`).join('')}</div></div></div>
 ${chapters.map((chapter,index)=>`<article class="creation-chapter creation-tone-${chapter.tone}" data-creation-chapter="${index}" data-chapter-color="${chapter.color}" style="--chapter-bg:${chapter.color}"><figure class="creation-chapter-media"><img src="${chapter.image}" alt="${chapter.alt}" width="1536" height="1024" loading="lazy" decoding="async"></figure><div class="creation-chapter-copy"><p class="creation-era">${chapter.era}</p><h3${index===0?' id="hub-title"':''}>${chapter.title}</h3><p class="creation-chapter-description">${chapter.copy}</p></div></article>`).join('')}
 </div>
-${photographyCredits?`<details class="creation-photo-credits"><summary>Artwork and photography credits</summary>${photographyCredits}</details>`:''}
 <section class="creation-access" aria-labelledby="creation-access-title">
 <div class="creation-access-heading"><h2 id="creation-access-title">Access is only<br>the beginning.</h2><p>Use is not the same as knowing what to make.</p></div>
 <figure class="creation-survey"><div class="creation-survey-number"><strong>44%</strong><p>of U.S. adults say they ever use ChatGPT.</p></div><div class="creation-dots" role="img" aria-label="100 dots represent U.S. adults. 44 highlighted dots represent the 44 percent who say they ever use ChatGPT.">${Array.from({length:100},(_,index)=>`<span${index<44?' class="is-use"':''}></span>`).join('')}</div><figcaption><p>Reported use, not skill.</p><a href="https://www.pewresearch.org/chart/majorities-of-adults-under-50-now-use-chatgpt/">Pew Research Center, February 2026</a></figcaption></figure>
