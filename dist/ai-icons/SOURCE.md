@@ -1,0 +1,1 @@
+AI brand logo paths from @lobehub/icons-static-svg 1.95.1, https://github.com/lobehub/lobe-icons. MIT license retained in licenses/lobe-icons-LICENSE. Brand marks belong to their respective owners. OpenAI knot represents ChatGPT.

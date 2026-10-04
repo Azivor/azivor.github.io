@@ -128,3 +128,23 @@
   if ('ResizeObserver' in window) new ResizeObserver(fitAtmosphere).observe(timeline);
   document.fonts?.ready.then(fitAtmosphere);
 })();
+
+(() => {
+  const apps = document.querySelector('.creation-apps');
+  if (!apps) return;
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let frame;
+  function updateApps() {
+    frame = null;
+    const top = apps.getBoundingClientRect().top;
+    apps.classList.toggle('is-scroll-apps', !motion.matches);
+    apps.classList.toggle('has-lead', motion.matches || top <= window.innerHeight * .88);
+    // One short further scroll reveals the whole second group together.
+    apps.classList.toggle('has-more', motion.matches || top <= window.innerHeight * .68);
+  }
+  function queue() { if (!frame) frame = requestAnimationFrame(updateApps); }
+  window.addEventListener('scroll',queue,{passive:true});
+  window.addEventListener('resize',queue,{passive:true});
+  motion.addEventListener('change',updateApps);
+  updateApps();
+})();

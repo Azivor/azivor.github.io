@@ -828,3 +828,30 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
  .creation-ai-payoff{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:90px 0}
  .creation-timeline::after{height:clamp(240px,28svh,420px)}
 }
+
+/* A quiet pair opens into a wider creative toolkit. Space is reserved throughout. */
+.creation-apps { margin: 40px auto 0; width: min(720px,100%); }
+.creation-apps ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 24px; }
+.creation-apps .creation-apps-more { margin-top: 28px; gap: 20px; }
+.creation-app { display: grid; place-items: center; width: 64px; height: 64px; flex: 0 0 64px; border-radius: 17px; background: rgba(255,242,223,.07); box-shadow: inset 0 0 0 1px rgba(255,242,223,.12); }
+.creation-app span { display: block; width: 37px; height: 37px; background: #fff2df; mask: var(--app-icon) center / contain no-repeat; -webkit-mask: var(--app-icon) center / contain no-repeat; }
+.creation-apps-lead .creation-app { width: 80px; height: 80px; flex-basis: 80px; border-radius: 21px; }
+.creation-apps-lead .creation-app span { width: 48px; height: 48px; }
+.creation-app--claude { background: #cc785c; }
+.creation-app--openai { background: #f3eee6; }
+.creation-app--openai span { background: #242924; }
+.creation-apps.is-scroll-apps .creation-apps-lead,
+.creation-apps.is-scroll-apps .creation-apps-more { opacity: 0; transform: translateY(18px); transition: opacity 360ms ease, transform 480ms cubic-bezier(.16,1,.3,1); }
+.creation-apps.is-scroll-apps.has-lead .creation-apps-lead,
+.creation-apps.is-scroll-apps.has-more .creation-apps-more { opacity: 1; transform: translateY(0); }
+@media (max-width: 700px) {
+  .creation-apps { margin-top: 32px; max-width: 340px; }
+  .creation-apps .creation-apps-more { display: grid; grid-template-columns: repeat(4,56px); gap: 16px; }
+  .creation-apps-more .creation-app { width: 56px; height: 56px; flex-basis: 56px; border-radius: 15px; }
+  .creation-apps-more .creation-app span { width: 33px; height: 33px; }
+  .creation-ai-thesis { margin-top: 32px!important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .creation-apps.is-scroll-apps .creation-apps-lead,
+  .creation-apps.is-scroll-apps .creation-apps-more { opacity: 1; transform: none; transition: none; }
+}

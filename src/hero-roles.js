@@ -16,7 +16,7 @@ function schedule() {
     current = (current + 1) % roles.length;
     roles[current].classList.add('is-current');
     schedule();
-  }, 3400);
+  }, 2200);
 }
 function syncMotion() {
   if (reducedMotion.matches) {
