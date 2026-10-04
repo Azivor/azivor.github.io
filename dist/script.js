@@ -148,6 +148,78 @@ document.documentElement?.classList.toggle('gg-refraction-ready', probe);
 const scrollNav = document.querySelector('.floating-nav');
 const topHeader = document.querySelector('.header');
 const headerNav = document.querySelector('.inner-page .header .nav');
+// Sample the existing fade once. Scrolling only reads cached colors and DOM surfaces,
+// never captures the page or reads pixels from the animated Earth canvas.
+let heroFadePixels;
+const surfaceLuminance = rgb => {
+  const channels=rgb.map(value=>{const c=value/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;});
+  return channels[0]*.2126+channels[1]*.7152+channels[2]*.0722;
+};
+const foregroundOverLight = (control, fallback) => {
+  if (!control?.getBoundingClientRect || !document.elementsFromPoint || typeof getComputedStyle !== 'function') return fallback;
+  if (window.matchMedia('(prefers-reduced-transparency: reduce)').matches && (window.innerWidth>700 || window.scrollY>8)) return true;
+  const tint=window.innerWidth>700 ? .335 : .08;
+  const paintedLuminance=rgb=>surfaceLuminance(rgb.map(c=>c*(1-tint)+245*tint));
+  const threshold=control.classList?.contains('is-over-light') ? .23 : .27;
+  const bounds=control.getBoundingClientRect();
+  const x=Math.max(0,Math.min(window.innerWidth-1,bounds.left+bounds.width/2));
+  const y=Math.max(0,bounds.top+bounds.height/2);
+  for(const surface of document.elementsFromPoint(x,y)){
+    if(surface.closest('.header, .floating-nav')) continue;
+    const style=getComputedStyle(surface);
+    if(surface.matches('.page-hero')){
+      const fade=parseFloat(style.getPropertyValue('--hero-fade'))||180;
+      const bottom=surface.getBoundingClientRect().bottom;
+      const progress=Math.max(0,Math.min(1,1-(bottom-y)/fade));
+      if(!heroFadePixels) return progress>.55;
+      const offset=Math.round(progress*255)*4;
+      const rgb=Array.from(heroFadePixels.slice(offset,offset+3));
+      return paintedLuminance(rgb)>threshold;
+    }
+    const color=style.backgroundColor.match(/[\d.]+/g)?.map(Number);
+    if(color && (color[3]??1)>=.6){
+      return paintedLuminance(color.slice(0,3))>threshold;
+    }
+    if(surface.matches('.content-flow, .editorial-main, footer')) return true;
+    if(surface.matches('.journey, .journey-stage')){
+      const journey=document.querySelector('.journey');
+      const stage=document.querySelector('.journey-stage');
+      if(!journey || !stage) return fallback;
+      const rect=stage.getBoundingClientRect(), bounds=journey.getBoundingClientRect();
+      const clamp=value=>Math.max(0,Math.min(1,value));
+      const p=clamp(-bounds.top/Math.max(1,bounds.height-rect.height));
+      const position=clamp((y-rect.top)/rect.height);
+      const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('sky-fallback');
+      // Match the existing landing wash; no animated canvas readback is needed.
+      const stops=[[0,[36,76,128]],[.36,[83,139,184]],[.72,[153,200,227]],[1,[217,238,248]]];
+      let wash=stops[0][1];
+      for(let i=1;i<stops.length;i++){
+        if(position<=stops[i][0]){
+          const [start,a]=stops[i-1], [end,b]=stops[i];
+          const t=(position-start)/(end-start);
+          wash=a.map((c,index)=>c+(b[index]-c)*t);break;
+        }
+      }
+      const opacity=reduced ? clamp((position-.6)/.4) : clamp((p-.8)*5);
+      if(reduced) wash=stops[3][1];
+      return paintedLuminance(wash.map((c,index)=>c*opacity+stops[0][1][index]*(1-opacity)))>threshold;
+    }
+  }
+  return fallback;
+};
+if(document.querySelector('.page-hero') && typeof Image !== 'undefined'){
+  const fadeImage=new Image();
+  fadeImage.onload=()=>{
+    try{
+      const sample=document.createElement('canvas');sample.width=1;sample.height=256;
+      const context=sample.getContext('2d',{willReadFrequently:true});
+      context.drawImage(fadeImage,0,0,1,256);
+      heroFadePixels=context.getImageData(0,0,1,256).data;
+      refreshScrollNav();
+    }catch{/* The geometry-based contrast fallback remains available. */}
+  };
+  fadeImage.src='/information-fade.svg';
+}
 if (topHeader && (scrollNav || headerNav)) {
   const journey = document.querySelector('.journey');
   const sceneStage = document.querySelector('.journey-stage');
@@ -160,7 +232,14 @@ if (topHeader && (scrollNav || headerNav)) {
     const menuOpen = document.body.classList.contains('menu-open');
     topHeader.classList?.toggle('is-mobile-scrolled', !desktop && window.scrollY > 8);
     const mobileLightEdge = lightBoundary?.getBoundingClientRect()[journey ? 'top' : 'bottom'] ?? Infinity;
-    topHeader.classList?.toggle('is-mobile-over-light', !desktop && window.scrollY > 8 && mobileLightEdge <= (topHeader.getBoundingClientRect().height || 60));
+    const mobileFallback=mobileLightEdge <= (topHeader.getBoundingClientRect().height || 60);
+    const mobileLight=!desktop && foregroundOverLight(topHeader,mobileFallback);
+    topHeader.classList?.toggle('is-mobile-over-light',mobileLight);
+    if(!desktop){
+      for(const control of [wordmark,navToggle]){
+        control?.classList?.toggle('is-over-light',!menuOpen && foregroundOverLight(control,mobileLight));
+      }
+    }
     if (scrollNav) {
       const bounds = journey?.getBoundingClientRect();
       const journeyProgress = bounds ? Math.max(0, Math.min(1, -bounds.top / Math.max(1, bounds.height - (sceneStage?.getBoundingClientRect().height || window.innerHeight)))) : 0;
@@ -174,12 +253,12 @@ if (topHeader && (scrollNav || headerNav)) {
       scrollNav.classList.toggle('is-visible', show);
       scrollNav.setAttribute('aria-hidden', String(!show));
       scrollNav.inert = !show;
-      if (lightBoundary) scrollNav.classList.toggle('is-over-light', lightBoundary.getBoundingClientRect().top <= 145);
+      if (lightBoundary) scrollNav.classList.toggle('is-over-light', foregroundOverLight(scrollNav,lightBoundary.getBoundingClientRect().top <= 145));
     }
     if (headerNav) {
       const glass = desktop && window.scrollY > 8;
       headerNav.classList.toggle('is-glass', glass);
-      headerNav.classList.toggle('is-over-light', glass && (lightBoundary?.getBoundingClientRect().bottom ?? Infinity) <= 175);
+      headerNav.classList.toggle('is-over-light', glass && foregroundOverLight(headerNav,(lightBoundary?.getBoundingClientRect().bottom ?? Infinity) <= 175));
       if (wordmark && !menuOpen) wordmark.inert = desktop && topHeader.getBoundingClientRect().bottom <= 0;
     }
   };

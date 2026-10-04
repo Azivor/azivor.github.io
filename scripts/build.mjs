@@ -30,17 +30,17 @@ await copyFile(join(root,'src/exercise.js'),join(out,'exercise.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
 for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});
-// Content versions let returning visitors keep caching without retaining old styles.
-const stylesheetVersions=new Map();
+// Content versions let returning visitors keep caching without retaining old styles or navigation logic.
+const assetVersions=new Map();
 for(const page of ['index.html','explore/index.html','builds/index.html','about/index.html','scene-test/index.html','components/index.html']){
   const path=join(out,page);
   let html=await readFile(path,'utf8');
-  for(const [,href] of html.matchAll(/<link rel="stylesheet" href="(\/[^"?]+\.css)"/g)){
-    if(!stylesheetVersions.has(href)){
+  for(const [,href] of html.matchAll(/(?:href|src)="(\/[^"?]+\.(?:css|js))"/g)){
+    if(!assetVersions.has(href)){
       const bytes=await readFile(join(out,href));
-      stylesheetVersions.set(href,createHash('sha256').update(bytes).digest('hex').slice(0,12));
+      assetVersions.set(href,createHash('sha256').update(bytes).digest('hex').slice(0,12));
     }
-    html=html.replaceAll(`href="${href}"`,`href="${href}?v=${stylesheetVersions.get(href)}"`);
+    html=html.replaceAll(`"${href}"`,`"${href}?v=${assetVersions.get(href)}"`);
   }
   await writeFile(path,html);
 }

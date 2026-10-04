@@ -17,11 +17,11 @@ test('generated pages reference existing local assets and routes',()=>{
   }
 });
 
-test('every local stylesheet has a version matching its published content',()=>{
+test('every local style and script has a version matching its published content',()=>{
   for(const file of pages){
     const html=readFileSync(file,'utf8');
-    const links=[...html.matchAll(/<link rel="stylesheet" href="(\/[^"]+)"/g)];
-    assert.ok(links.length>0,`${file}: no local stylesheets`);
+    const links=[...html.matchAll(/(?:href|src)="(\/[^"?]+\.(?:css|js)(?:\?[^"]+)?)"/g)];
+    assert.ok(links.length>0,`${file}: no local styles or scripts`);
     for(const [,href] of links){
       const url=new URL(href,'https://azivor.github.io');
       const bytes=readFileSync(join('dist',url.pathname));
