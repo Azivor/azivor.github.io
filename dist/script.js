@@ -192,7 +192,7 @@ const foregroundOverLight = (control, fallback) => {
       const position=clamp((y-rect.top)/rect.height);
       const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('sky-fallback');
       // Match the existing landing wash; no animated canvas readback is needed.
-      const stops=[[0,[36,76,128]],[.36,[83,139,184]],[.72,[153,200,227]],[1,[217,238,248]]];
+      const stops=[[0,[36,76,128]],[.48,[48,91,138]],[1,[36,76,128]]];
       let wash=stops[0][1];
       for(let i=1;i<stops.length;i++){
         if(position<=stops[i][0]){
@@ -202,7 +202,7 @@ const foregroundOverLight = (control, fallback) => {
         }
       }
       const opacity=reduced ? clamp((position-.6)/.4) : clamp((p-.8)*5);
-      if(reduced) wash=stops[3][1];
+      if(reduced) wash=stops[stops.length-1][1];
       return paintedLuminance(wash.map((c,index)=>c*opacity+stops[0][1][index]*(1-opacity)))>threshold;
     }
   }

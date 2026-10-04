@@ -166,13 +166,13 @@ footer{min-height:300px;margin:0;display:flex;justify-content:space-between;alig
 
 /* Match the page center independently of the width of the wordmark. */
 @media(min-width:701px){.header .nav{position:absolute;left:50%;transform:translateX(-50%)}}
-.landing-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#244c80 0%,#538bb8 36%,#99c8e3 72%,#d9eef8 100%);opacity:clamp(0,calc((var(--journey-progress,0) - .80)*5),1)}
+.landing-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#244c80 0%,#305b8a 48%,#244c80 100%);opacity:clamp(0,calc((var(--journey-progress,0) - .80)*5),1)}
 .shooting-stars{position:absolute;inset:0;pointer-events:none;opacity:clamp(0,calc(1 - var(--journey-progress,0)*8),1);overflow:hidden}
 .shooting-star{position:absolute;left:var(--meteor-x,68%);top:var(--meteor-y,16%);width:var(--meteor-length,95px);height:1px;opacity:0;background:linear-gradient(var(--meteor-gradient,90deg),transparent,#d8eaffb3);transform:rotate(var(--meteor-angle,24deg));transform-origin:var(--meteor-origin,right center)}
 .shooting-star.is-shooting{animation:shooting-star var(--meteor-duration,1.3s) ease-out both}
 @keyframes shooting-star{0%{opacity:0;transform:translate(0,0) rotate(var(--meteor-angle,24deg)) scaleX(.25)}18%{opacity:.42}65%{opacity:.25}100%{opacity:0;transform:translate(var(--meteor-dx,150px),var(--meteor-dy,85px)) rotate(var(--meteor-angle,24deg)) scaleX(1)}}
-@media(prefers-reduced-motion:reduce){.shooting-stars{display:none}.landing-wash{opacity:1}.journey-stage{background:#244c80}.landing-wash{background:linear-gradient(180deg,transparent 60%,#d9eef8 100%)}}
-.sky-fallback .landing-wash{opacity:1;background:linear-gradient(180deg,transparent 60%,#d9eef8 100%)}
+@media(prefers-reduced-motion:reduce){.shooting-stars{display:none}.landing-wash{opacity:1}.journey-stage{background:#244c80}.landing-wash{background:linear-gradient(180deg,transparent 60%,#244c80 100%)}}
+.sky-fallback .landing-wash{opacity:1;background:linear-gradient(180deg,transparent 60%,#244c80 100%)}
 
 /* Home's route switcher joins the scene only when the Earth descent reaches its reveal. */
 .floating-nav{position:fixed;z-index:8;top:18px;left:50%;transform:translate(-50%,-10px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .4s ease,transform .55s cubic-bezier(.22,1,.36,1),visibility 0s linear .55s,color .32s ease;color:#fff}
@@ -757,18 +757,16 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 
 .creation-story::before{display:none}
 .creation-timeline::after{content:"";display:block;grid-column:1/-1;height:320px}
-@media(max-width:700px){.creation-story::before,.creation-timeline::after{content:"";display:block;grid-column:1/-1;height:320px}
 
 .creation-invitation{position:relative;isolation:isolate}
 .creation-invitation::before{content:"";position:absolute;inset:0 auto 0 50%;transform:translateX(-50%);width:100vw;background:linear-gradient(180deg,#ede8de,#fff);z-index:-1;pointer-events:none}
 
 
 /* A continuous film atmosphere behind the historical timeline only. */
-.creation-atmosphere{position:absolute;inset:0 auto 0 50%;transform:translateX(-50%);width:100vw;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#d9eef8 0px,#c7e0eb 45px,#9ab9ce 100px,#5c809d 165px,#2b4c68 230px,#102b40 300px,#2a526c 26%,#53596d 42%,#96583d 56%,#78372e 60%,#2b1e24 70%,#12171c calc(100% - 320px),#18232b calc(100% - 270px),#354650 calc(100% - 220px),#6b797b calc(100% - 145px),#b4b9b0 calc(100% - 65px),#ede8de 100%)}
-.creation-atmosphere::after{content:"";position:absolute;inset:0;background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIj48ZmlsdGVyIGlkPSJncmFpbiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIxIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjxmZUNvbXBvbmVudFRyYW5zZmVyPjxmZUZ1bmNSIHR5cGU9ImxpbmVhciIgc2xvcGU9IjIiIGludGVyY2VwdD0iLS41Ii8+PGZlRnVuY0cgdHlwZT0ibGluZWFyIiBzbG9wZT0iMiIgaW50ZXJjZXB0PSItLjUiLz48ZmVGdW5jQiB0eXBlPSJsaW5lYXIiIHNsb3BlPSIyIiBpbnRlcmNlcHQ9Ii0uNSIvPjwvZmVDb21wb25lbnRUcmFuc2Zlcj48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZ3JhaW4pIi8+PC9zdmc+);background-size:180px 180px;opacity:.32;mix-blend-mode:soft-light}
+.creation-atmosphere{position:absolute;inset:0 auto 0 50%;transform:translateX(-50%);width:100vw;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#244c80 0px,#224773 65px,#1d3e64 140px,#16334f 230px,#102b40 300px,#2a526c 26%,#53596d 42%,#96583d 56%,#78372e 60%,#2b1e24 70%,#12171c calc(100% - 320px),#18232b calc(100% - 270px),#354650 calc(100% - 220px),#6b797b calc(100% - 145px),#b4b9b0 calc(100% - 65px),#ede8de 100%)}
+.creation-atmosphere::after{content:"";position:absolute;inset:0;background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIj48ZmlsdGVyIGlkPSJncmFpbiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9Ii45IiBudW1PY3RhdmVzPSIxIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjxmZUNvbXBvbmVudFRyYW5zZmVyPjxmZUZ1bmNSIHR5cGU9ImxpbmVhciIgc2xvcGU9IjIiIGludGVyY2VwdD0iLS41Ii8+PGZlRnVuY0cgdHlwZT0ibGluZWFyIiBzbG9wZT0iMiIgaW50ZXJjZXB0PSItLjUiLz48ZmVGdW5jQiB0eXBlPSJsaW5lYXIiIHNsb3BlPSIyIiBpbnRlcmNlcHQ9Ii0uNSIvPjwvZmVDb21wb25lbnRUcmFuc2Zlcj48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZ3JhaW4pIi8+PC9zdmc+);background-size:230px 230px;opacity:.55;mix-blend-mode:overlay}
 .creation-chapter-copy{position:relative;z-index:1}
 .creation-timeline .creation-era,.creation-timeline .creation-chapter-description{color:#f1e8dd;text-shadow:0 1px 10px #10151b30}
-@media(max-width:700px){.creation-atmosphere{position:absolute;inset:0 auto 0 50%;transform:translateX(-50%);width:100vw;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#d9eef8 0px,#c7e0eb 45px,#9ab9ce 100px,#5c809d 165px,#2b4c68 230px,#102b40 300px,#2a526c 26%,#53596d 42%,#96583d 56%,#78372e 60%,#2b1e24 70%,#12171c calc(100% - 320px),#18232b calc(100% - 270px),#354650 calc(100% - 220px),#6b797b calc(100% - 145px),#b4b9b0 calc(100% - 65px),#ede8de 100%)}
 
 .creation-timeline-heading{grid-column:1/-1;padding:260px 0 76px;position:relative;z-index:1;max-width:980px}
 .creation-timeline-heading .creation-era{margin-bottom:22px!important;letter-spacing:.1em;text-transform:uppercase;font-size:13px}

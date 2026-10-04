@@ -41,12 +41,13 @@ test('reduced transparency keeps white controls at the dark top and dark control
   vm.runInContext('window.scrollY=30',h.context);assert.equal(h.read(),true);
 });
 
-test('late Home descent keeps white ink at the dark wash top and dark ink as its pale bottom moves underneath',()=>{
+test('late Home descent keeps white ink across the blue landing wash',()=>{
   const h=contrastHarness();
   h.setSurfaces([{closest:()=>false,matches:selector=>selector==='.journey, .journey-stage',style:{backgroundColor:'rgba(0, 0, 0, 0)'}}]);
   vm.runInContext("let stageTop=0;document.querySelector=selector=>selector==='.journey'?{getBoundingClientRect:()=>({top:-1600,height:2400})}:selector==='.journey-stage'?{getBoundingClientRect:()=>({top:stageTop,height:800})}:null;document.documentElement.classList.contains=()=>false",h.context);
   assert.equal(h.read(),false);
-  vm.runInContext('stageTop=-650',h.context);assert.equal(h.read(),true);
+  vm.runInContext('stageTop=-650',h.context);assert.equal(h.read(),false);
+  vm.runInContext("window.matchMedia=query=>({matches:query.includes('prefers-reduced-motion')})",h.context);assert.equal(h.read(),false);
   const css=readFileSync('src/styles/home.css','utf8');
-  assert.match(css,/#244c80 0%,#538bb8 36%,#99c8e3 72%,#d9eef8 100%/,'contrast estimate must track the rendered landing wash');
+  assert.match(css,/#244c80 0%,#305b8a 48%,#244c80 100%/,'contrast estimate must track the rendered landing wash');
 });

@@ -59,13 +59,13 @@ footer{min-height:300px;margin:0;display:flex;justify-content:space-between;alig
 
 /* Match the page center independently of the width of the wordmark. */
 @media(min-width:701px){.header .nav{position:absolute;left:50%;transform:translateX(-50%)}}
-.landing-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#244c80 0%,#538bb8 36%,#99c8e3 72%,#d9eef8 100%);opacity:clamp(0,calc((var(--journey-progress,0) - .80)*5),1)}
+.landing-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#244c80 0%,#305b8a 48%,#244c80 100%);opacity:clamp(0,calc((var(--journey-progress,0) - .80)*5),1)}
 .shooting-stars{position:absolute;inset:0;pointer-events:none;opacity:clamp(0,calc(1 - var(--journey-progress,0)*8),1);overflow:hidden}
 .shooting-star{position:absolute;left:var(--meteor-x,68%);top:var(--meteor-y,16%);width:var(--meteor-length,95px);height:1px;opacity:0;background:linear-gradient(var(--meteor-gradient,90deg),transparent,#d8eaffb3);transform:rotate(var(--meteor-angle,24deg));transform-origin:var(--meteor-origin,right center)}
 .shooting-star.is-shooting{animation:shooting-star var(--meteor-duration,1.3s) ease-out both}
 @keyframes shooting-star{0%{opacity:0;transform:translate(0,0) rotate(var(--meteor-angle,24deg)) scaleX(.25)}18%{opacity:.42}65%{opacity:.25}100%{opacity:0;transform:translate(var(--meteor-dx,150px),var(--meteor-dy,85px)) rotate(var(--meteor-angle,24deg)) scaleX(1)}}
-@media(prefers-reduced-motion:reduce){.shooting-stars{display:none}.landing-wash{opacity:1}.journey-stage{background:#244c80}.landing-wash{background:linear-gradient(180deg,transparent 60%,#d9eef8 100%)}}
-.sky-fallback .landing-wash{opacity:1;background:linear-gradient(180deg,transparent 60%,#d9eef8 100%)}
+@media(prefers-reduced-motion:reduce){.shooting-stars{display:none}.landing-wash{opacity:1}.journey-stage{background:#244c80}.landing-wash{background:linear-gradient(180deg,transparent 60%,#244c80 100%)}}
+.sky-fallback .landing-wash{opacity:1;background:linear-gradient(180deg,transparent 60%,#244c80 100%)}
 
 /* Home's route switcher joins the scene only when the Earth descent reaches its reveal. */
 .floating-nav{position:fixed;z-index:8;top:18px;left:50%;transform:translate(-50%,-10px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .4s ease,transform .55s cubic-bezier(.22,1,.36,1),visibility 0s linear .55s,color .32s ease;color:#fff}
