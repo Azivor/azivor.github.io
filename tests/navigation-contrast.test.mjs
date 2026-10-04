@@ -71,3 +71,19 @@ test('desktop and mobile navigation follow the visible timeline gradient above i
     assert.equal(h.read(false),true,'dark ink returns as the exit reaches cream');
   }
 });
+
+test('browser backdrop follows the timeline gradient and clears its old tint on white content',()=>{
+ const h=contrastHarness();
+ vm.runInContext(`
+ document.documentElement.style={};document.body={style:{}};
+ const atmosphere={style:{backgroundImage:'linear-gradient(rgb(16, 43, 64) 0px, rgb(120, 55, 46) 1000px)'},getBoundingClientRect:()=>({top:-499,bottom:501,height:1000})};
+ let theme='';document.querySelector=selector=>selector==='.creation-atmosphere'?atmosphere:selector==='meta[name="theme-color"]'?{setAttribute:(name,value)=>theme=value}:null;
+ syncBrowserBackdrop();
+ `,h.context);
+ assert.equal(h.context.document.documentElement.style.backgroundColor,'rgb(68,49,55)');
+ assert.equal(h.context.document.body.style.backgroundColor,'rgb(68,49,55)');
+ assert.equal(vm.runInContext('theme',h.context),'rgb(68,49,55)');
+ h.setSurfaces([h.surface('rgb(255, 255, 255)')]);
+ vm.runInContext("document.querySelector=()=>null;syncBrowserBackdrop()",h.context);
+ assert.equal(h.context.document.documentElement.style.backgroundColor,'rgb(255,255,255)');
+});
