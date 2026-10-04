@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-04T06:23:38.285277+00:00",
+  "title": "Design System: Azivor",
+  "extensions": {
+    "colorMeta": {
+      "editorial-navy": {
+        "role": "primary",
+        "displayName": "Editorial Navy",
+        "canonical": "#143b59",
+        "tonalRamp": [
+          "oklch(15% 0.0684 245.16)",
+          "oklch(27% 0.0684 245.16)",
+          "oklch(38% 0.0684 245.16)",
+          "oklch(50% 0.0684 245.16)",
+          "oklch(61% 0.0684 245.16)",
+          "oklch(73% 0.0684 245.16)",
+          "oklch(84% 0.0684 245.16)",
+          "oklch(95% 0.0684 245.16)"
+        ]
+      },
+      "editorial-muted": {
+        "role": "neutral",
+        "displayName": "Editorial Muted",
+        "canonical": "#405e73",
+        "tonalRamp": [
+          "oklch(15% 0.0492 239.68)",
+          "oklch(27% 0.0492 239.68)",
+          "oklch(38% 0.0492 239.68)",
+          "oklch(50% 0.0492 239.68)",
+          "oklch(61% 0.0492 239.68)",
+          "oklch(73% 0.0492 239.68)",
+          "oklch(84% 0.0492 239.68)",
+          "oklch(95% 0.0492 239.68)"
+        ]
+      },
+      "editorial-ground": {
+        "role": "neutral",
+        "displayName": "Editorial Ground",
+        "canonical": "#f4f8fc",
+        "tonalRamp": [
+          "oklch(15% 0.0068 247.89)",
+          "oklch(27% 0.0068 247.89)",
+          "oklch(38% 0.0068 247.89)",
+          "oklch(50% 0.0068 247.89)",
+          "oklch(61% 0.0068 247.89)",
+          "oklch(73% 0.0068 247.89)",
+          "oklch(84% 0.0068 247.89)",
+          "oklch(95% 0.0068 247.89)"
+        ]
+      },
+      "editorial-line": {
+        "role": "neutral",
+        "displayName": "Editorial Line",
+        "canonical": "#c5d7e5",
+        "tonalRamp": [
+          "oklch(15% 0.0275 241.20)",
+          "oklch(27% 0.0275 241.20)",
+          "oklch(38% 0.0275 241.20)",
+          "oklch(50% 0.0275 241.20)",
+          "oklch(61% 0.0275 241.20)",
+          "oklch(73% 0.0275 241.20)",
+          "oklch(84% 0.0275 241.20)",
+          "oklch(95% 0.0275 241.20)"
+        ]
+      },
+      "exercise-cyan": {
+        "role": "neutral",
+        "displayName": "Exercise Cyan",
+        "canonical": "#d6ebf7",
+        "tonalRamp": [
+          "oklch(15% 0.0276 232.67)",
+          "oklch(27% 0.0276 232.67)",
+          "oklch(38% 0.0276 232.67)",
+          "oklch(50% 0.0276 232.67)",
+          "oklch(61% 0.0276 232.67)",
+          "oklch(73% 0.0276 232.67)",
+          "oklch(84% 0.0276 232.67)",
+          "oklch(95% 0.0276 232.67)"
+        ]
+      },
+      "evidence-cyan": {
+        "role": "neutral",
+        "displayName": "Evidence Cyan",
+        "canonical": "#e2f0f8",
+        "tonalRamp": [
+          "oklch(15% 0.0184 232.51)",
+          "oklch(27% 0.0184 232.51)",
+          "oklch(38% 0.0184 232.51)",
+          "oklch(50% 0.0184 232.51)",
+          "oklch(61% 0.0184 232.51)",
+          "oklch(73% 0.0184 232.51)",
+          "oklch(84% 0.0184 232.51)",
+          "oklch(95% 0.0184 232.51)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(27% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(50% 0.0000 89.88)",
+          "oklch(61% 0.0000 89.88)",
+          "oklch(73% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Accent",
+        "canonical": "#1e82e0",
+        "tonalRamp": [
+          "oklch(15% 0.1669 252.12)",
+          "oklch(27% 0.1669 252.12)",
+          "oklch(38% 0.1669 252.12)",
+          "oklch(50% 0.1669 252.12)",
+          "oklch(61% 0.1669 252.12)",
+          "oklch(73% 0.1669 252.12)",
+          "oklch(84% 0.1669 252.12)",
+          "oklch(95% 0.1669 252.12)"
+        ]
+      },
+      "accent-deep": {
+        "role": "neutral",
+        "displayName": "Accent Deep",
+        "canonical": "#1c38ea",
+        "tonalRamp": [
+          "oklch(15% 0.2609 266.28)",
+          "oklch(27% 0.2609 266.28)",
+          "oklch(38% 0.2609 266.28)",
+          "oklch(50% 0.2609 266.28)",
+          "oklch(61% 0.2609 266.28)",
+          "oklch(73% 0.2609 266.28)",
+          "oklch(84% 0.2609 266.28)",
+          "oklch(95% 0.2609 266.28)"
+        ]
+      },
+      "footer-cloud": {
+        "role": "neutral",
+        "displayName": "Footer Cloud",
+        "canonical": "#b8cbd6",
+        "tonalRamp": [
+          "oklch(15% 0.0258 233.04)",
+          "oklch(27% 0.0258 233.04)",
+          "oklch(38% 0.0258 233.04)",
+          "oklch(50% 0.0258 233.04)",
+          "oklch(61% 0.0258 233.04)",
+          "oklch(73% 0.0258 233.04)",
+          "oklch(84% 0.0258 233.04)",
+          "oklch(95% 0.0258 233.04)"
+        ]
+      },
+      "footer-graphite": {
+        "role": "neutral",
+        "displayName": "Footer Graphite",
+        "canonical": "#41464b",
+        "tonalRamp": [
+          "oklch(15% 0.0107 248.10)",
+          "oklch(27% 0.0107 248.10)",
+          "oklch(38% 0.0107 248.10)",
+          "oklch(50% 0.0107 248.10)",
+          "oklch(61% 0.0107 248.10)",
+          "oklch(73% 0.0107 248.10)",
+          "oklch(84% 0.0107 248.10)",
+          "oklch(95% 0.0107 248.10)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "hero": {
+        "displayName": "Earth opening",
+        "purpose": "The only serif headline; source: src/styles/home.css and src/styles/tokens.css."
+      },
+      "headline": {
+        "displayName": "Discovery headline",
+        "purpose": "Geist interior headlines; compact gallery and About variants retain their own scale."
+      },
+      "body": {
+        "displayName": "Reading body",
+        "purpose": "Open disclosure prose and project notes."
+      }
+    },
+    "shadows": [
+      {
+        "name": "glass-navigation",
+        "value": "0 12px 32px rgba(0,0,0,.254)",
+        "purpose": "Established glass navigation material; src/styles/components.css."
+      },
+      {
+        "name": "light-glass",
+        "value": "inset 0 1px 1px #ffffff52,0 6px 18px #10283f14",
+        "purpose": "Shared light glass material; src/styles/tokens.css."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-fast",
+        "value": "200ms",
+        "purpose": "Shared control state; src/styles/tokens.css."
+      },
+      {
+        "name": "disclosure-symbol",
+        "value": "transform .2s ease",
+        "purpose": "Plus/minus state, suppressed by reduced motion; src/styles/discovery.css."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "discovery-refinement",
+        "value": "1000px"
+      },
+      {
+        "name": "phone",
+        "value": "700px"
+      },
+      {
+        "name": "compact-phone",
+        "value": "360px"
+      }
+    ],
+    "sourcePaths": [
+      "src/styles/tokens.css",
+      "src/styles/components.css",
+      "src/styles/home.css",
+      "src/styles/content.css",
+      "src/styles/discovery.css",
+      "src/pages/home.mjs",
+      "src/pages/builds.mjs",
+      "src/pages/earth-descent.mjs",
+      "src/pages/explore.mjs",
+      "src/pages/about.mjs",
+      "src/pages/site-shell.mjs",
+      "src/discovery.js"
+    ],
+    "tonalRampPurpose": "Synthesized OKLCH preview ramps; canonical source colors and runtime CSS remain unchanged."
+  },
+  "components": [
+    {
+      "name": "Editorial primary link",
+      "kind": "button",
+      "description": "src/styles/discovery.css: .primary-link",
+      "html": "<a class=\"ds-editorial-primary\" href=\"#preview\">Try the live scene</a>",
+      "css": ".ds-editorial-primary{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 20px;border-radius:10px;background:var(--discovery-ink,#143b59);color:white;font-size:.95rem;font-weight:500;line-height:1.4;text-decoration:none;font-family:var(--font-body,Geist,Arial,sans-serif);}.ds-editorial-primary:hover{background:#1b557d}.ds-editorial-primary:focus-visible{outline:3px solid #236b99;outline-offset:5px;}",
+      "refersTo": "editorial-primary"
+    },
+    {
+      "name": "Earth primary button",
+      "kind": "button",
+      "description": "src/styles/components.css: .button.primary; compact material preview",
+      "html": "<a class=\"ds-earth-button\" href=\"#preview\">Explore what you can create</a>",
+      "css": ".ds-earth-button{display:inline-flex;align-items:center;min-height:44px;padding:9px 19px;border:1px solid #a0c7ff57;border-radius:var(--radius-control,11px);color:white;text-decoration:none;font-weight:500;font-family:var(--font-body,Geist,Arial,sans-serif);background:radial-gradient(101.79% 101.79% at 65.61% 81.79%,#ffffff47,transparent),radial-gradient(114.65% 114.65% at 9.73% 17.27%,var(--color-accent,#1e82e0),var(--color-accent-deep,#1c38ea));box-shadow:14px 15px 24px #6d97e540,inset -3px -3px 4px #bfe5fb66,inset 4px 4px 4px #131ae41a;transition:transform 200ms ease}.ds-earth-button:hover{transform:scale(1.03)}.ds-earth-button:active{transform:scale(.97)}.ds-earth-button:focus-visible{outline:3px solid #112f53;outline-offset:5px}@media(prefers-reduced-motion:reduce){.ds-earth-button:hover,.ds-earth-button:active{transform:none}}"
+    },
+    {
+      "name": "Glass button",
+      "kind": "button",
+      "description": "src/styles/components.css: .button.glass",
+      "html": "<button class=\"ds-glass\" type=\"button\">Explore</button>",
+      "css": ".ds-glass{min-height:44px;padding:9px 19px;border:1px solid #ffffff40;border-radius:var(--radius-control,11px);background:linear-gradient(135deg,#ffffff2e,#ffffff0f);color:var(--color-ink,#203550);font-size:1rem;cursor:pointer;font-family:var(--font-body,Geist,Arial,sans-serif);}.ds-glass:hover{background-color:#ffffff1a}.ds-glass:focus-visible{outline:3px solid #236b99;outline-offset:5px;}"
+    },
+    {
+      "name": "Ghost button",
+      "kind": "button",
+      "description": "src/styles/components.css: .button.ghost",
+      "html": "<button class=\"ds-ghost\" type=\"button\">Explore</button>",
+      "css": ".ds-ghost{min-height:44px;padding:9px 19px;border:1px solid currentColor;border-radius:var(--radius-control,11px);background:transparent;color:var(--color-ink,#203550);font-size:1rem;cursor:pointer;font-family:var(--font-body,Geist,Arial,sans-serif);}.ds-ghost:hover{background-color:#ffffff1a}.ds-ghost:focus-visible{outline:3px solid #236b99;outline-offset:5px;}"
+    },
+    {
+      "name": "Input field",
+      "kind": "input",
+      "description": "src/styles/components.css: .ui-field, .ui-input; reference primitive",
+      "html": "<label class=\"ds-field\">Project name<input class=\"ds-input\" type=\"text\" placeholder=\"A scene you imagined\"></label>",
+      "css": ".ds-field{display:grid;gap:8px;font-size:.875rem;font-weight:500;font-family:var(--font-body,Geist,Arial,sans-serif);}.ds-input{min-height:44px;padding:10px 12px;border:1px solid #91a9c0;border-radius:var(--radius-control,11px);background:#ffffffbf;color:var(--color-ink,#203550);font-family:var(--font-body,Geist,Arial,sans-serif);}.ds-input:focus-visible{outline:3px solid #236b99;outline-offset:5px;}.ds-input[aria-invalid=true]{border-color:#b6263c}.ds-input:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "description": "src/styles/components.css: .ui-badge; reference primitive",
+      "html": "<span class=\"ds-badge\">Web experience</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;border-radius:999px;background:#e1f1fc;color:#234d70;border:1px solid #c9e3f5;padding:4px 10px;font-size:.8125rem;line-height:1.4;font-family:var(--font-body,Geist,Arial,sans-serif);}"
+    },
+    {
+      "name": "Glass route navigation",
+      "kind": "nav",
+      "description": "src/styles/components.css: .glass-pill, .floating-nav__links; material preview without app motion",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Preview routes\"><a href=\"#preview\" aria-current=\"page\">Home</a><a href=\"#explore-preview\">Explore</a><a href=\"#builds-preview\">Builds</a><a href=\"#about-preview\">About</a></nav>",
+      "css": ".ds-nav{display:flex;justify-content:center;align-items:center;gap:22px;width:356px;max-width:100%;min-height:52px;border-radius:26px;background:rgba(255,255,255,.335);border:1px solid rgba(255,255,255,.26);box-shadow:0 12px 32px rgba(0,0,0,.254);backdrop-filter:blur(6.5px) saturate(1.09);color:#143b59;font-family:var(--font-body,Geist,Arial,sans-serif);}.ds-nav a{padding:9px 4px;border-radius:18px;color:inherit;font-size:.875rem;text-decoration:none}.ds-nav a[aria-current=page]{background:rgba(255,255,255,.23)}.ds-nav a:hover{background:#ffffff36}.ds-nav a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media(prefers-reduced-transparency:reduce){.ds-nav{backdrop-filter:none;background:rgba(255,255,255,.92)}}"
+    },
+    {
+      "name": "Exercise entry",
+      "kind": "card",
+      "description": "src/styles/discovery.css: .choice-exercise",
+      "html": "<a class=\"ds-exercise\" href=\"#preview\"><h2>Improve something<br>you made.</h2><p>Let AI critique. You decide what changes.</p><span>Open the exercise</span></a>",
+      "css": ".ds-exercise{display:block;background:#d6ebf7;color:#143b59;border-radius:14px;padding:40px;text-decoration:none;max-width:440px;font-family:var(--font-body,Geist,Arial,sans-serif);}.ds-exercise h2{font-size:2.6rem;line-height:1.05;font-weight:500;letter-spacing:-.035em;margin:0}.ds-exercise p{font-size:1.05rem;line-height:1.65;color:#405e73;margin:20px 0 26px}.ds-exercise span{font-size:.9rem;font-weight:500}.ds-exercise:focus-visible{outline:3px solid #236b99;outline-offset:5px;}",
+      "refersTo": "exercise-entry"
+    },
+    {
+      "name": "Reading disclosure",
+      "kind": "custom",
+      "description": "src/styles/discovery.css: .topic-disclosure; native details/summary",
+      "html": "<details class=\"ds-topic\"><summary><span>The Human Loop</span><span class=\"ds-symbol\" aria-hidden=\"true\"></span></summary><p>Think and delegate. Inspect and explain. Verify and own.</p></details>",
+      "css": ".ds-topic{border-top:1px solid #c5d7e5;color:#143b59;font-family:var(--font-body,Geist,Arial,sans-serif);}.ds-topic summary{display:flex;justify-content:space-between;align-items:center;gap:30px;padding:28px 0;cursor:pointer;list-style:none;font-size:1.4rem;font-weight:500}.ds-topic summary::-webkit-details-marker{display:none}.ds-symbol{position:relative;width:44px;height:44px;flex:none;border-radius:50%;background:#e1edf5}.ds-symbol::before,.ds-symbol::after{content:\"\";position:absolute;left:14px;top:21px;width:16px;height:2px;background:#143b59}.ds-symbol::after{transform:rotate(90deg);transition:transform .2s ease}.ds-topic[open] .ds-symbol::after{transform:rotate(0deg)}.ds-topic summary:hover{text-decoration:underline;text-underline-offset:5px}.ds-topic summary:focus-visible{outline:3px solid #236b99;outline-offset:5px;}.ds-topic p{font-size:1rem;line-height:1.7;color:#405e73;max-width:67ch}@media(prefers-reduced-motion:reduce){.ds-symbol::after{transition:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Editorial magazine",
+    "overview": "Preserve the paper-airplane mark, the original blue Earth descent, restrained glass navigation, and Geist reading typography. The editorial magazine direction changes the composition of information: let real work lead, offer concise routes, then reveal the depth a visitor chooses.\n\nThe homepage audience is anyone with something they want to create. The human directs and owns the work. Project evidence remains bounded to actual published work; the site does not imply measured learning, usability, or graphics-performance outcomes.",
+    "keyCharacteristics": [
+      "Real artifacts lead discovery.",
+      "Page composition follows the content.",
+      "Short entry points reveal optional reading.",
+      "Earth and navigation retain their established identity."
+    ],
+    "rules": [
+      {
+        "name": "The Composition Follows Content Rule",
+        "body": "Use distinct layouts for browsing, exercises, project notes, and purpose statements. The former universal split-column chapter layout and three-category-card Home instructions are superseded.",
+        "section": "layout"
+      }
+    ],
+    "dos": [
+      "Do preserve the original Earth renderer, texture assets, scroll geometry, and introduction behavior.",
+      "Do lead project discovery with the actual captured artifact.",
+      "Do keep deep links, native disclosure controls, readable measures, and visible keyboard focus.",
+      "Do document AI contribution, human decisions, and limitations beside project evidence."
+    ],
+    "donts": [
+      "Don't require every page to repeat a split heading-and-box composition.",
+      "Don't restore the obsolete three-category-card homepage as a mandatory layout.",
+      "Don't fabricate projects, screenshots, adoption, or validated outcomes.",
+      "Don't use emoji-prone Unicode symbols as website icons unless specifically requested."
+    ]
+  }
+}

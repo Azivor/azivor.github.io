@@ -180,3 +180,5 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .hero-article{white-space:nowrap}
 .hero-article-ending{opacity:0;transition:opacity .35s ease}
 .hero-content.uses-an .hero-article-ending{opacity:1}
+
+@media(max-width:360px){.hero-actions{flex-wrap:nowrap}.hero-actions .descent-link{padding-inline:10px}.hero-actions .descent-link .button-icon{display:none}}

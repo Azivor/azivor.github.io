@@ -1,8 +1,80 @@
+---
+name: Azivor
+description: An editorial magazine for things people can create with AI.
+colors:
+  editorial-navy: "#143b59"
+  editorial-muted: "#405e73"
+  editorial-ground: "#f4f8fc"
+  editorial-line: "#c5d7e5"
+  exercise-cyan: "#d6ebf7"
+  evidence-cyan: "#e2f0f8"
+  white: "#ffffff"
+  accent: "#1e82e0"
+  accent-deep: "#1c38ea"
+  footer-cloud: "#b8cbd6"
+  footer-graphite: "#41464b"
+typography:
+  hero:
+    fontFamily: "EB Garamond, Georgia, serif"
+    fontWeight: 500
+  headline:
+    fontFamily: "Geist, Arial, sans-serif"
+    fontSize: "clamp(3rem, 6vw, 5.8rem)"
+    fontWeight: 500
+    lineHeight: 1.02
+    letterSpacing: "-.035em"
+  body:
+    fontFamily: "Geist, Arial, sans-serif"
+    fontSize: "1rem"
+    lineHeight: 1.7
+rounded:
+  editorial-artifact: "14px"
+  editorial-action: "10px"
+  control: "11px"
+  panel: "20px"
+spacing:
+  small: "1rem"
+  medium: "1.5rem"
+  large: "2rem"
+  section-gap: "3rem"
+components:
+  editorial-primary:
+    backgroundColor: "{colors.editorial-navy}"
+    textColor: "{colors.white}"
+    rounded: "{rounded.editorial-action}"
+    padding: "12px 20px"
+  editorial-primary-hover:
+    backgroundColor: "#1b557d"
+  exercise-entry:
+    backgroundColor: "{colors.exercise-cyan}"
+    rounded: "{rounded.editorial-artifact}"
+    padding: "40px"
+---
+
 # Azivor design system
 
-This is the current visual rule for Home, Explore, Builds, About, and the `/components/` reference page. Preserve the paper-airplane mark, blue Earth-descent opening, restrained glass surfaces, and clear page hierarchy.
+## Overview
 
-## Typography — one serif moment
+**Creative North Star: "Editorial magazine"**
+
+Preserve the paper-airplane mark, the original blue Earth descent, restrained glass navigation, and Geist reading typography. The editorial magazine direction changes the composition of information: let real work lead, offer concise routes, then reveal the depth a visitor chooses.
+
+The homepage audience is anyone with something they want to create. The human directs and owns the work. Project evidence remains bounded to actual published work; the site does not imply measured learning, usability, or graphics-performance outcomes.
+
+**Key Characteristics:**
+
+- Real artifacts lead discovery.
+- Page composition follows the content.
+- Short entry points reveal optional reading.
+- Earth and navigation retain their established identity.
+
+## Colors
+
+The dark blue Earth opening blends into a cloud-white reading ground. Editorial navy carries titles and actions; muted blue-gray carries supporting copy; pale cyan identifies the exercise and evidence insets. Thin blue-gray separators distinguish entries without enclosing every paragraph. These values are extracted from `src/styles/discovery.css`, `src/styles/tokens.css`, and `src/styles/home.css`.
+
+The footer uses clean cloud blue-gray `#b8cbd6`, with coordinated graphite `#41464b` for both copyright and wordmark. Cluely's muted blue-gray footer remains a palette reference; Azivor's latest treatment favors a broad diffuse transition instead of a short upper fade. The shared `footer-fade.svg` samples an almost even OKLab progression with gentle easing only in the outer 12%, plus a faint offset white cloud wash and restrained grain. Spread the blend over the full 300px footer (240px on phones) so it never becomes a narrow horizontal haze band. The top matches white exactly and the bottom matches the shared surface token. Shared material/ink tokens also render in the component library.
+
+## Typography
 
 **EB Garamond is only for the opening headline in the homepage Earth hero** (`.hero-content h1`). The rest of that hero, its glass panel, every section below it, all other pages, navigation, buttons, cards, forms, footer, and the component library use **Geist**. Do not use a serif for article titles or interior page heroes. This rule supersedes earlier notes describing EB Garamond as the general display font.
 
@@ -12,15 +84,37 @@ Use type size, weight, spacing, and color to distinguish headings after the hero
 
 Do not use Unicode symbols or emoji-prone characters as website icons or decorative cues. They can change appearance across browsers and phones. Prefer clear text without an icon; when an icon is necessary, draw it with SVG or CSS and check it at desktop and phone widths. Use a Unicode symbol only when the user specifically requests one.
 
-## Color, materials, and motion
+Editorial discovery headings use Geist at weight 500, tight tracking, and role-specific scale. The shared interior heading spans 3–5.8rem; the compact Builds masthead is 2.1rem. Reading text is generally 1rem with 1.6–1.7 line height and 65–67ch measure. This scale does not make every route hero the same size.
 
-The Earth scene belongs to the homepage. The shift from dark blue through cloud blue to a light page sets the palette for all four pages. Keep the transition gradual and preserve readable white hero text. Use one clear cyan-tinted glass feature panel in the descent; avoid stacking glass layers for decoration. Shared buttons, surfaces, radii, and focus states live in `src/styles/components.css`, with reusable values in `src/styles/tokens.css`. Page composition lives in `src/styles/home.css` and `src/styles/content.css`.
+## Layout
+
+**The Composition Follows Content Rule.** Use distinct layouts for browsing, exercises, project notes, and purpose statements. The former universal split-column chapter layout and three-category-card Home instructions are superseded.
+
+Home retains its original Earth journey and intro above a lead project capture, a short evidence column, and a separate “What do you want to create?” section with exercise and workflow routes. Builds is a compact masthead and artifact-first gallery. Explore uses unequal entries: one prominent exercise, one real project, and shorter workflow and comparison links. About uses a centered statement, a purpose section, and optional questions. The project notebook at `/builds/earth-descent/` has its own local index, artifact overview, decision comparison, and evidence inset. These are current surface patterns, not a requirement to reuse any single composition everywhere.
+
+The main reading container is 72rem. Discovery sections use 32px side gutters on desktop and 20px on phones. The main layout stacks at 700px; narrower refinements occur at 1000px and 360px. The Human Loop reads in three columns on desktop and a vertical sequence on phones. The revision exercise is an ordered row sequence, not a stack of repeated cards. The artifact precedes its explanation in document and phone order.
+
+All desktop fragment destinations leave 100px clearance; phone destinations leave 85px. Preserve `/explore/#first-experiment`, `#workflows`, `#new-capabilities`, and `#build`, as well as the notebook section fragments. Legacy `/builds/` case-study fragments continue to their matching notebook sections.
+
+Interior heroes retain `information-fade.svg`: 65 OKLab color samples on a quintic smootherstep curve, fine grain, and matching seams. Discovery layouts adjust the fade position for their own heading density; do not impose the older fixed 180px/150px spacing on every route. The original homepage Earth introduction and animation remain separate from these editorial composition rules.
+
+The current editorial references are Hack Club’s real maker work and varied density, Experiments with Google’s browse/detail separation, and Are.na’s compact linked entries. Earlier Linear Method, Anthropic Engineering, and GOV.UK references still inform reading rhythm and clear prose. References guide composition; they do not establish measured outcomes.
+
+## Elevation & Depth
+
+The Earth scene belongs to the homepage. The shift from dark blue through cloud blue to a light page sets the palette for all four pages. Keep the transition gradual and preserve readable white hero text. Use one clear cyan-tinted glass feature panel in the descent; avoid stacking glass layers for decoration. Shared buttons, surfaces, radii, and focus states live in `src/styles/components.css`, with reusable values in `src/styles/tokens.css`. Page composition lives in `src/styles/home.css`, `src/styles/content.css`, and `src/styles/discovery.css`.
+
+Editorial reading surfaces are mostly open and flat. Depth comes from tonal insets, genuine imagery, and whitespace. Glass remains concentrated in the established navigation and the single descent reveal panel; retain its supplied tint, rim, shine, refraction fallback, and reduced-transparency behavior.
+
+## Shapes
+
+Real artifact frames and the exercise entry have soft 14px corners. Editorial primary links use 10px corners; the shared controls retain 11px and shared panels retain 20px. Thin separators organize disclosures and reading rows. Prompts use a deep-navy inset with 12px corners. Draw disclosure plus/minus marks with CSS and directional marks with SVG.
+
+## Components
+
+### Navigation
 
 Use the same transparent, viewport-centered header on Home, Explore, Builds, and About: wordmark left, page links centered, with no separate navbar strip or color block. Each interior hero begins in the same dark blue behind the header. Blend every section background into the next with gradients; avoid sharp color jumps at the header, hero, or content seams.
-
-On Home, the three category cards share the same styles and copy as their examples in `/components/`: blue featured Build, silver editorial Workflows, and pale compact New capabilities. They are whole-card links without numbered labels or repeated “Explore” CTAs. Keep the shared card CSS in `src/styles/category-cards.css` so the homepage and library cannot drift. Reserve visual showcases for real builds or screenshots; do not fabricate project mockups to fill empty cards. The latest real build supplies the homepage Builds preview. The opening Explore control uses a drawn SVG down arrow and carries the visitor through the Earth descent to the first information section at a readable pace. User scrolling or navigation cancels that trip; reduced-motion users jump straight to the section.
-
-The footer uses clean cloud blue-gray `#b8cbd6`, with coordinated graphite `#41464b` for both copyright and wordmark. Cluely's muted blue-gray footer remains a palette reference; Azivor's latest treatment favors a broad diffuse transition instead of a short upper fade. The shared `footer-fade.svg` samples an almost even OKLab progression with gentle easing only in the outer 12%, plus a faint offset white cloud wash and restrained grain. Spread the blend over the full 300px footer (240px on phones) so it never becomes a narrow horizontal haze band. The top matches white exactly and the bottom matches the shared surface token. Shared material/ink tokens also render in the component library.
 
 The original transparent header remains at the top of each page on desktop. At 700px and below, the compact wordmark and 44px menu tap target remain fixed to the viewport on every learner page. The mobile header is 60px high plus the top safe area. After scrolling 8px, a translucent frosted backing keeps it readable, with one constant 8% cloud-white wash over a direct 22px backdrop blur; never change the backing tint between dark and light sections; blur belongs to a separate backing layer so the full-screen menu remains viewport-sized. Anchors and the Explore descent leave clearance beneath the mobile header. Foreground colors adapt to the painted DOM surface beneath each control, with the actual hero fade sampled once into a small cached color strip; the Home landing wash uses its existing colors and scene geometry. Keep a small luminance dead band to prevent flickering near the contrast threshold. Never read back the animated Earth canvas or capture page pixels during scrolling. Menu controls stay white over their overlay. Controls and logo interpolate their foreground changes; the backing only fades into view after scrolling. Reduced transparency uses a solid pale backing with navy controls. Desktop floating route colors and their selected capsule also interpolate. Reduced motion follows the shared suppression rule. On desktop Home, a 356 × 52px glass route switcher appears only when the Earth descent reaches its reveal panel, around 80% of the scene. It stays hidden during the earlier Earth animation. On Explore, Builds, and About, the original four navigation links stay in the same centered position; scrolling a little causes the frosted shell to form around those very links. The Home glass links use that same centered 22px gap and link padding, and both glass shells fit the group closely. The original header wordmark scrolls away. Do not swap or duplicate the links on inner pages. The current page receives a restrained translucent capsule only in the glass state; its edges extend 9px beyond each side of the link box so the label can breathe without shifting the links. On an unmodified desktop click of another glass-nav route, the capsule slides to that link briefly before navigating; keyboard navigation and reduced-motion settings skip the delay.
 
@@ -28,37 +122,55 @@ The shared glass uses the supplied tint, rim, shine, and SVG refraction map with
 
 The three plain menu bars animate into an X and open a full-screen overlay on narrow screens. Maintain visible keyboard focus and a usable reduced-motion layout. The Earth canvas should remain a visual layer behind real HTML text and controls.
 
+The mobile menu isolates background content while open, cycles focus through its close control and links, and restores state and focus on dismissal. The footer adds direct Builds, Exercises & workflows, and About links alongside the existing mark and copyright.
+
+### Actions and entry points
+
+The original glowing blue primary button remains the Earth descent action. Editorial primary links use navy with white text and a minimum 46px height; secondary actions are underlined links with 44px targets. Whole-entry links use concise action labels tied to their destination. No decorative entrance motion is added to discovery entries.
+
+### Reading disclosures
+
+Native `details` and `summary` provide optional depth on Explore and About. Summaries expose a short heading and, where useful, one teaser line. Their CSS plus/minus mark reflects the open state. `src/discovery.js` opens the matching disclosure for initial fragments, fragment changes, and repeated activation of the current fragment; keyboard activation remains native and focus moves to the destination summary when appropriate. Native disclosures remain operable without JavaScript.
+
+Keep ordered source sequences and textual labels so color is never the only signpost. The selectable prompt has a copy action and accessible status feedback. Its toolbar wraps on phones, and the inset stays within the step’s inner edge. Comparison reading uses result, corrections, and effort criteria. Caveats remain visible at the appropriate entry or evidence level.
+
+### Earth introduction
+
 The opening headline, supporting text, and Explore control stay fixed during the Earth descent. As the globe rises, its curved edge progressively hides that copy; do not fade or move the copy away. Keep the HTML controls above the canvas and use the scene's sphere geometry to clip the copy. Reduced-motion and fallback views keep the opening copy fully visible.
-
-## Keeping the guide and examples aligned
-
-`DESIGN.md` records the rule; the visual component library renders the shared tokens and components. The file is not parsed by the site build. When changing a shared visual rule, update the source styles/components, the relevant library example, and this guide together, then inspect the actual Home and interior pages at desktop and phone widths. The Earth shader and other scene-specific values are not all represented by catalog swatches.
-
-## Design review workflow
-
-For changes to layout, typography, color, cards, or motion, apply the design-director skill and ask a design-review agent to critique the result. Compare the relevant composition and interaction patterns against polished contemporary sites and the supplied references, then inspect the actual pages at desktop and phone widths. Use comparisons to improve hierarchy, spacing, materials, and clarity; preserve Azivor’s existing identity and factual content. Update this guide and the visual component library when a shared rule changes.
-
-## Information hierarchy
-
-Below the homepage journey and on Explore, Builds, and About, use a split editorial composition: a narrower orientation column and a wider reading column. Section introductions remain in view on desktop; stack them above content at 700px and below. Geist section headings use a 36–54px scale, module headings 22–28px, body text 16px with a 64ch maximum, and metadata 12px. Preserve the blue interior opening and homepage Earth sequence. Interior headings are compact and distinct by purpose; the first exercise action is visible in Explore’s opening. Keep interior fades unobstructed: do not add page-contents panels. The Builds artifact overlaps the lower fade; Explore and About flow straight into their first chapter.
-
-Give content a format that matches its role: actual project screenshot plus linked title for builds; ordered rows for the Human Loop and revision exercise; one inset prompt; a comparison recipe with result/correction/effort criteria; visible notes for guidance and limitations. Chapter fragment destinations remain available through contextual links and the first-exercise action. All desktop anchor destinations clear the centered glass navigation. Shared examples live in the component library; no fabricated projects or decorative stacked glass.
-
-The informational design references were Linear Method (grouped navigation and article rhythm), Anthropic Engineering (separated summary and reading detail), and GOV.UK layout/paragraph guidance (readable measure and distinct prose roles). These are design references, not measured evidence of learning improvement.
-
-### Boxed information surfaces
-
-The information pages use a quiet cloud-white ground (#f4f8fc) with related white, pale cyan (#e2f0f8), and cool silver (#e9edf6) boxes to distinguish content roles. Preserve textual headings and ordered source sequences so color is never the only signpost. The Human Loop and revision exercise use ordered single-column step boxes with compact numbered markers. The prompt is a distinct deep-blue inset with selectable text, a copy action, and accessible status feedback; caveats use cool silver. Surface role and textual labels both communicate hierarchy. Build overview places its real scene capture before the summary in document and phone reading order, and case-study details/attribution/limits use clearly bounded surfaces. Prose stays in readable panels. Below 900px, narrow process boxes stack; below 700px the main chapter layout stacks.
-
-Interior heroes use the shared static `information-fade.svg`: 65 OKLab color samples along a quintic smootherstep curve, with zero slope at both ends and very fine monochrome grain that fades out at the seams. This avoids the visible shoulders and banding of a short piecewise linear gradient. The blend spans 180px (150px on phones), begins below the white supporting text and action, and matches the cloud-white page exactly. The component library renders the same asset. Homepage Earth introduction and animation are unchanged.
-
-The homepage content arrival offers a direct first-exercise route before its category cards. “Human Loop” names the workflow route consistently. Builds leads with its genuine homepage capture and records the 27 September stationary-headline revision with before/decision/after, a source revision link, and an explicit limit on outcome claims. The blue featured category keeps its brightest background dark enough for white body text. The mobile menu isolates background content while open and cycles focus through its close control and links, restoring state and focus on dismissal.
-
-Phone prompt insets align to the step’s inner edge without extending past the card. Prompt toolbar controls wrap when space is constrained. On Builds, the screenshot precedes its summary so the artifact appears in the opening phone view.
 
 The intro renders only the actual 3D Earth, with a small loading status until its first successful frame. Preload the real surface and compact cloud maps in parallel, then keep those textures unchanged for the entire descent. Do not upload or replace textures during the visible animation. Never replace this scene with a photograph. Texture failures and graphics-context loss expose a retry action and restore usable HTML copy and controls.
 
 Earth camera progress, clipping, and render dimensions use the same actual stage size. The phone stage uses a stable large viewport height so browser controls cannot resize and clear the canvas while scrolling, and the background still fills the screen when they retract. Explore owns one cancellable scroll animation and draws the corresponding Earth frame in the same animation callback; manual scrolling, pointer input, and resize return control to the visitor.
+
+Preserve the original Earth renderer, styles governing its geometry, and texture assets from baseline `1ac3b89`. The editorial redesign does not replace that animation. Homepage headline and supporting-copy changes belong to the separate homepage-positioning task; its existing addendum is retained below rather than being attributed to this redesign.
+
+### Project evidence
+
+The genuine Earth capture is a browser image of the working website, not generated art. The notebook records the 27 September stationary-headline revision with before/decision/after, the source revision link, and limits on outcome claims. Keep the real artifact separate from the explanation of what worked and what remains unmeasured.
+
+## Do's and Don'ts
+
+### Do
+
+- Do preserve the original Earth renderer, texture assets, scroll geometry, and introduction behavior.
+- Do lead project discovery with the actual captured artifact.
+- Do keep deep links, native disclosure controls, readable measures, and visible keyboard focus.
+- Do document AI contribution, human decisions, and limitations beside project evidence.
+
+### Don't
+
+- Don't require every page to repeat a split heading-and-box composition.
+- Don't restore the obsolete three-category-card homepage as a mandatory layout.
+- Don't fabricate projects, screenshots, adoption, or validated outcomes.
+- Don't use emoji-prone Unicode symbols as website icons unless specifically requested.
+
+## Keeping the guide and examples aligned
+
+`DESIGN.md` records the rule; the visual component library renders the shared tokens and components. The file is not parsed by the site build. Its frontmatter records extracted design values; source CSS remains the runtime implementation. `.impeccable/design.json` supplies component previews, motion, breakpoints, and source references for design tools. Legacy category cards may remain as catalog examples without defining the current Home composition. When changing a shared visual rule, update the source styles/components, the relevant library example, and this guide together, then inspect the actual Home and interior pages at desktop and phone widths. The Earth shader and other scene-specific values are not all represented by catalog swatches.
+
+## Design review workflow
+
+For changes to layout, typography, color, cards, or motion, apply the design-director skill and ask a design-review agent to critique the result. Compare the relevant composition and interaction patterns against polished contemporary sites and the supplied references, then inspect the actual pages at desktop and phone widths. Use comparisons to improve hierarchy, spacing, materials, and clarity; preserve Azivor’s existing identity and factual content. Update this guide and the visual component library when a shared rule changes.
 
 ## Creator-first homepage
 

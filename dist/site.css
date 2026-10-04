@@ -288,6 +288,8 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .hero-article-ending{opacity:0;transition:opacity .35s ease}
 .hero-content.uses-an .hero-article-ending{opacity:1}
 
+@media(max-width:360px){.hero-actions{flex-wrap:nowrap}.hero-actions .descent-link{padding-inline:10px}.hero-actions .descent-link .button-icon{display:none}}
+
 :root{--editorial-ink:#143b59;--editorial-muted:#4f7187;--editorial-line:#c9e0ed}
 .content-flow,.editorial-main{background:linear-gradient(180deg,#d9eef8 0%,#f3f9fc 35%,#fff 100%);color:var(--editorial-ink)}
 .content-section,.editorial-section{width:min(var(--content-width),calc(100% - 48px));margin-inline:auto;padding:100px 0;border-bottom:1px solid var(--editorial-line)}
