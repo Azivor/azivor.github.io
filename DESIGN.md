@@ -187,3 +187,5 @@ One proportion chart presents Pew’s February 2026 finding that 44% of US adult
 ## Homepage timeline pacing — October 2026
 
 The Earth landing opens with “One person can create more than ever before.” The three period-authentic historical images form a shorter buildup: craft, mechanization, personal computing. The final computer statement names the remaining barrier: learning each tool. AI receives a centered, larger serif finale on the existing cinematic grain background rather than a fourth photograph-and-copy row. Keep the Earth title and its supporting copy clear of the first historical image. The original white sections resume after the timeline. The BJC project showcase is deferred at the user's request; do not insert stock or invented output examples.
+
+Desktop timeline chapters occupy at least one small viewport height, with a centered sticky photograph. The AI finale also occupies a viewport. Color plateaus follow measured chapter bounds and recalculate after resize/font loading; they are not fixed percentages of the entire story. Phones retain content-sized chapters.

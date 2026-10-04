@@ -7,7 +7,7 @@ const chapters = [
 ];
 
 export function TimelineHeading(){
-  return '<header class="creation-timeline-heading creation-timeline-heading--scene"><h2 id="creation-timeline-title">One person can create more than ever before.</h2><p class="creation-opening-copy">Every generation of technology lowered a different barrier.<br>AI is lowering one we’ve lived with for centuries.</p></header>';
+  return '<header class="creation-timeline-heading creation-timeline-heading--scene"><h2 id="creation-timeline-title">One person can create more than ever before.</h2><p class="creation-opening-copy">Every generation of technology lowered a different barrier.<br> AI is lowering one we’ve lived with for centuries.</p></header>';
 }
 
 export default function CreationStory() {
