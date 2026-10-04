@@ -6,6 +6,38 @@
   const markers = [...timeline.querySelectorAll('.creation-progress span')];
   const desktop = window.matchMedia('(min-width: 901px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // Only editorial statements reveal; captions, source labels and controls stay still.
+  const statements = [...document.querySelectorAll('.creation-story h2, .creation-story h3, .creation-chapter-description, .creation-access-heading > p, .creation-proof-note, .creation-invitation > p, .creation-survey-number strong')];
+  const landingTitle = document.querySelector('.creation-timeline-heading--scene h2');
+  const stage = document.querySelector('.journey-stage');
+  const revealed = new WeakSet();
+  let textObserver;
+  function revealText(element) {
+    if (!element || revealed.has(element) || reducedMotion.matches) return;
+    revealed.add(element);
+    element.classList.add('is-text-revealing');
+    element.addEventListener('animationend', () => element.classList.remove('is-text-revealing'), {once:true});
+  }
+  function revealLandingTitle() {
+    if (stage?.classList.contains('scene-reveal') || document.documentElement.classList.contains('sky-fallback')) revealText(landingTitle);
+  }
+  function configureText() {
+    textObserver?.disconnect();
+    document.querySelectorAll('.is-text-revealing').forEach(element => element.classList.remove('is-text-revealing'));
+    if (reducedMotion.matches) return;
+    textObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        revealText(entry.target);
+        textObserver.unobserve(entry.target);
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:.15});
+    statements.forEach(element => { if (!revealed.has(element)) textObserver.observe(element); });
+    revealLandingTitle();
+  }
+  if (stage && landingTitle) new MutationObserver(revealLandingTitle).observe(stage, {attributes:true, attributeFilter:['class']});
+  reducedMotion.addEventListener('change', configureText);
+  configureText();
   let observer;
   const ratios = new Map();
   function activate(index) {

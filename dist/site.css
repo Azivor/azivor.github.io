@@ -777,3 +777,10 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .sky-fallback .creation-timeline-heading--scene{position:relative;inset:auto;transform:none;opacity:1;margin:0 auto}
 
 @media(prefers-reduced-motion:no-preference){.scene-model-ready .content-flow{position:relative;z-index:2;margin-top:-96px}}
+
+/* Large statements settle into focus once, without changing the reading layout. */
+@media(prefers-reduced-motion:no-preference){
+ .is-text-revealing{animation:creation-text-arrive .75s cubic-bezier(.16,1,.3,1) both}
+}
+@keyframes creation-text-arrive{from{opacity:.2;transform:translateY(14px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@media(prefers-reduced-motion:reduce){.is-text-revealing{animation:none}}
