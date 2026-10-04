@@ -7,9 +7,6 @@ let current = 0;
 let inViewport = true;
 let covered = false;
 let timer;
-function syncArticle() {
-  hero?.classList.toggle('uses-an', roles[current]?.textContent === 'animator');
-}
 function schedule() {
   clearTimeout(timer);
   if (roles.length < 2 || reducedMotion.matches || !inViewport || covered || document.hidden) return;
@@ -18,7 +15,6 @@ function schedule() {
     roles[current].classList.replace('is-current', 'is-leaving');
     current = (current + 1) % roles.length;
     roles[current].classList.add('is-current');
-    syncArticle();
     schedule();
   }, 3400);
 }
@@ -29,7 +25,6 @@ function syncMotion() {
       role.classList.remove('is-leaving');
       role.classList.toggle('is-current', index === 0);
     });
-    syncArticle();
   }
   schedule();
 }

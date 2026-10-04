@@ -30,14 +30,14 @@ function harness({reduced=false}={}) {
     visible(on){intersection([{isIntersecting:on}]);},
     cover(on){hero.inert=on;mutation();},mutate(){mutation();}};
 }
-test('roles complete the curated cycle, including the correct article, and wrap',()=>{
+test('roles complete the curated cycle and wrap',()=>{
  const h=harness();assert.equal(h.current(),0);
- for(let i=1;i<=8;i++){h.tick();assert.equal(h.current(),i%8);assert.equal(h.hero.classList.contains('uses-an'),i===5);assert.equal(h.roles.filter(x=>x.classList.contains('is-current')).length,1);}
+ for(let i=1;i<=8;i++){h.tick();assert.equal(h.current(),i%8);assert.equal(h.roles.filter(x=>x.classList.contains('is-current')).length,1);}
 });
 test('reduced motion starts static and a preference change settles an active transition',()=>{
  const initial=harness({reduced:true});assert.equal(initial.timers.size,0);
  const h=harness();for(let i=0;i<5;i++)h.tick();h.reduced(true);
- assert.equal(h.current(),0);assert.equal(h.hero.classList.contains('uses-an'),false);assert.equal(h.timers.size,0);
+ assert.equal(h.current(),0);assert.equal(h.timers.size,0);
  assert.ok(h.roles.every(x=>!x.classList.contains('is-leaving')));h.reduced(false);assert.equal(h.timers.size,1);
 });
 test('hidden page, offscreen hero, and Earth coverage independently suspend rotation',()=>{
