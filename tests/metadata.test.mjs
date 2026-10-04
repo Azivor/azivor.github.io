@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 
-const routes=['','explore','builds','about','scene-test','components'];
+const routes=['','explore','builds','builds/earth-descent','about','scene-test','components'];
 test('every route has intentional social metadata and its own canonical URL',()=>{
  const titles=new Set();
  for(const route of routes){

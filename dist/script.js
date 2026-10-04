@@ -1,7 +1,8 @@
 const links = Array.from(document.querySelectorAll('.nav a'));
 const currentPath = location.pathname.replace(/index\.html$/, '') || '/';
 for (const link of links) {
-  const active = link.getAttribute('href') === currentPath;
+  const href = link.getAttribute('href');
+  const active = href === '/' ? currentPath === '/' : currentPath.startsWith(href);
   link.classList.toggle('selected', active);
   if (active) link.setAttribute('aria-current', 'page');
   else link.removeAttribute('aria-current');

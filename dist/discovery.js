@@ -1,3 +1,8 @@
+// Older case-study fragments continue to reach their new notebook destination.
+const legacyProjectSections = new Set(['the-scene','the-decisions','the-limits','try-it']);
+if (location.pathname === '/builds/' && legacyProjectSections.has(location.hash.slice(1))) {
+  location.replace('/builds/earth-descent/' + location.hash);
+}
 // Native details work without JavaScript. Deep links also reveal their destination.
 function revealTopic(hash, moveFocus = false) {
   let id;
