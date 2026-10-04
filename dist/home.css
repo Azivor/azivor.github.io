@@ -172,3 +172,8 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 
 
 @media(max-width:360px){.hero-actions{flex-wrap:nowrap}.hero-actions .descent-link{padding-inline:10px}}
+
+/* Approved monochrome role icons; center each word and icon as a pair. */
+
+.hero-role{position:relative;text-align:center}.role-label{display:inline-flex;align-items:center;justify-content:center;gap:.16em;vertical-align:top}.role-symbol{display:inline-flex;align-items:center;justify-content:center;flex:0 0 .84em;width:.84em;height:.84em;color:#c9cbd0;line-height:0;transform:translateY(.03em)}.role-symbol svg{display:block;width:100%;height:100%}.hero-role:nth-child(8) .role-symbol svg{transform:rotate(-22deg)}
+@media(max-width:700px){.role-label{gap:.13em}}

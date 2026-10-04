@@ -1,3 +1,4 @@
+import {roleIcon} from "../ui/role-icons.mjs";
 import {Button} from "../ui/components.mjs";
 import CreationStory, {TimelineHeading} from "./creation-story.mjs";
 import {footer, header, head} from "./site-shell.mjs";
@@ -17,7 +18,7 @@ ${header("/")}
 <div class="scene-vignette" aria-hidden="true"></div>
 <div class="hero-content">
 ${study?'<p class="study-label">Developer visual reference · Earth descent study</p>':''}
-<h1 id="hero-title" aria-label="You can be a designer, a developer, a filmmaker, a writer, a researcher, a animator, a builder, or a creator."><span class="ui-sr-only">You can be a designer, developer, filmmaker, writer, researcher, animator, builder, creator.</span><span class="hero-prefix" aria-hidden="true">You can be a</span><span class="hero-roles" aria-hidden="true">${["designer","developer","filmmaker","writer","researcher","animator","builder","creator"].map((role,index)=>`<span class="hero-role${index===0?' is-current':''}">${role}</span>`).join('')}</span></h1>
+<h1 id="hero-title" aria-label="You can be a designer, a developer, a filmmaker, a writer, a researcher, a animator, a builder, or a creator."><span class="ui-sr-only">You can be a designer, developer, filmmaker, writer, researcher, animator, builder, creator.</span><span class="hero-prefix" aria-hidden="true">You can be a</span><span class="hero-roles" aria-hidden="true">${["designer","developer","filmmaker","writer","researcher","animator","builder","creator"].map((role,index)=>`<span class="hero-role${index===0?' is-current':''}">${`<span class="role-label">${role}<span class="role-symbol">${roleIcon(role)}</span></span>`}</span>`).join('')}</span></h1>
 <p class="intro">AI expands what you can create.<br>Azivor helps you make it real.</p>
 <div class="hero-actions">${Button({label:"Explore what you can create",href:"#first-content",variant:"primary",className:"descent-link",icon:"down"}).replace("Explore what you can create", '<span class="descent-label-full">Explore what you can create</span><span class="descent-label-short">Explore</span>')}</div>
 </div>
