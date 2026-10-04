@@ -895,8 +895,8 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .creation-story .creation-showcase>h2{font-family:var(--font-hero);font-weight:500;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1.1;text-align:center;margin:0 0 48px}
 .creation-showcase-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
 .creation-showcase figure{margin:0;min-width:0}
-.creation-showcase-player{aspect-ratio:16/9;overflow:hidden;background:#080b0f;border-radius:8px}
-.creation-showcase iframe{display:block;width:100%;height:100%;border:0}
+.creation-showcase-image{display:block;aspect-ratio:16/9;overflow:hidden;background:#080b0f;border-radius:8px}
+.creation-showcase-image img{width:100%;height:100%;object-fit:cover}.creation-showcase-credit{display:inline-block;font-size:13px;margin-top:10px;line-height:1.5;color:#cdc6bc}
 .creation-showcase figcaption{padding-top:24px}
 .creation-story .creation-showcase h3{font-size:clamp(1.5rem,2.3vw,2.1rem);line-height:1.2;letter-spacing:-.02em;margin:0 0 14px;color:#fff2df}
 .creation-showcase p{font-size:14px;line-height:1.6;color:#cdc6bc;margin:0}
