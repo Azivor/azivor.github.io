@@ -840,7 +840,7 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .creation-app--openai { background: #f3eee6; transform: rotate(-12deg); z-index: 1; }
 
 .creation-app--claude { background: #cc785c; margin-left: -16px; transform: translateY(9px) rotate(11deg); z-index: 2; }
-.creation-apps .creation-apps-more { position: relative; height: 196px; margin-top: -38px; z-index: 1; }
+.creation-apps .creation-apps-more { position: relative; height: 230px; margin-top: -38px; z-index: 1; }
 .creation-apps-more .creation-app { position: absolute; left: 50%; top: 0; transform: translate(calc(var(--x) * var(--fan-unit) - 50%),calc(var(--y) * var(--fan-rise))) rotate(var(--tilt)); }
 .creation-apps-more .creation-app:nth-child(1) { --x:-210; --y:43; --tilt:-19deg; }
 .creation-apps-more .creation-app:nth-child(2) { --x:-150; --y:93; --tilt:-11deg; }
@@ -861,7 +861,7 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
   .creation-apps { margin-top: 32px; --fan-unit:.48px; --fan-rise:.85px; }
   .creation-apps-more .creation-app { width: 56px; height: 56px; flex-basis: 56px; border-radius: 15px; }
   .creation-apps-more .creation-app img { width: 33px; height: 33px; }
-  .creation-apps .creation-apps-more { height: 172px; }
+  .creation-apps .creation-apps-more { height: 205px; }
   .creation-ai-thesis { margin-top: 32px!important; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -878,4 +878,6 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .creation-app--runway { background:#e6edda; }
 .creation-app--elevenlabs { background:#f2e7d1; }
 .creation-app--codex { background:#e9eef8; }
-.creation-apps-more .creation-app:nth-child(9) { --x:0; --y:28; --tilt:-4deg; z-index:2; }
+.creation-apps-more .creation-app:nth-child(9) { --x:0; --y:158; --tilt:-4deg; }
+
+.creation-app--claude img { filter: invert(1); }
