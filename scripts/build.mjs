@@ -33,6 +33,7 @@ await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
 await copyFile(join(root,'src/exercise.js'),join(out,'exercise.js'));
 await copyFile(join(root,'src/discovery.js'),join(out,'discovery.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
+await copyFile(join(root,'src/hero-roles.js'),join(out,'hero-roles.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
 for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});
 // Content versions let returning visitors keep caching without retaining old styles or navigation logic.
