@@ -1,4 +1,4 @@
-import {Button, Logo, surfaceAttributes} from "../ui/components.mjs";
+import {Button} from "../ui/components.mjs";
 import CreationStory from "./creation-story.mjs";
 import {footer, header, head} from "./site-shell.mjs";
 
@@ -24,10 +24,6 @@ ${study?'<p class="study-label">Developer visual reference · Earth descent stud
 <div class="scene-status"><p class="scene-status-text" role="status" aria-live="polite">Preparing Earth…</p><button class="scene-retry" type="button" hidden>Retry Earth</button></div>
 <div class="scroll-cue" aria-hidden="true"><span>Scroll to descend</span><span class="cue-line"></span></div>
 <div class="landing-wash" aria-hidden="true"></div>
-<div ${surfaceAttributes({variant:"light",className:"showcase"})} tabindex="-1" aria-labelledby="showcase-title">
-<div class="showcase-copy"><h2 id="showcase-title">An idea is closer<br><span>to something real.</span></h2><p>AI can help you turn a sketch into a scene, a draft into a story, an idea into a working website. You decide what it becomes.</p></div>
-<div class="showcase-emblem" aria-hidden="true">${Logo()}</div>
-</div>
 </div>
 <div class="journey-target" id="possibilities" aria-hidden="true"></div>
 </section>
