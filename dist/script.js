@@ -177,7 +177,7 @@ const foregroundOverLight = (control, fallback) => {
       return paintedLuminance(rgb)>threshold;
     }
     const color=style.backgroundColor.match(/[\d.]+/g)?.map(Number);
-    if(color && (color[3]??1)>=.6){
+    if(color && (color[3]??1)>=.6 && !surface.matches('.journey, .journey-stage')){
       return paintedLuminance(color.slice(0,3))>threshold;
     }
     if(surface.matches('.content-flow, .editorial-main, footer')) return true;
