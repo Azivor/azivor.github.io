@@ -136,16 +136,46 @@
   const desktopOrder = ['codex','grok','cursor','deepseek','midjourney','perplexity','runway','gemini','elevenlabs'];
   const phoneOrder = ['perplexity','deepseek','gemini','elevenlabs','midjourney','cursor','grok','runway','codex'];
   const icons = new Map(desktopOrder.map(slug => [slug,apps.querySelector('.creation-app--'+slug)]));
-  let frame;
+  let frame, timer, started = false;
+  function revealMore() {
+    timer = null;
+    apps.classList.toggle('has-more',true);
+    const order = window.innerWidth <= 700 ? phoneOrder : desktopOrder;
+    order.forEach((slug,index) => {
+      const icon = icons.get(slug);
+      if (!icon) return;
+      icon.style.setProperty('--app-delay',motion.matches ? '0ms' : `${index * 80}ms`);
+      icon.classList.toggle('is-app-visible',true);
+    });
+  }
+  function reset() {
+    clearTimeout(timer);
+    timer = null;
+    started = false;
+    apps.classList.toggle('has-lead',false);
+    apps.classList.toggle('has-more',false);
+    icons.forEach(icon => {
+      icon?.style.setProperty('--app-delay','0ms');
+      icon?.classList.toggle('is-app-visible',false);
+    });
+  }
   function updateApps() {
     frame = null;
     const top = apps.getBoundingClientRect().top;
     apps.classList.toggle('is-scroll-apps', !motion.matches);
-    apps.classList.toggle('has-lead', motion.matches || top <= window.innerHeight * .88);
-    // Scroll distance adds one mark at a time, alternating outward on each side.
-    apps.classList.toggle('has-more', motion.matches || top <= window.innerHeight * .78);
-    const order = window.innerWidth <= 700 ? phoneOrder : desktopOrder;
-    order.forEach((slug,index) => icons.get(slug)?.classList.toggle('is-app-visible',motion.matches || top <= window.innerHeight * (.78 - index * .065)));
+    if (motion.matches) {
+      clearTimeout(timer);
+      started = true;
+      apps.classList.toggle('has-lead',true);
+      revealMore();
+    } else if (top > window.innerHeight * 1.1) {
+      reset();
+    } else if (!started && top <= window.innerHeight * .82) {
+      started = true;
+      apps.classList.toggle('has-lead',true);
+      // Once in view, the complete outward sequence runs without more scrolling.
+      timer = setTimeout(revealMore,350);
+    }
   }
   function queue() { if (!frame) frame = requestAnimationFrame(updateApps); }
   window.addEventListener('scroll',queue,{passive:true});
