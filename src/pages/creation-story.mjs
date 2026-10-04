@@ -9,11 +9,13 @@ const chapters = [
 
 // photographyCredits is trusted, author-written attribution markup.
 export default function CreationStory({photographyCredits=''}={}) {
-  return `<section class="creation-story" id="first-content" tabindex="-1" aria-labelledby="hub-title">
+  return `<section class="creation-story" id="first-content" tabindex="-1" aria-labelledby="creation-timeline-title">
 <div class="creation-story-inner">
 <div class="creation-timeline">
+<div class="creation-atmosphere" aria-hidden="true"></div>
+<header class="creation-timeline-heading"><p class="creation-era">The history of possibility</p><h2 id="creation-timeline-title">How technology expanded what one person can create.</h2></header>
 <div class="creation-visual-stage" aria-hidden="true"><div class="creation-visual-stack">${chapters.map((chapter,index)=>`<img class="creation-stage-image creation-tone-${chapter.tone}${index===0?' is-active':''}" src="${chapter.image}" alt="" width="1536" height="1024" loading="lazy" decoding="async">`).join('')}<div class="creation-progress">${chapters.map((chapter,index)=>`<span${index===0?' class="is-active"':''}></span>`).join('')}</div></div></div>
-${chapters.map((chapter,index)=>`<article class="creation-chapter creation-tone-${chapter.tone}" data-creation-chapter="${index}" data-chapter-color="${chapter.color}" style="--chapter-bg:${chapter.color}"><figure class="creation-chapter-media"><img src="${chapter.image}" alt="${chapter.alt}" width="1536" height="1024" loading="lazy" decoding="async"></figure><div class="creation-chapter-copy"><p class="creation-era">${chapter.era}</p><h2${index===0?' id="hub-title"':''}>${chapter.title}</h2><p class="creation-chapter-description">${chapter.copy}</p></div></article>`).join('')}
+${chapters.map((chapter,index)=>`<article class="creation-chapter creation-tone-${chapter.tone}" data-creation-chapter="${index}" data-chapter-color="${chapter.color}" style="--chapter-bg:${chapter.color}"><figure class="creation-chapter-media"><img src="${chapter.image}" alt="${chapter.alt}" width="1536" height="1024" loading="lazy" decoding="async"></figure><div class="creation-chapter-copy"><p class="creation-era">${chapter.era}</p><h3${index===0?' id="hub-title"':''}>${chapter.title}</h3><p class="creation-chapter-description">${chapter.copy}</p></div></article>`).join('')}
 </div>
 ${photographyCredits?`<details class="creation-photo-credits"><summary>Artwork and photography credits</summary>${photographyCredits}</details>`:''}
 <section class="creation-access" aria-labelledby="creation-access-title">

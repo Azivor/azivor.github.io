@@ -9,7 +9,6 @@
   let observer;
   const ratios = new Map();
   function activate(index) {
-    timeline.style.setProperty('--chapter-bg', chapters[index].dataset.chapterColor);
     images.forEach((image,i) => image.classList.toggle('is-active',i === index));
     markers.forEach((marker,i) => marker.classList.toggle('is-active',i === index));
   }
