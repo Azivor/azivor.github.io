@@ -829,55 +829,56 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
  .creation-timeline::after{height:clamp(240px,28svh,420px)}
 }
 
-/* Tilted app cards expand into a loose fan behind the familiar pair. */
-.creation-apps { margin: 40px auto 0; width: min(560px,100%); --fan-unit: 1px; --fan-rise: 1px; }
-.creation-apps ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; }
-.creation-app { display: grid; place-items: center; width: 64px; height: 64px; flex: 0 0 64px; border-radius: 17px; background: #263035; box-shadow: inset 0 0 0 1px rgba(255,242,223,.16),0 9px 24px rgba(0,0,0,.2); }
-.creation-app img { display: block; width: 37px; height: 37px; object-fit: contain; }
-.creation-apps-lead { position: relative; z-index: 2; }
-.creation-apps-lead .creation-app { width: 88px; height: 88px; flex-basis: 88px; border-radius: 23px; }
-.creation-apps-lead .creation-app img { width: 52px; height: 52px; }
-.creation-app--openai { background: #f3eee6; transform: rotate(-12deg); z-index: 1; }
-
-.creation-app--claude { background: #cc785c; margin-left: -16px; transform: translateY(9px) rotate(11deg); z-index: 2; }
-.creation-apps .creation-apps-more { position: relative; height: 230px; margin-top: -38px; z-index: 1; }
-.creation-apps-more .creation-app { position: absolute; left: 50%; top: 0; transform: translate(calc(var(--x) * var(--fan-unit) - 50%),calc(var(--y) * var(--fan-rise))) rotate(var(--tilt)); }
-.creation-apps-more .creation-app:nth-child(1) { --x:-210; --y:43; --tilt:-19deg; }
-.creation-apps-more .creation-app:nth-child(2) { --x:-150; --y:93; --tilt:-11deg; }
-.creation-apps-more .creation-app:nth-child(3) { --x:-90; --y:116; --tilt:-7deg; }
-.creation-apps-more .creation-app:nth-child(4) { --x:-30; --y:102; --tilt:5deg; }
-.creation-apps-more .creation-app:nth-child(5) { --x:30; --y:118; --tilt:-6deg; }
-.creation-apps-more .creation-app:nth-child(6) { --x:90; --y:103; --tilt:12deg; }
-.creation-apps-more .creation-app:nth-child(7) { --x:150; --y:84; --tilt:8deg; }
-.creation-apps-more .creation-app:nth-child(8) { --x:210; --y:39; --tilt:20deg; }
-.creation-apps.is-scroll-apps .creation-apps-lead,
-.creation-apps.is-scroll-apps .creation-apps-more { opacity: 0; transform: translateY(20px); transition: opacity 300ms ease, transform 460ms cubic-bezier(.16,1,.3,1); }
-.creation-apps.is-scroll-apps.has-lead .creation-apps-lead,
-.creation-apps.is-scroll-apps.has-more .creation-apps-more { opacity: 1; transform: translateY(0); }
-@media (max-width: 800px) {
-  .creation-apps { --fan-unit:.72px; }
+/* The familiar pair expands into one equally sized fan of AI app marks. */
+.creation-apps { position:relative; margin:44px auto 0; width:min(850px,100%); height:220px; --fan-unit:1px; }
+.creation-apps ul { position:absolute; inset:0; padding:0; margin:0; list-style:none; }
+.creation-app { position:absolute; left:50%; top:0; display:grid; place-items:center; width:68px; height:68px; border-radius:18px; background:#f3eee6; box-shadow:inset 0 0 0 1px rgba(255,242,223,.16),0 9px 24px rgba(0,0,0,.2); transform:translate(calc(var(--x) * var(--fan-unit) - 50%),var(--y)) rotate(var(--tilt)); transition:transform 480ms cubic-bezier(.16,1,.3,1); }
+.creation-app img { display:block; width:40px; height:40px; object-fit:contain; }
+.creation-app--openai { --x:-29; --y:0px; --tilt:-12deg; z-index:2; }
+.creation-app--claude { --x:29; --y:7px; --tilt:11deg; background:#cc785c; z-index:3; }
+.creation-app--claude img { filter:invert(1); }
+.creation-apps.has-more .creation-app--openai { --x:-70; --y:80px; --tilt:-4deg; }
+.creation-apps.has-more .creation-app--claude { --x:0; --y:84px; --tilt:2deg; }
+.creation-app--gemini { --x:-350; --y:0px; --tilt:-18deg; background:#f5f0e8; }
+.creation-app--perplexity { --x:-280; --y:30px; --tilt:-14deg; background:#e1f1ed; }
+.creation-app--deepseek { --x:-210; --y:54px; --tilt:-10deg; background:#edf2ff; }
+.creation-app--grok { --x:-140; --y:68px; --tilt:-7deg; background:#181818; }
+.creation-app--cursor { --x:140; --y:68px; --tilt:7deg; background:#181818; }
+.creation-app--grok img,.creation-app--cursor img { filter:invert(1); }
+.creation-app--midjourney { --x:210; --y:54px; --tilt:10deg; background:#dce7f1; }
+.creation-app--runway { --x:280; --y:30px; --tilt:14deg; background:#e6edda; }
+.creation-app--elevenlabs { --x:350; --y:0px; --tilt:18deg; background:#f2e7d1; }
+.creation-app--codex { --x:70; --y:80px; --tilt:4deg; background:#e9eef8; }
+.creation-apps.is-scroll-apps ul { opacity:0; transition:opacity 300ms ease; }
+.creation-apps.is-scroll-apps.has-lead .creation-apps-lead,.creation-apps.is-scroll-apps .creation-apps-more { opacity:1; }
+.creation-apps.is-scroll-apps .creation-apps-more .creation-app { opacity:0; transition:opacity 260ms ease,transform 480ms cubic-bezier(.16,1,.3,1); }
+.creation-apps.is-scroll-apps .creation-apps-more .is-app-visible { opacity:1; }
+@media (min-width:701px) and (max-width:1000px) { .creation-apps { --fan-unit:.76px; } }
+@media (max-width:700px) {
+ .creation-apps { margin-top:32px; height:240px; --fan-unit:1px; }
+ .creation-app { width:52px; height:52px; border-radius:14px; }
+ .creation-app img { width:31px; height:31px; }
+ .creation-apps.has-more .creation-app--openai { --x:-28; --y:38px; --tilt:-4deg; }
+ .creation-apps.has-more .creation-app--claude { --x:28; --y:38px; --tilt:4deg; }
+ .creation-app--gemini { --x:-110; --y:0px; --tilt:-17deg; }
+ .creation-app--perplexity { --x:-58; --y:20px; --tilt:-10deg; }
+ .creation-app--deepseek { --x:58; --y:20px; --tilt:10deg; }
+ .creation-app--elevenlabs { --x:110; --y:0px; --tilt:17deg; }
+ .creation-app--grok { --x:-108; --y:98px; --tilt:-12deg; }
+ .creation-app--midjourney { --x:-54; --y:119px; --tilt:-6deg; }
+ .creation-app--codex { --x:0; --y:126px; --tilt:0deg; }
+ .creation-app--cursor { --x:54; --y:119px; --tilt:6deg; }
+ .creation-app--runway { --x:108; --y:98px; --tilt:12deg; }
+ .creation-ai-thesis { margin-top:20px!important; }
 }
-@media (max-width: 700px) {
-  .creation-apps { margin-top: 32px; --fan-unit:.48px; --fan-rise:.85px; }
-  .creation-apps-more .creation-app { width: 56px; height: 56px; flex-basis: 56px; border-radius: 15px; }
-  .creation-apps-more .creation-app img { width: 33px; height: 33px; }
-  .creation-apps .creation-apps-more { height: 205px; }
-  .creation-ai-thesis { margin-top: 32px!important; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .creation-apps.is-scroll-apps .creation-apps-lead,
-  .creation-apps.is-scroll-apps .creation-apps-more { opacity: 1; transform: none; transition: none; }
+@media (prefers-reduced-motion:reduce) { .creation-app,.creation-apps.is-scroll-apps ul { transition:none; } .creation-apps.is-scroll-apps ul,.creation-apps.is-scroll-apps .creation-apps-more .creation-app { opacity:1; transition:none; } }
+
+/* Static fallback uses the complete fan; only the enhanced opening is a pair. */
+.creation-apps:not(.is-scroll-apps) .creation-app--openai { --x:-70; --y:80px; --tilt:-4deg; }
+.creation-apps:not(.is-scroll-apps) .creation-app--claude { --x:0; --y:84px; --tilt:2deg; }
+@media(max-width:700px) {
+ .creation-apps:not(.is-scroll-apps) .creation-app--openai { --x:-28; --y:38px; }
+ .creation-apps:not(.is-scroll-apps) .creation-app--claude { --x:28; --y:38px; }
 }
 
-.creation-app--gemini { background:#f5f0e8; }
-.creation-app--perplexity { background:#e1f1ed; }
-.creation-app--deepseek { background:#edf2ff; }
-.creation-app--grok, .creation-app--cursor { background:#181818; }
-.creation-app--grok img, .creation-app--cursor img { filter:invert(1); }
-.creation-app--midjourney { background:#dce7f1; }
-.creation-app--runway { background:#e6edda; }
-.creation-app--elevenlabs { background:#f2e7d1; }
-.creation-app--codex { background:#e9eef8; }
-.creation-apps-more .creation-app:nth-child(9) { --x:0; --y:158; --tilt:-4deg; }
-
-.creation-app--claude img { filter: invert(1); }
+@media(max-width:360px) { .creation-apps { --fan-unit:.88px; } }

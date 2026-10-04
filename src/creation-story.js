@@ -133,14 +133,19 @@
   const apps = document.querySelector('.creation-apps');
   if (!apps) return;
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const desktopOrder = ['codex','grok','cursor','deepseek','midjourney','perplexity','runway','gemini','elevenlabs'];
+  const phoneOrder = ['perplexity','deepseek','gemini','elevenlabs','midjourney','cursor','grok','runway','codex'];
+  const icons = new Map(desktopOrder.map(slug => [slug,apps.querySelector('.creation-app--'+slug)]));
   let frame;
   function updateApps() {
     frame = null;
     const top = apps.getBoundingClientRect().top;
     apps.classList.toggle('is-scroll-apps', !motion.matches);
     apps.classList.toggle('has-lead', motion.matches || top <= window.innerHeight * .88);
-    // One short further scroll reveals the whole second group together.
-    apps.classList.toggle('has-more', motion.matches || top <= window.innerHeight * .68);
+    // Scroll distance adds one mark at a time, alternating outward on each side.
+    apps.classList.toggle('has-more', motion.matches || top <= window.innerHeight * .78);
+    const order = window.innerWidth <= 700 ? phoneOrder : desktopOrder;
+    order.forEach((slug,index) => icons.get(slug)?.classList.toggle('is-app-visible',motion.matches || top <= window.innerHeight * (.78 - index * .065)));
   }
   function queue() { if (!frame) frame = requestAnimationFrame(updateApps); }
   window.addEventListener('scroll',queue,{passive:true});
