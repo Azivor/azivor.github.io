@@ -829,29 +829,53 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
  .creation-timeline::after{height:clamp(240px,28svh,420px)}
 }
 
-/* A quiet pair opens into a wider creative toolkit. Space is reserved throughout. */
-.creation-apps { margin: 40px auto 0; width: min(720px,100%); }
-.creation-apps ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 24px; }
-.creation-apps .creation-apps-more { margin-top: 28px; gap: 20px; }
-.creation-app { display: grid; place-items: center; width: 64px; height: 64px; flex: 0 0 64px; border-radius: 17px; background: rgba(255,242,223,.07); box-shadow: inset 0 0 0 1px rgba(255,242,223,.12); }
-.creation-app span { display: block; width: 37px; height: 37px; background: #fff2df; mask: var(--app-icon) center / contain no-repeat; -webkit-mask: var(--app-icon) center / contain no-repeat; }
-.creation-apps-lead .creation-app { width: 80px; height: 80px; flex-basis: 80px; border-radius: 21px; }
-.creation-apps-lead .creation-app span { width: 48px; height: 48px; }
-.creation-app--claude { background: #cc785c; }
-.creation-app--openai { background: #f3eee6; }
-.creation-app--openai span { background: #242924; }
+/* Tilted app cards expand into a loose fan behind the familiar pair. */
+.creation-apps { margin: 40px auto 0; width: min(560px,100%); --fan-unit: 1px; --fan-rise: 1px; }
+.creation-apps ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; }
+.creation-app { display: grid; place-items: center; width: 64px; height: 64px; flex: 0 0 64px; border-radius: 17px; background: #263035; box-shadow: inset 0 0 0 1px rgba(255,242,223,.16),0 9px 24px rgba(0,0,0,.2); }
+.creation-app img { display: block; width: 37px; height: 37px; object-fit: contain; }
+.creation-apps-lead { position: relative; z-index: 2; }
+.creation-apps-lead .creation-app { width: 88px; height: 88px; flex-basis: 88px; border-radius: 23px; }
+.creation-apps-lead .creation-app img { width: 52px; height: 52px; }
+.creation-app--openai { background: #f3eee6; transform: rotate(-12deg); z-index: 1; }
+
+.creation-app--claude { background: #cc785c; margin-left: -16px; transform: translateY(9px) rotate(11deg); z-index: 2; }
+.creation-apps .creation-apps-more { position: relative; height: 196px; margin-top: -38px; z-index: 1; }
+.creation-apps-more .creation-app { position: absolute; left: 50%; top: 0; transform: translate(calc(var(--x) * var(--fan-unit) - 50%),calc(var(--y) * var(--fan-rise))) rotate(var(--tilt)); }
+.creation-apps-more .creation-app:nth-child(1) { --x:-210; --y:43; --tilt:-19deg; }
+.creation-apps-more .creation-app:nth-child(2) { --x:-150; --y:93; --tilt:-11deg; }
+.creation-apps-more .creation-app:nth-child(3) { --x:-90; --y:116; --tilt:-7deg; }
+.creation-apps-more .creation-app:nth-child(4) { --x:-30; --y:102; --tilt:5deg; }
+.creation-apps-more .creation-app:nth-child(5) { --x:30; --y:118; --tilt:-6deg; }
+.creation-apps-more .creation-app:nth-child(6) { --x:90; --y:103; --tilt:12deg; }
+.creation-apps-more .creation-app:nth-child(7) { --x:150; --y:84; --tilt:8deg; }
+.creation-apps-more .creation-app:nth-child(8) { --x:210; --y:39; --tilt:20deg; }
 .creation-apps.is-scroll-apps .creation-apps-lead,
-.creation-apps.is-scroll-apps .creation-apps-more { opacity: 0; transform: translateY(18px); transition: opacity 360ms ease, transform 480ms cubic-bezier(.16,1,.3,1); }
+.creation-apps.is-scroll-apps .creation-apps-more { opacity: 0; transform: translateY(20px); transition: opacity 300ms ease, transform 460ms cubic-bezier(.16,1,.3,1); }
 .creation-apps.is-scroll-apps.has-lead .creation-apps-lead,
 .creation-apps.is-scroll-apps.has-more .creation-apps-more { opacity: 1; transform: translateY(0); }
+@media (max-width: 800px) {
+  .creation-apps { --fan-unit:.72px; }
+}
 @media (max-width: 700px) {
-  .creation-apps { margin-top: 32px; max-width: 340px; }
-  .creation-apps .creation-apps-more { display: grid; grid-template-columns: repeat(4,56px); gap: 16px; }
+  .creation-apps { margin-top: 32px; --fan-unit:.48px; --fan-rise:.85px; }
   .creation-apps-more .creation-app { width: 56px; height: 56px; flex-basis: 56px; border-radius: 15px; }
-  .creation-apps-more .creation-app span { width: 33px; height: 33px; }
+  .creation-apps-more .creation-app img { width: 33px; height: 33px; }
+  .creation-apps .creation-apps-more { height: 172px; }
   .creation-ai-thesis { margin-top: 32px!important; }
 }
 @media (prefers-reduced-motion: reduce) {
   .creation-apps.is-scroll-apps .creation-apps-lead,
   .creation-apps.is-scroll-apps .creation-apps-more { opacity: 1; transform: none; transition: none; }
 }
+
+.creation-app--gemini { background:#f5f0e8; }
+.creation-app--perplexity { background:#e1f1ed; }
+.creation-app--deepseek { background:#edf2ff; }
+.creation-app--grok, .creation-app--cursor { background:#181818; }
+.creation-app--grok img, .creation-app--cursor img { filter:invert(1); }
+.creation-app--midjourney { background:#dce7f1; }
+.creation-app--runway { background:#e6edda; }
+.creation-app--elevenlabs { background:#f2e7d1; }
+.creation-app--codex { background:#e9eef8; }
+.creation-apps-more .creation-app:nth-child(9) { --x:0; --y:28; --tilt:-4deg; z-index:2; }

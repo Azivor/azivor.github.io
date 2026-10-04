@@ -1,9 +1,9 @@
 import {Button} from '../ui/components.mjs';
 
 
-const aiApps = [['openai','ChatGPT'],['claude','Claude'],['gemini','Gemini'],['perplexity','Perplexity'],['deepseek','DeepSeek'],['grok','Grok'],['cursor','Cursor'],['midjourney','Midjourney'],['runway','Runway'],['elevenlabs','ElevenLabs']];
+const aiApps = [['openai','ChatGPT'],['claude','Claude'],['gemini','Gemini'],['perplexity','Perplexity'],['deepseek','DeepSeek'],['grok','Grok'],['cursor','Cursor'],['midjourney','Midjourney'],['runway','Runway'],['elevenlabs','ElevenLabs'],['codex','Codex']];
 function AiApps() {
-  const icon = ([slug,name]) => `<li class="creation-app creation-app--${slug}" aria-label="${name}" title="${name}"><span aria-hidden="true" style="--app-icon:url('/ai-icons/${slug}.svg')"></span></li>`;
+  const icon = ([slug,name]) => `<li class="creation-app creation-app--${slug}" aria-label="${name}" title="${name}"><img src="/ai-icons/${slug}${['gemini','perplexity','deepseek','codex'].includes(slug)?'-color':''}.svg" alt="" width="52" height="52" decoding="async"></li>`;
   return `<div class="creation-apps"><ul class="creation-apps-lead" aria-label="Familiar AI apps">${aiApps.slice(0,2).map(icon).join('')}</ul><ul class="creation-apps-more" aria-label="More tools for creating with AI">${aiApps.slice(2).map(icon).join('')}</ul></div>`;
 }
 
