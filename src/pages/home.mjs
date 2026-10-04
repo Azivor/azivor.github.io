@@ -41,5 +41,5 @@ ${study?'<section class="content-section" aria-labelledby="study-title"><p class
 </div>
 </main>${footer()}
 </div>
-<script src="/script.js" defer></script><script type="module" src="/sky-scene.js"></script><script type="module" src="/hero-roles.js"></script>
+<script src="/script.js" defer></script><script type="module" src="/sky-scene.js"></script><script src="/hero-roles.js" defer></script>
 </body></html>`; }

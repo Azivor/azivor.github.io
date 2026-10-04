@@ -1,3 +1,4 @@
+(() => {
 // Native HTML keeps a readable headline without JavaScript or motion.
 const roles = [...document.querySelectorAll('.hero-role')];
 const toggle = document.querySelector('.role-toggle');
@@ -70,3 +71,4 @@ if (hero && 'MutationObserver' in window) {
 reducedMotion.addEventListener('change', syncMotion);
 document.addEventListener('visibilitychange', schedule);
 syncMotion();
+})();
