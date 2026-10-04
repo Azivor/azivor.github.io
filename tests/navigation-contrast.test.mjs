@@ -51,3 +51,23 @@ test('late Home descent keeps white ink across the blue landing wash',()=>{
   const css=readFileSync('src/styles/home.css','utf8');
   assert.match(css,/#244c80 0%,#305b8a 48%,#244c80 100%/,'contrast estimate must track the rendered landing wash');
 });
+
+
+test('desktop and mobile navigation follow the visible timeline gradient above its cream backing',()=>{
+  const h=contrastHarness();
+  const css=readFileSync('src/styles/creation-story.css','utf8');
+  const source=css.match(/background:linear-gradient\(180deg,(#244c80 0px.*?)\)}/)[1];
+  const gradient=source.replace(/#([0-9a-f]{6})/g,(_,hex)=>`rgb(${parseInt(hex.slice(0,2),16)}, ${parseInt(hex.slice(2,4),16)}, ${parseInt(hex.slice(4,6),16)})`);
+  h.context.gradient=gradient;
+  h.setSurfaces([h.surface('rgb(237, 232, 222)')]);
+  vm.runInContext("let timelinePosition=0;document.querySelector=selector=>selector==='.creation-atmosphere'?{style:{backgroundImage:gradient},getBoundingClientRect:()=>({top:30-timelinePosition,bottom:4030-timelinePosition,height:4000})}:null",h.context);
+  for(const width of [390,1440]){
+    h.context.window.innerWidth=width;
+    for(const position of [0,300,1680,2240,2800]){
+      vm.runInContext(`timelinePosition=${position}`,h.context);
+      assert.equal(h.read(true),width===1440 && position===2240,`ink follows the visible gradient and glass tint at ${position}px, viewport ${width}`);
+    }
+    vm.runInContext('timelinePosition=3990',h.context);
+    assert.equal(h.read(false),true,'dark ink returns as the exit reaches cream');
+  }
+});

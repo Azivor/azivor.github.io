@@ -280,6 +280,12 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 
 @media(max-width:360px){.hero-actions{flex-wrap:nowrap}.hero-actions .descent-link{padding-inline:10px}}
 
+/* Give white navigation ink a quiet dark glass backing over cinematic scenes. */
+@media(min-width:701px){
+ .floating-nav:not(.is-over-light){background:rgba(8,20,35,.65)}
+ .floating-nav:not(.is-over-light) .glass-pill__shine{opacity:.3}
+}
+
 :root{--editorial-ink:#143b59;--editorial-muted:#4f7187;--editorial-line:#c9e0ed}
 .content-flow,.editorial-main{background:linear-gradient(180deg,#d9eef8 0%,#f3f9fc 35%,#fff 100%);color:var(--editorial-ink)}
 .content-section,.editorial-section{width:min(var(--content-width),calc(100% - 48px));margin-inline:auto;padding:100px 0;border-bottom:1px solid var(--editorial-line)}

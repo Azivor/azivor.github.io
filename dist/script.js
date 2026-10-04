@@ -165,6 +165,27 @@ const foregroundOverLight = (control, fallback) => {
   const bounds=control.getBoundingClientRect();
   const x=Math.max(0,Math.min(window.innerWidth-1,bounds.left+bounds.width/2));
   const y=Math.max(0,bounds.top+bounds.height/2);
+  // The timeline paints above a cream section. Read its actual gradient rather
+  // than mistaking that underlying section for the visible surface.
+  const atmosphere=document.querySelector('.creation-atmosphere');
+  if(atmosphere){
+    const rect=atmosphere.getBoundingClientRect();
+    if(y>=rect.top && y<=rect.bottom){
+      const gradient=getComputedStyle(atmosphere).backgroundImage || '';
+      const stops=Array.from(gradient.matchAll(/rgb\((\d+),\s*(\d+),\s*(\d+)\)\s+(calc\(100% - (\d+)px\)|(\d+(?:\.\d+)?)(px|%))/g),match=>({
+        rgb:match.slice(1,4).map(Number),
+        position:match[5] ? rect.height-Number(match[5]) : Number(match[6])*(match[7]==='%'?rect.height/100:1)
+      }));
+      const position=y-rect.top;
+      for(let i=1;i<stops.length;i++){
+        if(position<=stops[i].position){
+          const a=stops[i-1],b=stops[i];
+          const t=Math.max(0,Math.min(1,(position-a.position)/Math.max(1,b.position-a.position)));
+          return paintedLuminance(a.rgb.map((c,index)=>c+(b.rgb[index]-c)*t))>threshold;
+        }
+      }
+    }
+  }
   for(const surface of document.elementsFromPoint(x,y)){
     if(surface.closest('.header, .floating-nav')) continue;
     const style=getComputedStyle(surface);
