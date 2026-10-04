@@ -681,7 +681,7 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .creation-invitation .creation-explore:hover{background:#1b557d;border-color:#1b557d}
 @media(min-width:901px) and (prefers-reduced-motion:no-preference){
  .creation-timeline.is-scroll-story{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:clamp(40px,5.5vw,80px)}
- .is-scroll-story .creation-visual-stage{display:block;grid-column:1;grid-row:1/5;position:relative}
+ .is-scroll-story .creation-visual-stage{display:block;grid-column:1;grid-row:1/4;position:relative}
  .creation-visual-stack{position:sticky;top:clamp(110px,calc((100svh - 430px)/2),200px);overflow:hidden;border-radius:14px;aspect-ratio:3/2;margin:50px 0}
  .creation-visual-stack .creation-stage-image{position:absolute;inset:0;height:100%;opacity:0;transition:opacity .65s cubic-bezier(.22,1,.36,1)}
  .creation-visual-stack .creation-stage-image.is-active{opacity:1}
@@ -791,3 +791,18 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 @media(max-width:700px) and (prefers-reduced-motion:no-preference){.is-text-pending,.is-text-revealing{--text-rise:12px}h2.is-text-pending,h3.is-text-pending,h2.is-text-revealing,h3.is-text-revealing,.creation-survey-number strong.is-text-revealing{--text-rise:22px}}
 @keyframes creation-text-rise{from{opacity:0;transform:translate3d(0,var(--text-rise),0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @media(prefers-reduced-motion:reduce){.is-text-pending,.is-text-revealing{animation:none;opacity:1;transform:none}}
+
+/* Three short steps lead into an open, typography-led AI finale. */
+.creation-timeline-heading--scene{top:64%;width:min(1000px,calc(100% - 64px))}
+.creation-opening-copy{font:400 clamp(1.1rem,1.7vw,1.4rem)/1.5 var(--font-body);max-width:48ch;margin:24px 0 0;color:#f1e8dd;text-wrap:pretty}
+.creation-timeline::after{height:240px}
+.creation-atmosphere{background:linear-gradient(180deg,#244c80 0px,#224773 65px,#1d3e64 140px,#16334f 230px,#102b40 300px,#2a526c 26%,#53596d 42%,#96583d 56%,#78372e 60%,#2b1e24 70%,#12171c calc(100% - 240px),#18232b calc(100% - 200px),#354650 calc(100% - 165px),#6b797b calc(100% - 110px),#ccd1d4 calc(100% - 50px),#fff 100%)}
+.creation-turn{font-size:clamp(1.3rem,2.1vw,1.8rem);font-weight:500;line-height:1.25;max-width:24ch;margin-top:26px!important;color:#fff3e5;text-wrap:balance}
+.creation-ai-payoff{grid-column:1/-1;text-align:center;position:relative;padding:110px 0 70px}
+.creation-ai-payoff .creation-era{margin-bottom:30px!important;letter-spacing:.12em;text-transform:uppercase}
+.creation-story .creation-ai-payoff h2{font-family:var(--font-hero);font-size:clamp(4rem,9vw,8rem);font-weight:500;line-height:.98;letter-spacing:-.035em;color:#fff2df}
+.creation-ai-description{font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.5;max-width:42ch;margin:32px auto 0!important;color:#f1e8dd;text-wrap:balance}
+.creation-ai-thesis{font-size:clamp(1.7rem,3vw,2.7rem);font-weight:500;line-height:1.2;letter-spacing:-.025em;margin:55px auto 0!important;color:#fff2df;text-wrap:balance}
+@media(min-width:901px) and (prefers-reduced-motion:no-preference){.is-scroll-story .creation-chapter{min-height:46svh;padding:35px 0}.creation-visual-stack{top:120px;max-height:440px}.creation-chapter-copy h3{font-size:clamp(2.5rem,3.7vw,3.8rem)}.creation-chapter-description{font-size:clamp(1.1rem,1.6vw,1.35rem);margin-top:22px!important}.creation-chapter:first-of-type{padding-top:65px}}
+@media(max-width:900px){.creation-chapter{padding:36px 0;gap:30px}.creation-chapter-media{aspect-ratio:4/3}.creation-ai-payoff{padding:85px 0 50px}}
+@media(max-width:700px){.creation-timeline-heading--scene{top:64%;width:calc(100% - 48px)}.creation-opening-copy{font-size:1.05rem;line-height:1.45;margin-top:18px}.creation-opening-copy br{display:none}.creation-chapter{gap:22px;padding:32px 0 38px}.creation-chapter-media{aspect-ratio:16/10}.creation-chapter-copy h3{font-size:clamp(2.1rem,8.4vw,3rem)}.creation-chapter-description{font-size:1.1rem;margin-top:18px!important}.creation-era{margin-bottom:14px!important}.creation-turn{font-size:1.4rem;margin-top:22px!important}.creation-story .creation-ai-payoff h2{font-size:clamp(3.3rem,14vw,5rem)}.creation-ai-description{font-size:1.2rem}.creation-ai-thesis{font-size:1.65rem;margin-top:38px!important}.creation-ai-payoff{padding:70px 0 40px}}

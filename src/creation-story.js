@@ -7,7 +7,7 @@
   const desktop = window.matchMedia('(min-width: 901px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   // Only editorial statements reveal; captions, source labels and controls stay still.
-  const statements = [...document.querySelectorAll('.creation-story h2, .creation-story h3, .creation-chapter-description, .creation-access-heading > p, .creation-proof-note, .creation-invitation > p, .creation-survey-number strong')];
+  const statements = [...document.querySelectorAll('.creation-story h2, .creation-story h3, .creation-chapter-description, .creation-access-heading > p, .creation-proof-note, .creation-invitation > p,  .creation-turn, .creation-ai-thesis, .creation-ai-description')];
   const landingTitle = document.querySelector('.creation-timeline-heading--scene h2');
   const stage = document.querySelector('.journey-stage');
   const revealed = new WeakSet();
