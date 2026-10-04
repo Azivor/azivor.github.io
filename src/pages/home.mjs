@@ -17,7 +17,7 @@ ${header("/")}
 <div class="hero-content">
 ${study?'<p class="study-label">Developer visual reference · Earth descent study</p>':''}
 <h1 id="hero-title">Build with what<br>AI can do now.</h1>
-<p class="intro">Explore what AI makes possible. Make something you can understand and own.</p>
+<p class="intro">Azivor helps students discover what modern AI makes possible—and turn it into something they can make, understand, and own.</p>
 <div class="hero-actions">${Button({label:"Explore",href:"#first-content",variant:"primary",className:"descent-link",icon:"down"})}</div>
 </div>
 <div class="scene-status"><p class="scene-status-text" role="status" aria-live="polite">Preparing Earth…</p><button class="scene-retry" type="button" hidden>Retry Earth</button></div>

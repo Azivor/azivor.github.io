@@ -26,6 +26,9 @@ await copyFile(join(root,'src/assets/earth-clouds-detail.webp'),join(out,'earth-
 await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
 for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
 for(const name of ['home','content','catalog','category-cards','discovery'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
+// One stylesheet request keeps the shared layout and its page composition atomic.
+const styleSources=['tokens','base','components','home','content','category-cards','discovery'];
+await writeFile(join(out,'site.css'),(await Promise.all(styleSources.map(name=>readFile(join(root,`src/styles/${name}.css`),'utf8')))).join('\n'));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
 await copyFile(join(root,'src/exercise.js'),join(out,'exercise.js'));
 await copyFile(join(root,'src/discovery.js'),join(out,'discovery.js'));
