@@ -1,9 +1,9 @@
 import {Button} from '../ui/components.mjs';
 
 const chapters = [
-  {era:'Before', title:'Big ideas used to need a whole production.', copy:'Specialist skills. Expensive tools. A team to bring it together.', image:'/creative-workshop.jpg', alt:'A creative production workspace with specialist tools and equipment.'},
-  {era:'The personal computer', title:'Then the studio fit on a desk.', copy:'Computers put more of the process within reach.', image:'/creative-desktop.jpg', alt:'A personal computer used as a creative workspace.'},
-  {era:'Now', title:'Now one person can take an idea further.', copy:'AI helps you write, design, build, and revise. You decide what it becomes.', image:'/creative-now.jpg', alt:'A contemporary workspace where one person can develop creative work.'},
+  {era:'The editing room', title:'A film could take a whole production.', copy:'Specialist skills. Expensive tools. A team to bring it together.', image:'/creative-workshop.jpg', alt:'A Steenbeck film-editing workstation with physical film reels, photographed by Marcel Oosterwijk in 2010.'},
+  {era:'The personal computer', title:'Then the studio fit on a desk.', copy:'Computers put more of the process within reach.', image:'/creative-desktop.jpg', alt:'A laptop running DaVinci Resolve beside a keyboard, photographed by TheRegisti in 2021.'},
+  {era:'Now', title:'Now one person can take an idea further.', copy:'AI helps you write, design, build, and revise. You decide what it becomes.', image:'/creative-now.jpg', alt:'One person wearing headphones edits video at a desktop computer, photographed by Mark Cruz in 2017.'},
 ];
 
 // photographyCredits is trusted, author-written attribution markup.

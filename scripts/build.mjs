@@ -16,6 +16,7 @@ await mkdir(join(out,'scene-test'),{recursive:true});
 await writeFile(join(out,'scene-test/index.html'),Home({study:true}));
 await writeFile(join(out,'components/index.html'),Catalog());
 await copyFile(join(root,'src/assets/earth-descent-preview.jpg'),join(out,'earth-descent-preview.jpg'));
+for(const name of ['creative-workshop','creative-desktop','creative-now'])await copyFile(join(root,'src/assets/'+name+'.jpg'),join(out,name+'.jpg'));
 await copyFile(join(root,'src/assets/information-fade.svg'),join(out,'information-fade.svg'));
 for(const name of ['hero-blue-fade','editorial-footer-fade'])await copyFile(join(root,'src/assets/'+name+'.svg'),join(out,name+'.svg'));
 await copyFile(join(root,'src/assets/footer-fade.svg'),join(out,'footer-fade.svg'));
@@ -26,15 +27,16 @@ await copyFile(join(root,'src/assets/earth-clouds.jpg'),join(out,'earth-clouds.j
 await copyFile(join(root,'src/assets/earth-clouds-detail.webp'),join(out,'earth-clouds-detail.webp'));
 await copyFile(join(root,'src/assets/space-orbit.webp'),join(out,'space-orbit.webp'));
 for(const name of ['tokens','base','components'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`ui/${name}.css`));
-for(const name of ['home','content','catalog','category-cards','discovery'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
+for(const name of ['home','content','catalog','category-cards','discovery','creation-story'])await copyFile(join(root,`src/styles/${name}.css`),join(out,`${name}.css`));
 // One stylesheet request keeps the shared layout and its page composition atomic.
-const styleSources=['tokens','base','components','home','content','category-cards','discovery'];
+const styleSources=['tokens','base','components','home','content','category-cards','discovery','creation-story'];
 await writeFile(join(out,'site.css'),(await Promise.all(styleSources.map(name=>readFile(join(root,`src/styles/${name}.css`),'utf8')))).join('\n'));
 await copyFile(join(root,'src/navigation.js'),join(out,'script.js'));
 await copyFile(join(root,'src/exercise.js'),join(out,'exercise.js'));
 await copyFile(join(root,'src/discovery.js'),join(out,'discovery.js'));
 await copyFile(join(root,'src/sky-scene.js'),join(out,'sky-scene.js'));
 await copyFile(join(root,'src/hero-roles.js'),join(out,'hero-roles.js'));
+await copyFile(join(root,'src/creation-story.js'),join(out,'creation-story.js'));
 await copyFile(join(root,'src/descent-study.js'),join(out,'descent-study.js'));
 for(const name of ['style.css','refinements.css','cloud-descent.webp'])await rm(join(out,name),{force:true});
 // Content versions let returning visitors keep caching without retaining old styles or navigation logic.

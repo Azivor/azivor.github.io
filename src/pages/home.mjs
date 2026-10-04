@@ -1,4 +1,5 @@
 import {Button, Logo, surfaceAttributes} from "../ui/components.mjs";
+import CreationStory from "./creation-story.mjs";
 import {footer, header, head} from "./site-shell.mjs";
 
 export default function Home({study=false}={}){ return `<!doctype html>
@@ -32,14 +33,9 @@ ${study?'<p class="study-label">Developer visual reference · Earth descent stud
 </section>
 <div class="content-flow">
 ${study?'<section class="content-section" aria-labelledby="study-title"><p class="eyebrow">Scene study</p><h2 id="study-title">Inspect the descent.</h2><p>This reference uses the homepage scene and content to inspect its scroll transitions in context. Scroll from orbit through the atmosphere to the landing reveal. It is not a separate learning activity. Reduced motion keeps the scene still. If WebGL is unavailable, a gradient background and usable page content remain available; graphics performance has not been established across devices.</p><a class="text-link" href="/builds/earth-descent/">Return to the Earth descent case study</a> · <a class="text-link" href="/">View the public homepage</a></section>':''}
-<section class="home-hub" id="first-content" tabindex="-1" aria-labelledby="hub-title">
-<div class="hub-heading"><h2 id="hub-title">An idea.<br>A world you can enter.</h2><p>The scene you just travelled through started with an idea.</p></div>
-<div class="hub-layout"><a class="hub-project" href="/builds/earth-descent/"><div class="hub-project-image"><img src="/earth-descent-preview.jpg" alt="Azivor’s textured Earth and blue atmosphere, captured from the working website during development." width="1264" height="712" loading="lazy"></div><div class="hub-project-caption"><h3>A cinematic website.</h3><span>See how it was made<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></div></a>
-<div class="hub-evidence"><h3>From a visual idea<br>to a working experience.</h3><p>A textured Earth. Layered clouds. A journey from orbit to sky, rendered in your browser.</p><p>AI helped explore the visual direction. Human choices shaped the pace, the design, and the revisions. Open the build to see the process and what still needs work.</p><a class="text-link" href="/builds/earth-descent/">Explore the project</a></div></div>
-<section class="creator-next" aria-labelledby="create-title"><div class="creator-heading"><h2 id="create-title">What do you<br>want to create?</h2><p>A website, a story, a space you imagined.<br>Start with something you want to bring to life.</p></div><div class="creator-methods"><p class="creator-description">Azivor connects that ambition to practical tools, workflows, and methods. Try a first step, inspect what you make, and take it further.</p><div class="hub-paths"><a href="/explore/#first-experiment"><h3>Start with<br>your own idea.</h3><p>Bring a draft or design. Use AI to help make one thoughtful revision.</p><span>Try the first step</span></a><a href="/explore/#workflows"><h3>Find your<br>way to make it.</h3><p>A workflow for directing AI, checking the result, and keeping the choices yours.</p><span>Explore the workflow</span></a></div></div></section>
-<div class="hub-footnote"><p>Test it first. Write about it second.</p><a href="/about/">Why Azivor exists</a><a href="/explore/#new-capabilities">Explore tools in practice</a></div></section>
+${CreationStory({photographyCredits:'<p><a href="https://commons.wikimedia.org/wiki/File:Film_editing_workstation.jpg">Film editing workstation</a> by Marcel Oosterwijk, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>. Resized and cropped for display; this image retains that license.</p><p>Laptop editing photograph by <a href="https://unsplash.com/photos/a-person-typing-on-a-keyboard-next-to-a-laptop-ziSzilQLSOM">TheRegisti</a>. Individual editor photograph by <a href="https://unsplash.com/photos/person-editing-video-in-dark-workspace-VW2oU66mwbc">Mark Cruz</a>. Both under the <a href="https://unsplash.com/license">Unsplash License</a>.</p><p>The photographs show creative tools and people. They do not document AI use by the pictured creators.</p>'})}
 </div>
 </main>${footer()}
 </div>
-<script src="/script.js" defer></script><script type="module" src="/sky-scene.js"></script><script src="/hero-roles.js" defer></script>
+<script src="/script.js" defer></script><script type="module" src="/sky-scene.js"></script><script src="/hero-roles.js" defer></script><script src="/creation-story.js" defer></script>
 </body></html>`; }
