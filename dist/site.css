@@ -681,7 +681,7 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .creation-invitation .creation-explore:hover{background:#1b557d;border-color:#1b557d}
 @media(min-width:901px) and (prefers-reduced-motion:no-preference){
  .creation-timeline.is-scroll-story{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:clamp(40px,5.5vw,80px)}
- .is-scroll-story .creation-visual-stage{display:block;grid-column:1;grid-row:2/6;position:relative}
+ .is-scroll-story .creation-visual-stage{display:block;grid-column:1;grid-row:1/5;position:relative}
  .creation-visual-stack{position:sticky;top:clamp(110px,calc((100svh - 430px)/2),200px);overflow:hidden;border-radius:14px;aspect-ratio:3/2;margin:50px 0}
  .creation-visual-stack .creation-stage-image{position:absolute;inset:0;height:100%;opacity:0;transition:opacity .65s cubic-bezier(.22,1,.36,1)}
  .creation-visual-stack .creation-stage-image.is-active{opacity:1}
@@ -745,7 +745,7 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .creation-access-heading p,.creation-survey figcaption,.creation-proof-note,.creation-invitation>p{color:#4c5a5b}
 @media(min-width:901px) and (prefers-reduced-motion:no-preference){
  .is-scroll-story .creation-chapter{background:none;box-shadow:none;clip-path:none;min-height:75svh;padding:80px 0}
- .creation-visual-stack{position:sticky;top:clamp(100px,calc((100svh - 480px)/2),220px);margin:80px 0}
+ .creation-visual-stack{position:sticky;top:clamp(100px,calc((100svh - 480px)/2),220px);margin:48px 0}
  .creation-progress{z-index:3}
 }
 @media(max-width:700px){.creation-chapter{padding:48px 0 60px}.creation-era{font-size:13px;line-height:1.5}.creation-chapter-description{font-size:20px}.creation-chapter-media{aspect-ratio:5/4}.creation-access{padding-top:70px}}
@@ -763,8 +763,17 @@ footer a:focus-visible{outline:3px solid var(--footer-ink);outline-offset:6px;bo
 .creation-chapter-copy{position:relative;z-index:1}
 .creation-timeline .creation-era,.creation-timeline .creation-chapter-description{color:#f1e8dd;text-shadow:0 1px 10px #10151b30}
 
-.creation-timeline-heading{grid-column:1/-1;padding:260px 0 76px;position:relative;z-index:1;max-width:980px}
+.creation-timeline-heading{grid-column:1/-1;padding:80px 0 40px;position:relative;z-index:1;max-width:980px}
 .creation-timeline-heading .creation-era{margin-bottom:22px!important;letter-spacing:.1em;text-transform:uppercase;font-size:13px}
 .creation-timeline-heading h2{font-family:var(--font-hero);font-weight:500;letter-spacing:-.025em;font-size:clamp(2.8rem,5.6vw,5rem);line-height:1.06;max-width:none;text-wrap:balance}
 .creation-atmosphere::after{mask-image:linear-gradient(180deg,transparent,black 230px,black calc(100% - 320px),transparent);-webkit-mask-image:linear-gradient(180deg,transparent,black 230px,black calc(100% - 320px),transparent)}
-@media(max-width:700px){.creation-timeline-heading{padding:235px 0 28px}.creation-timeline-heading h2{font-size:clamp(2.6rem,10.8vw,3.8rem)}.creation-timeline-heading .creation-era{font-size:11px;margin-bottom:20px!important}.creation-timeline::after{height:320px}}
+@media(max-width:700px){.creation-timeline-heading{padding:64px 0 28px}.creation-timeline-heading h2{font-size:clamp(2.6rem,10.8vw,3.8rem)}.creation-timeline-heading .creation-era{font-size:11px;margin-bottom:20px!important}.creation-timeline::after{height:320px}}
+
+/* The timeline title fills the final Earth reveal, without an empty card stage. */
+.creation-timeline-heading--scene{position:absolute;z-index:2;top:74%;left:50%;width:min(980px,calc(100% - 64px));max-width:none;padding:0!important;margin:0;transform:translate(-50%,-50%);color:#f4ede0;opacity:clamp(0,calc((var(--journey-progress,0) - .76)*8),1);pointer-events:none}
+.creation-timeline-heading--scene h2{margin:0}
+@media(max-width:700px){.creation-timeline-heading--scene{width:calc(100% - 48px)}}
+@media(prefers-reduced-motion:reduce){.creation-timeline-heading--scene{position:relative;inset:auto;transform:none;opacity:1;margin:0 auto}}
+.sky-fallback .creation-timeline-heading--scene{position:relative;inset:auto;transform:none;opacity:1;margin:0 auto}
+
+@media(prefers-reduced-motion:no-preference){.scene-model-ready .content-flow{position:relative;z-index:2;margin-top:-96px}}
