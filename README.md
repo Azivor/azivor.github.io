@@ -74,3 +74,9 @@ The public shell requests one bundled `/site.css`. The build concatenates tokens
 GitHub repository: https://github.com/Azivor/azivor.github.io (public). The workflow in `.github/workflows/pages.yml` tests, builds, and publishes `dist/` to https://azivor.github.io after each push to `main`. The existing Sites project remains configured in `.openai/hosting.json`. The visual direction follows the supplied screenshot and subsequent live Cluely audit. The paper-airplane A is original vector geometry. Google Fonts supplies EB Garamond for the homepage opening headline and Geist for every other heading and text element, with system fallbacks.
 
 Design rules and editorial reference decisions are recorded in DESIGN.md, with component/source metadata in `.impeccable/design.json`. The Earth preview is a browser capture of the working site; the editorial references supply no borrowed artwork or project claims. Dark overlays deliberately use 60% charcoal for readable text over the silver feature surface; reference measurements suggested 50% as a starting point.
+
+## Google Analytics
+
+The Azivor GA4 property uses web stream **Azivor GitHub Pages** for `https://azivor.github.io` and measurement ID `G-7E6HW5VEPF`. The ID is public, not a credential. `src/analytics.mjs` supplies one asynchronous Google tag to each public page through the shared head. It only activates on `azivor.github.io`; local previews and the noindex developer routes `/components/` and `/scene-test/` do not send traffic.
+
+Standard page views and the stream's enhanced measurement collect traffic and engagement. No custom personal data, advertising integration, or Google Signals was added. Verify a release with Google's **Test installation** and the property's **Realtime** report; normal reports can take up to 48 hours to populate.
